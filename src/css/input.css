@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.hamburger-active>span:nth-child(1) {
+    @apply rotate-45;
+}
+
+.hamburger-active>span:nth-child(2) {
+    @apply scale-0;
+}
+
+.hamburger-active>span:nth-child(3) {
+    @apply -rotate-45;
+}
+
+.navbar-fixed {
+    @apply fixed z-[9999] bg-secondary bg-opacity-80;
+    backdrop-filter: blur(5px);
+    box-shadow: inset 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+}
+
+.animblob {
+    animation: animate_blob 16s linear infinite;
+}
+
+@keyframes animate_blob {
+    0%,
+    100% {
+        border-radius: 63% 37% 73% 27% / 37% 67% 33% 63%;
+    }
+    25% {
+        border-radius: 26% 74% 49% 51% / 35% 53% 47% 65%;
+    }
+    50% {
+        border-radius: 64% 36% 62% 38% / 55% 32% 68% 45%;
+    }
+    75% {
+        border-radius: 19% 81% 70% 30% / 79% 73% 27% 21%;
+    }
+}
