@@ -15,10 +15,20 @@
         .swiper-slide {
             background-position: center;
             background-size: cover;
-            width: 400px;
-            height: 100%;
+            width: 40vw;
+            height: auto;
+        }
+        
+        @media (max-width:600px) {
+            .swiper-slide {
+                background-position: center;
+                background-size: cover;
+                width: 65vw;
+                height: auto;
+            }
         }
     </style>
+
 </head>
 
 
@@ -66,9 +76,9 @@
     <section id="home" class="pt-3 mb-14">
         <div class="container">
             <div class="flex flex-wrap">
-                <div class="w-full self-start px-4 lg:w-1/2">
-                    <div class="relative mt-8 lg:ml-28">
-                        <span class="relative overflow-hidden ring-4 ring-forth animate-lentur shadow-third shadow-2xl bg-primary  w-full h-full scale-y-75 -bottom-1.5 -z-10 md:scale-75 flex justify-center items-center">
+                <div class="w-full px-4 lg:w-1/2">
+                    <div class="relative mt-16 md:mt-8 lg:ml-28">
+                        <span class="relative overflow-hidden ring-4 ring-forth animate-lentur shadow-third shadow-2xl bg-primary  w-full h-full scale-90 -bottom-1.5 -z-10 md:scale-75 flex justify-center items-center">
                             <img src="catur.png" alt="">
                         </span>
                     </div>
@@ -80,12 +90,14 @@
 
                         </h1>
                         <span id="multiple_text" class="text-primary font-extrabold text-4xl lg:text-5xl font-sans"></span>
-                        <!-- <h2 class="font-bold text-forth text-lg mb-5 md:text-2xl">Catur Hendra</h2> -->
-                        <p class="font-medium leading-relaxed text-forth mb-10">As a student striving to fund my education
+                        <p class="font-medium leading-relaxed text-forth">Juggling textbooks and dreams, I dance through the pages of life,
+                        </p>
+                        <p class="font-medium leading-relaxed text-forth mb-10">
+                            aiming to turn every hurdle into a stepping stone.
                         </p>
 
-                        <a href="#contact" class="text-base text-white font-semibold py-3 p-8 bg-primary rounded-full hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out">Hit
-                            me</a>
+                        <a href="#contact" class="text-base text-white font-semibold py-3 p-8 bg-primary rounded-full hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out">Get
+                            In Touch</a>
                     </div>
 
                 </div>
@@ -102,9 +114,11 @@
                     <h2 class="font-bold text-forth text-3xl mb-2 max-w-md">
                         living ✨
                     </h2>
-                    <p class="font-medium text-base text-forth max-w-xl mb-5 mr-4">
-                        Born in Surabaya in 2002, and I'm the youngest of four siblings. I started getting into the world of IT when I was in vocational school, and that's where I found my love for web development. I began looking for ways to turn it into a career. After I graduated,
-                        I was excited to keep learning, so I decided to join Surabaya State University to study computer science.
+                    <p class="font-medium text-base text-forth max-w-xl mb-5 mr-4 text-justify">
+                        I was born in 2002 in Surabaya, a lively city full of culture and diversity. As the youngest of four siblings, I always had a curious and adventurous spirit. My passion for IT sparked when I attended a vocational school, where I discovered the wonders
+                        of web development. I wanted to pursue this path as a profession, so I enrolled in the computer science program at State University of Surabaya. There, I continued to learn and grow as a web developer, eager to explore new challenges
+                        and opportunities.
+
                     </p>
 
                 </div>
@@ -112,7 +126,7 @@
                     <h2 class="font-bold text-forth text-3xl mb-2 max-w-md">
                         Evolve 💻
                     </h2>
-                    <p class="font-medium text-base text-forth max-w-xl mb-5 mr-4">
+                    <p class="font-medium text-base text-forth max-w-xl mb-5 mr-4 text-ju">
                         Evolution is an endless adventure, a path where learning never stops. Along the way, I've gained skills such as web development, programing, problem solving and many other skills,my hunger for knowledge is still burning. I'm stoked to keep leveling up
                         my skill set.
                     </p>
@@ -175,20 +189,20 @@
     </section>
 
     <section id="portofolio" class="pt-20 pb-20">
-        <div class="container">
+        <div class="">
             <div class="w-full px-4 ">
                 <div class="max-w-xl mx-auto text-center mb-8">
                     <h3 class="font-bold uppercase text-primary text-lg mb-4">Portofolio</h3>
-                    <p class="font-bold text-md text-dark text-3xl">This is what i have done lastly</p>
+                    <p class="font-bold text-md text-dark text-xl md:text-2xl">Behold my latest masterpiece, a living testament to my continuous journey of growth and discovery</p>
                 </div>
-                <div class="w-full px-4 flex flex-row justify-center mb-12">
-                    <div class="w-28 mx-4 p-4 bg-secondary border-2 rounded-lg border-primary shadow-lg">
+                <div class="w-full px-4 flex flex-row justify-center mb-12 ">
+                    <div class="w-28 mr-2 md:mx-4 p-4 bg-secondary border-2 rounded-lg border-primary shadow-lg">
                         <h2 class="text-center font-bold text-3xl text-primary mb-3">
                             100++
                         </h2>
                         <p class="text-sm text-forth text-center">Projects completed</p>
                     </div>
-                    <div class="w-28 mx-4 p-4 bg-secondary border-2 rounded-lg border-primary shadow-lg">
+                    <div class="w-28 ml-2 md:mx-4 p-4 bg-secondary border-2 rounded-lg border-primary shadow-lg">
                         <h2 class="text-center font-bold text-3xl text-primary mb-3">
                             50++
                         </h2>
@@ -204,7 +218,7 @@
                                     <img src="porto/1.png" alt="" srcset="" width="w-full">
                                 </div>
                                 <h3 class="font-semibold text-3xl text-primary mt-3 mb-3">Caro</h3>
-                                <p class="font-medium text-base text-forth">Classroom Rating Official is an elearning website that allows students and teachers to rate each other. It is built with Laravel 9, Livewire, Bootstrap and more.</p>
+                                <p class="font-medium md:text-base text-forth text-sm">Classroom Rating Official is an elearning website that allows students and teachers to rate each other. It is built with Laravel 9, Livewire, Bootstrap and more.</p>
                             </div>
                         </div>
                         <div class="mb-5 p-4 md:w-1/2 xl:w-1/3 swiper-slide">
@@ -213,7 +227,7 @@
                                     <img src="porto/2.png" alt="" srcset="" width="w-full">
                                 </div>
                                 <h3 class="font-semibold text-3xl text-primary mt-3 mb-3">CUMTech</h3>
-                                <p class="font-medium text-base text-forth">Classy Unbeatable Modern Technologies is an marketing website that sells various electronic products with attractive features, such as a spinning wheel for buyer rewards. It is built using Laravel 10, Bootstrap, jQuery,
+                                <p class="font-medium md:text-base text-forth text-sm">Classy Unbeatable Modern Technologies is an marketing website that sells various electronic products with attractive features, such as a spinning wheel for buyer rewards. It is built using Laravel 10, Bootstrap, jQuery,
                                     and more.
                                 </p>
                             </div>
@@ -224,7 +238,7 @@
                                     <img src="porto/3.png" alt="" srcset="" width="w-full">
                                 </div>
                                 <h3 class="font-semibold text-3xl text-primary mt-3 mb-3">Ujian</h3>
-                                <p class="font-medium text-base text-forth">Ujian is an eLearning website where teachers can upload exams, and students can answer them. It is built using Laravel 10, Bootstrap, and more.
+                                <p class="font-medium md:text-base text-forth text-sm">Ujian is an eLearning website where teachers can upload exams, and students can answer them. It is built using Laravel 10, Bootstrap, and more.
                                 </p>
                             </div>
                         </div>
@@ -234,7 +248,7 @@
                                     <img src="porto/5.png" alt="" srcset="" width="w-full">
                                 </div>
                                 <h3 class="font-semibold text-3xl text-primary mt-3 mb-3">Survei</h3>
-                                <p class="font-medium text-base text-forth">Survei is a website where users can create survey forms and distribute them to gather responses from everyone. It is built using CodeIgniter 3, Bootstrap, and more.</p>
+                                <p class="font-medium md:text-base text-forth text-sm">Survei is a website where users can create survey forms and distribute them to gather responses from everyone. It is built using CodeIgniter 3, Bootstrap, and more.</p>
                             </div>
                         </div>
                         <div class="mb-5 p-4 md:w-1/2 xl:w-1/3 swiper-slide">
@@ -242,8 +256,18 @@
                                 <div class="rounded-lg shadow-lg overflow-hidden border border-primary">
                                     <img src="porto/8.png" alt="" srcset="" width="w-full">
                                 </div>
-                                <h3 class="font-semibold text-3xl text-primary mt-3 mb-3">SuperHero Api</h3>
-                                <p class="font-medium text-base text-forth">Super Hero API is a website for viewing information about heroes and villains in DC and Marvel comics. This data is retrieved from a public API. It is built using Next js and TailwindCSS.
+                                <h3 class="font-semibold text-3xl text-primary mt-3 mb-3">Super Hero Api</h3>
+                                <p class="font-medium md:text-base text-forth text-sm">Super Hero API is a website for viewing information about heroes and villains in DC and Marvel comics. This data is retrieved from a public API. It is built using Next js and TailwindCSS.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="mb-5 p-4 md:w-1/2 xl:w-1/3 swiper-slide">
+                            <div class="border h-full p-4 border-primary rounded-lg shadow-md bg-third bg-opacity-75">
+                                <div class="rounded-lg shadow-lg overflow-hidden border border-primary">
+                                    <img src="porto/9.png" alt="" srcset="" width="w-full">
+                                </div>
+                                <h3 class="font-semibold text-3xl text-primary mt-3 mb-3">PPG Unesa Tracer Study</h3>
+                                <p class="font-medium md:text-base text-forth text-sm">Tracer Study is a website designed to track the career paths of graduates from the Teacher Professional Education. It is built using Laravel 10, Bootstrap, and more
                                 </p>
                             </div>
                         </div>
@@ -253,7 +277,7 @@
                                     <img src="porto/7.png" alt="" srcset="" width="w-full">
                                 </div>
                                 <h3 class="font-semibold text-3xl text-primary mt-3 mb-3">And More</h3>
-                                <p class="font-medium text-base text-forth">Those are some examples of programs I have created. If you're interested in seeing more, please visit the Carrotech recap page
+                                <p class="font-medium md:text-base text-forth text-sm">Those are some examples of programs I have created. If you're interested in seeing more, please visit the Carrotech recap page
                                     <a href="https://t.me/+rFITFv0O-ZA1MzA1" class="text-blue-800">tele / Comingsoon
                                         website</a>
                                 </p>
@@ -271,10 +295,10 @@
     <section id="contact" class="pt-20 pb-12 bg-third">
         <div class="container">
             <div class="flex flex-wrap xl:w-10/12 mx-auto">
-                <div class="w-full px-4 pb-4 lg:w-1/2">
+                <div class="w-full px-4 pb-4">
                     <h3 class="font-bold uppercase text-primary text-lg mb-4">Contact</h3>
-                    <h2 class="font-bold text-forth text-3xl mb-2 max-w-md">
-                        Don't be shy, hit me up!! 👇
+                    <h2 class="font-bold text-forth text-xl md:text-3xl mb-2 max-w-xl">
+                        Don't hesitate, Let's connect and make some digital magic happen! 👇
                     </h2>
                 </div>
                 <div class="w-full px-4 pb-10">
@@ -360,7 +384,7 @@
                         </svg>
                     </a>
                 </div>
-                <p class="font-medium text-sm text-secondary text-center">Made with Carroo's heart 💗 using powerful TailwindCSS
+                <p class="font-medium text-sm text-secondary text-center">Crafted with Carroo's heart 💗 using the powerful magic spells of TailwindCSS
                 </p>
             </div>
         </div>
