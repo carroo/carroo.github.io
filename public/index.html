@@ -37,8 +37,11 @@
     <header class="bg-secondary absolute top-0 left-0 w-full flex items-center z-10">
         <div class="container">
             <div class="flex items-center justify-between relative">
-                <div class="px-4">
-                    <a href="" class="block font-bold text-3xl text-primary py-6 hover:animate-pulse ">Carroo</a>
+                <div class="px-4 flex items-center">
+                    <span id="imglogo" class="hidden w-12 h-12 mr-2 relative overflow-hidden ring-2 ring-forth animate-lentur shadow-third shadow-md bg-primary flex justify-center items-center">
+                        <img src="catur.png" alt="">
+                    </span>
+                    <a href="" class="block font-bold text-3xl text-primary py-6">Carroo</a>
                 </div>
                 <div class="flex items-center px-4">
                     <button id="hamburger" name="hamburger" type=" button" class="block absolute right-4 lg:hidden">
@@ -86,9 +89,11 @@
                 </div>
                 <div class="w-full self-center px-4 lg:w-1/2">
                     <div class="mt-6">
-                        <h1 class="font-extrabold text-forth text-3xl md:text-4xl mb-2">Hi ✋. i am Catur Hendra,
-
+                        <h1 class="text-3xl md:text-4xl mb-2">
+                            <span class="text-forth font-bold">Hi ✋. I am </span>
+                            <span class="text-forth font-extrabold">Catur Hendra</span>
                         </h1>
+
                         <span id="multiple_text" class="text-primary font-extrabold text-4xl lg:text-5xl font-sans"></span>
                         <p class="font-medium leading-relaxed text-forth">Juggling pains and dreams, I dance through the pages of life,
                         </p>
@@ -415,10 +420,23 @@
         window.onscroll = function() {
             const header = document.querySelector('header');
             const fixednav = header.offsetTop;
+            const imglogo = document.querySelector('#imglogo');
+            const aboutme = document.querySelector('#aboutme');
+            const aboutmeOffset = aboutme.offsetTop / 2;
             if (window.pageYOffset > fixednav) {
                 header.classList.add('navbar-fixed');
             } else {
                 header.classList.remove('navbar-fixed');
+            }
+            if (window.pageYOffset > aboutmeOffset) {
+                imglogo.classList.remove('hidden');
+
+                const scale = (window.pageYOffset - aboutmeOffset) / 500;
+                if (scale < 1) {
+                    imglogo.style.transform = `scale(${scale})`;
+                }
+            } else {
+                imglogo.classList.add('hidden');
             }
         };
         hamburger = document.getElementById('hamburger');
