@@ -23,9 +23,45 @@ module.exports = {
                 'mono': ['Monaco', 'Courier New', 'monospace'],
             },
             animation: {
-                'lentur': 'lentur 16s linear infinite'
+                'lentur': 'lentur 16s linear infinite',
+                'anigra': 'anigra 1s ease-out infinite'
             },
             keyframes: {
+                anigra: {
+                    '0%': {
+                        'background-image': 'linear-gradient(45deg, #b0b0b0, #909090, #707070, #505050, #303030, #101010, #303030, #505050, #707070, #909090)'
+                    },
+                    '10%': {
+                        'background-image': 'linear-gradient(45deg, #909090, #707070, #505050, #303030, #101010, #303030, #505050, #707070, #909090, #b0b0b0)'
+                    },
+                    '20%': {
+                        'background-image': 'linear-gradient(45deg, #707070, #505050, #303030, #101010, #303030, #505050, #707070, #909090, #b0b0b0, #909090)'
+                    },
+                    '30%': {
+                        'background-image': 'linear-gradient(45deg, #505050, #303030, #101010, #303030, #505050, #707070, #909090, #b0b0b0, #909090, #707070)'
+                    },
+                    '40%': {
+                        'background-image': 'linear-gradient(45deg, #303030, #101010, #303030, #505050, #707070, #909090, #b0b0b0, #909090, #707070, #505050)'
+                    },
+                    '50%': {
+                        'background-image': 'linear-gradient(45deg, #101010, #303030, #505050, #707070, #909090, #b0b0b0, #909090, #707070, #505050, #303030)'
+                    },
+                    '60%': {
+                        'background-image': 'linear-gradient(45deg, #303030, #505050, #707070, #909090, #b0b0b0, #909090, #707070, #505050, #303030, #101010)'
+                    },
+                    '70%': {
+                        'background-image': 'linear-gradient(45deg, #505050, #707070, #909090, #b0b0b0, #909090, #707070, #505050, #303030, #101010, #303030)'
+                    },
+                    '80%': {
+                        'background-image': 'linear-gradient(45deg, #707070, #909090, #b0b0b0, #909090, #707070, #505050, #303030, #101010, #303030, #505050)'
+                    },
+                    '90%': {
+                        'background-image': 'linear-gradient(45deg, #909090, #b0b0b0, #909090, #707070, #505050, #303030, #101010, #303030, #505050, #707070)'
+                    },
+                    '100%': {
+                        'background-image': 'linear-gradient(45deg, #b0b0b0, #909090, #707070, #505050, #303030, #101010, #303030, #505050, #707070, #909090)'
+                    },
+                },
                 lentur: {
                     '0%, 100%': {
                         borderRadius: '63% 37% 73% 27% / 37% 67% 33% 63%',
@@ -44,6 +80,7 @@ module.exports = {
                         backgroundColor: '#707E87',
                     },
                 },
+
             }
         },
     },

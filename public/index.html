@@ -27,13 +27,35 @@
                 height: auto;
             }
         }
+        
+        .click-effect {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: #e74c3c;
+            border-radius: 50%;
+            animation: clickAnimation 0.5s ease-out;
+        }
+        
+        @keyframes clickAnimation {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
     </style>
 
 </head>
 
 
 <body class="bg-gradient-to-r from-secondary to-third">
-
+    <span id="imgeffect" class="hidden w-12 h-12 mr-2 overflow-hidden ring-2 ring-forth animate-lentur shadow-third shadow-md bg-primary flex justify-center items-center">
+        <img src="catur.png" alt="">
+    </span>
     <header class="bg-secondary absolute top-0 left-0 w-full flex items-center z-10">
         <div class="container">
             <div class="flex items-center justify-between relative">
@@ -55,18 +77,18 @@
                 <nav id="nav-menu" class="hidden absolute py-5 bg-secondary border-2 border-primary shadow-lg rounded-lg max-w-[200px] w-full right-4 top-full lg:flex lg:flex-row-reverse  lg:static lg:bg-transparent lg:max-w-full lg:border-none lg:shadow-none lg:rounded-none">
                     <ul class="block lg:flex self-end">
                         <li class="group">
-                            <a href="#home" class="text-base text-primary py-2 px-8 flex group-hover:border-b-2 group-hover:border-primary group-hover:text-dark transition duration-300 ease-in-out">Home</a>
+                            <a href="#home" class="text-base text-primary py-2 px-8 flex group-hover:decoration-third group-hover:decoration-dashed group-hover:decoration-4 group-hover:underline group-hover:text-dark transition duration-1000 ease-in-out">Home</a>
                         </li>
                         <li class="group">
-                            <a href="#aboutme" class="text-base text-primary py-2 px-8 flex group-hover:border-b-2 group-hover:border-primary group-hover:text-dark transition duration-300 ease-in-out">About
+                            <a href="#aboutme" class="text-base text-primary py-2 px-8 flex group-hover:decoration-third group-hover:decoration-dashed group-hover:decoration-4 group-hover:underline group-hover:text-dark transition duration-1000 ease-in-out">About
                                 Me
                             </a>
                         </li>
                         <li class="group">
-                            <a href="#portofolio" class="text-base text-primary py-2 px-8 flex group-hover:border-b-2 group-hover:border-primary group-hover:text-dark transition duration-300 ease-in-out">Portofolio</a>
+                            <a href="#portofolio" class="text-base text-primary py-2 px-8 flex group-hover:decoration-third group-hover:decoration-dashed group-hover:decoration-4 group-hover:underline group-hover:text-dark transition duration-1000 ease-in-out">Portofolio</a>
                         </li>
                         <li class="group">
-                            <a href="#contact" class="text-base text-primary py-2 px-8 flex group-hover:border-b-2 group-hover:border-primary group-hover:text-dark transition duration-300 ease-in-out">Contact</a>
+                            <a href="#contact" class="text-base text-primary py-2 px-8 flex group-hover:decoration-third group-hover:decoration-dashed group-hover:decoration-4 group-hover:underline group-hover:text-dark transition duration-1000 ease-in-out">Contact</a>
                         </li>
                     </ul>
 
@@ -91,7 +113,8 @@
                     <div class="mt-6">
                         <h1 class="text-3xl md:text-4xl mb-2">
                             <span class="text-forth font-bold">Hi ✋. I am </span>
-                            <span class="text-forth font-extrabold">Catur Hendra</span>
+                            <span class="animate-anigra font-extrabold bg-clip-text text-transparent ">Catur
+                                Hendra</span>
                         </h1>
 
                         <span id="multiple_text" class="text-primary font-extrabold text-4xl lg:text-5xl font-sans"></span>
@@ -454,6 +477,44 @@
         });
     </script>
 
+
+    <script>
+        function createClickEffect(event) {
+            // Membuat elemen bulatan efek klik
+            const existingElement = document.getElementById("imgeffect");
+
+            // Mem-clone elemen "gelembung"
+            const clickEffect = existingElement.cloneNode(true);
+            clickEffect.classList.remove('hidden');
+            clickEffect.classList.add('absolute');
+
+            // Mengatur posisi efek klik sesuai dengan posisi klik
+            const x = event.clientX + window.pageXOffset;
+            const y = event.clientY + window.pageYOffset;
+            clickEffect.style.left = `${x - 15}px`;
+            clickEffect.style.top = `${y - 15}px`;
+
+            // Menambahkan elemen efek klik ke dalam elemen body
+            document.body.appendChild(clickEffect);
+
+            let scaleValue = 99;
+            const scaleInterval = setInterval(() => {
+                clickEffect.style.transform = `scale(${scaleValue / 100})`;
+                scaleValue--;
+
+                // Hentikan interval ketika skala mencapai 0
+                if (scaleValue < 0) {
+                    clearInterval(scaleInterval);
+
+                    // Menghapus elemen setelah animasi selesai
+                    setTimeout(() => {
+                        clickEffect.remove();
+                    }, 500);
+                }
+            }, 10);
+        }
+        document.body.addEventListener("click", createClickEffect);
+    </script>
 </body>
 
 </html>
