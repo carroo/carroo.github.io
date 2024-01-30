@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="tailwind.css">
     <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Exo+2&family=Ubuntu&display=swap" rel="stylesheet">
+
     <style>
         .swiper-slide {
             background-position: center;
@@ -27,35 +31,13 @@
                 height: auto;
             }
         }
-        
-        .click-effect {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background-color: #e74c3c;
-            border-radius: 50%;
-            animation: clickAnimation 0.5s ease-out;
-        }
-        
-        @keyframes clickAnimation {
-            0% {
-                transform: scale(0);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 0;
-            }
-        }
     </style>
 
 </head>
 
 
 <body class="bg-gradient-to-r from-secondary to-third">
-    <span id="imgeffect" class="hidden w-12 h-12 mr-2 overflow-hidden ring-2 ring-forth animate-lentur shadow-third shadow-md bg-primary flex justify-center items-center">
-        <img src="catur.png" alt="">
-    </span>
+
     <header class="bg-secondary absolute top-0 left-0 w-full flex items-center z-10">
         <div class="container">
             <div class="flex items-center justify-between relative">
@@ -63,7 +45,7 @@
                     <span id="imglogo" class="hidden w-12 h-12 mr-2 relative overflow-hidden ring-2 ring-forth animate-lentur shadow-third shadow-md bg-primary flex justify-center items-center">
                         <img src="catur.png" alt="">
                     </span>
-                    <a href="" class="block font-bold text-3xl text-primary py-6">Carroo</a>
+                    <a href="" class="block font-semibold text-3xl text-primary py-6 font-primary">Carroo</a>
                 </div>
                 <div class="flex items-center px-4">
                     <button id="hamburger" name="hamburger" type=" button" class="block absolute right-4 lg:hidden">
@@ -112,19 +94,19 @@
                 <div class="w-full self-center px-4 lg:w-1/2">
                     <div class="mt-6">
                         <h1 class="text-3xl md:text-4xl mb-2">
-                            <span class="text-forth font-bold">Hi ✋. I am </span>
-                            <span class="animate-anigra font-extrabold bg-clip-text text-transparent ">Catur
+                            <span class="text-forth font-bold font-secondary">Hi ✋. I am </span>
+                            <span class="animate-anigra font-extrabold bg-clip-text text-transparent font-primary">Catur
                                 Hendra</span>
                         </h1>
 
-                        <span id="multiple_text" class="text-primary font-extrabold text-4xl lg:text-5xl font-sans"></span>
-                        <p class="font-medium leading-relaxed text-forth">Juggling pains and dreams, I dance through the pages of life,
+                        <span id="multiple_text" class="text-primary font-extrabold text-4xl lg:text-5xl font-secondary"></span>
+                        <p class="font-medium leading-relaxed text-forth font-secondary">Juggling pains and dreams, I dance through the pages of life,
                         </p>
-                        <p class="font-medium leading-relaxed text-forth mb-10">
+                        <p class="font-medium leading-relaxed text-forth mb-10 font-secondary">
                             aiming to turn every hurdle into a stepping stone.
                         </p>
 
-                        <a href="#contact" class="text-base text-white font-semibold py-3 p-8 bg-primary rounded-full hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out">Get
+                        <a href="#contact" class="font-secondary text-base text-white font-semibold py-3 p-8 bg-primary rounded-full hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out">Get
                             In Touch</a>
                     </div>
 
@@ -139,10 +121,10 @@
             <div class="flex flex-wrap xl:w-10/12 mx-auto">
                 <div class="w-full px-4 pb-10 lg:w-1/2">
                     <h3 class="font-bold uppercase text-primary text-lg mb-4">About me</h3>
-                    <h2 class="font-bold text-forth text-3xl mb-2 max-w-md">
-                        living ✨
+                    <h2 class="font-bold text-forth text-3xl mb-2 max-w-md font-primary">
+                        Living ✨
                     </h2>
-                    <p class="font-medium text-base text-forth max-w-xl mb-5 mr-4 text-justify">
+                    <p class="font-medium text-base text-forth max-w-xl mb-5 mr-4 text-justify font-secondary">
                         I was born in 2002 in Surabaya, a lively city full of culture and diversity. As the youngest of four siblings, I always had a curious and adventurous spirit. My passion for IT sparked when I attended a vocational school, where I discovered the wonders
                         of web development. I wanted to pursue this path as a profession, so I enrolled in the computer science program at State University of Surabaya. There, I continued to learn and grow as a web developer, eager to explore new challenges
                         and opportunities.
@@ -151,10 +133,10 @@
 
                 </div>
                 <div class="w-full px-4 pb-10 lg:w-1/2 lg:pt-10">
-                    <h2 class="font-bold text-forth text-3xl mb-2 max-w-md">
+                    <h2 class="font-bold text-forth text-3xl mb-2 max-w-md font-primary">
                         Evolve 💻
                     </h2>
-                    <p class="font-medium text-base text-forth max-w-xl mb-5 mr-4 text-justify">
+                    <p class="font-medium text-base text-forth max-w-xl mb-5 mr-4 text-justify font-secondary">
                         Evolution is an endless adventure, a path where learning never stops. Along the way, I've gained skills such as web development, programing, problem solving and many other skills,my hunger for knowledge is still burning. I'm stoked to keep leveling up
                         my skill set.
                     </p>
@@ -479,14 +461,15 @@
 
 
     <script>
-        function createClickEffect(event) {
-            // Membuat elemen bulatan efek klik
-            const existingElement = document.getElementById("imgeffect");
+        let currentTextIndex = 0;
+        const texts = ["😀", "😘", "😜", "🤭"];
 
-            // Mem-clone elemen "gelembung"
-            const clickEffect = existingElement.cloneNode(true);
-            clickEffect.classList.remove('hidden');
+        function createClickEffect(event) {
+            // Membuat elemen teks efek klik
+            const clickEffect = document.createElement("div");
+            clickEffect.classList.add('click-effect');
             clickEffect.classList.add('absolute');
+            clickEffect.textContent = texts[currentTextIndex];
 
             // Mengatur posisi efek klik sesuai dengan posisi klik
             const x = event.clientX + window.pageXOffset;
@@ -509,12 +492,15 @@
                     // Menghapus elemen setelah animasi selesai
                     setTimeout(() => {
                         clickEffect.remove();
+                        currentTextIndex = (currentTextIndex + 1) % texts.length;
                     }, 500);
                 }
             }, 10);
         }
+
         document.body.addEventListener("click", createClickEffect);
     </script>
+
 </body>
 
 </html>

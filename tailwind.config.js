@@ -21,6 +21,8 @@ module.exports = {
                 'sans': ['Roboto', 'Helvetica', 'Arial', 'sans'],
                 'serif': ['Georgia', 'Cambria', 'serif'],
                 'mono': ['Monaco', 'Courier New', 'monospace'],
+                'primary': ["'Black Ops One'", 'system-ui'],
+                'secondary': ["'Exo 2'", 'sans']
             },
             animation: {
                 'lentur': 'lentur 16s linear infinite',
