@@ -45,7 +45,7 @@
                     <span id="imglogo" class="hidden w-12 h-12 mr-2 relative overflow-hidden ring-2 ring-forth animate-lentur shadow-third shadow-md bg-primary flex justify-center items-center">
                         <img src="catur.png" alt="">
                     </span>
-                    <a href="" class="block font-semibold text-3xl text-primary py-6 font-primary">Carroo</a>
+                    <a id="carroo" href="" class="block whitespace-nowrap font-semibold text-3xl text-primary py-6 font-primary">Carroo</a>
                 </div>
                 <div class="flex items-center px-4">
                     <button id="hamburger" name="hamburger" type=" button" class="block absolute right-4 lg:hidden">
@@ -94,13 +94,12 @@
                 <div class="w-full self-center px-4 lg:w-1/2">
                     <div class="mt-6">
                         <h1 class="text-3xl md:text-4xl mb-2">
-                            <span class="text-forth font-bold font-secondary">Hi ✋. I am </span>
+                            <span class="text-forth font-bold font-secondary">Hi. I am </span>
                             <span class="animate-anigra font-extrabold bg-clip-text text-transparent font-primary">Catur
                                 Hendra</span>
                         </h1>
-
                         <span id="multiple_text" class="text-primary font-extrabold text-4xl lg:text-5xl font-secondary"></span>
-                        <p class="font-medium leading-relaxed text-forth font-secondary">Juggling pains and dreams, I dance through the pages of life,
+                        <p class="font-medium leading-relaxed text-forth font-secondary mt-4">Juggling pains and dreams, I dance through the pages of life,
                         </p>
                         <p class="font-medium leading-relaxed text-forth mb-10 font-secondary">
                             aiming to turn every hurdle into a stepping stone.
@@ -427,6 +426,7 @@
             const fixednav = header.offsetTop;
             const imglogo = document.querySelector('#imglogo');
             const aboutme = document.querySelector('#aboutme');
+            const carroo = document.querySelector('#carroo');
             const aboutmeOffset = aboutme.offsetTop / 2;
             if (window.pageYOffset > fixednav) {
                 header.classList.add('navbar-fixed');
@@ -435,10 +435,20 @@
             }
             if (window.pageYOffset > aboutmeOffset) {
                 imglogo.classList.remove('hidden');
-
                 const scale = (window.pageYOffset - aboutmeOffset) / 500;
                 if (scale < 1) {
                     imglogo.style.transform = `scale(${scale})`;
+                    const textList = ['Carroo', 'Carro', 'Carr', 'Catr', 'Catr H', 'Catr He', 'Catur He', 'Catur Hen', 'Catur Hend', 'Catur Hendra'];
+
+                    const index = Math.floor(scale * (textList.length));
+                    const newText = textList[index];
+
+                    carroo.innerText = newText;
+                    if (scale > 0.98) {
+                        carroo.classList.add('animate-anigra', 'bg-clip-text', 'text-transparent');
+                    } else {
+                        carroo.classList.remove('animate-anigra', 'bg-clip-text', 'text-transparent');
+                    }
                 }
             } else {
                 imglogo.classList.add('hidden');
@@ -462,7 +472,7 @@
 
     <script>
         let currentTextIndex = 0;
-        const texts = ["😀", "😘", "😜", "🤭"];
+        const texts = ["😀", "🥰", "😜", "🤭"];
 
         function createClickEffect(event) {
             // Membuat elemen teks efek klik
