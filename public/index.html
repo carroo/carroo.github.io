@@ -45,7 +45,7 @@
                     <span id="imglogo" class="hidden w-12 h-12 mr-2 relative overflow-hidden ring-2 ring-forth animate-lentur shadow-third shadow-md bg-primary flex justify-center items-center">
                         <img src="catur.png" alt="">
                     </span>
-                    <a id="carroo" href="" class="block whitespace-nowrap font-semibold text-3xl text-primary py-6 font-primary">Carroo</a>
+                    <a id="carroo" href="" class="block whitespace-nowrap font-semibold text-2xl md:text-3xl text-primary py-6 font-primary">Carroo</a>
                 </div>
                 <div class="flex items-center px-4">
                     <button id="hamburger" name="hamburger" type=" button" class="block absolute right-4 lg:hidden">
@@ -452,7 +452,9 @@
                 }
             } else {
                 imglogo.classList.add('hidden');
+                carroo.innerText = 'Carroo';
             }
+
         };
         hamburger = document.getElementById('hamburger');
         navMenu = document.getElementById('nav-menu');
