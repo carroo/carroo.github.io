@@ -1040,10 +1040,6 @@ video {
   font-family: 'Black Ops One', system-ui;
 }
 
-.font-sans {
-  font-family: Roboto, Helvetica, Arial, sans;
-}
-
 .font-secondary {
   font-family: 'Exo 2', sans;
 }
@@ -1232,8 +1228,8 @@ video {
 }
 
 .click-effect {
-  font-size: 2.25rem;
-  line-height: 2.5rem;
+  font-size: 3rem;
+  line-height: 1;
   font-weight: 800;
   --tw-text-opacity: 1;
   color: rgb(82 97 107 / var(--tw-text-opacity));
@@ -1316,6 +1312,10 @@ video {
 
   .md\:w-1\/2 {
     width: 50%;
+  }
+
+  .md\:w-32 {
+    width: 8rem;
   }
 
   .md\:scale-75 {

@@ -20,5 +20,5 @@
 }
 
 .click-effect {
-    @apply text-4xl text-primary font-extrabold;
+    @apply text-5xl text-primary font-extrabold;
 }
