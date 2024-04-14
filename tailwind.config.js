@@ -26,7 +26,6 @@ module.exports = {
             },
             animation: {
                 'lentur': 'lentur 16s linear infinite',
-                'lentur_bentuk': 'lentur_bentuk 16s linear infinite',
                 'anigra': 'anigra 1s ease-out infinite'
             },
             keyframes: {
@@ -81,20 +80,6 @@ module.exports = {
                     '75%': {
                         borderRadius: '30% 70% 70% 30% / 30% 30% 70% 70% ',
                         backgroundColor: '#707E87',
-                    },
-                },
-                lentur_bentuk: {
-                    '0%, 100%': {
-                        borderRadius: '63% 37% 73% 27% / 37% 67% 33% 63%',
-                    },
-                    '25%': {
-                        borderRadius: '26% 74% 49% 51% / 35% 53% 47% 65%',
-                    },
-                    '50%': {
-                        borderRadius: '64% 36% 62% 38% / 55% 32% 68% 45%',
-                    },
-                    '75%': {
-                        borderRadius: '30% 70% 70% 30% / 30% 30% 70% 70% ',
                     },
                 },
 
