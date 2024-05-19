@@ -36,7 +36,6 @@
             opacity: 0;
             visibility: hidden;
         }
-
     </style>
 
 
@@ -115,7 +114,8 @@
                         </h1>
                         <span id="multiple_text"
                             class="text-primary font-extrabold text-4xl lg:text-5xl font-secondary"></span>
-                        <p class="font-medium leading-relaxed text-forth font-secondary mt-4 animate-bounceInRight">Juggling pains and dreams,
+                        <p class="font-medium leading-relaxed text-forth font-secondary mt-4 animate-bounceInRight">
+                            Juggling pains and dreams,
                             I dance through the pages of life,
                         </p>
                         <p class="font-medium leading-relaxed text-forth mb-10 font-secondary animate-bounceInRight">
@@ -137,7 +137,8 @@
         <div class="container">
             <div class="flex flex-wrap xl:w-10/12 mx-auto">
                 <div class="w-full px-4 pb-10 lg:w-1/2">
-                    <h3 class="font-bold uppercase text-primary text-lg mb-4" data-animate="true" data-animation="bounceInLeft">
+                    <h3 class="font-bold uppercase text-primary text-lg mb-4" data-animate="true"
+                        data-animation="bounceInLeft">
                         About
                         me</h3>
                     <h2 class="font-bold text-forth text-3xl mb-2 max-w-md font-primary" data-animate="true"
@@ -611,6 +612,10 @@
     </script>
     <script>
         function handleScroll() {
+
+            if (window.innerWidth <= 768) {
+                return;
+            }
             const elements = document.querySelectorAll('[data-animate="true"]');
             const viewHeight = window.innerHeight;
 
@@ -622,8 +627,8 @@
                     const delay = element.getAttribute('data-delay') || '0s';
 
                     element.style.animationDelay = delay;
-                    element.classList.add('animate-'+animation);
-                    
+                    element.classList.add('animate-' + animation);
+
                     element.setAttribute('data-animate', 'false');
                 }
             });
