@@ -26,7 +26,7 @@ module.exports = {
             },
             animation: {
                 'lentur': 'lentur 16s linear infinite',
-                'anigra': 'anigra 1s ease-out infinite'
+                'anigra': 'anigra 1s ease-out infinite',
             },
             keyframes: {
                 anigra: {
@@ -82,7 +82,6 @@ module.exports = {
                         backgroundColor: '#707E87',
                     },
                 },
-
             }
         },
     },
