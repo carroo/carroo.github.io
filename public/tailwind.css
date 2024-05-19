@@ -826,6 +826,90 @@ video {
   animation: anigra 1s ease-out infinite;
 }
 
+@keyframes bounceInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-1000px);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateY(30px);
+  }
+
+  75% {
+    transform: translateY(-10px);
+  }
+
+  90% {
+    transform: translateY(5px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-bounceInDown {
+  animation: bounceInDown 1s forwards;
+}
+
+@keyframes bounceInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-1000px);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateX(30px);
+  }
+
+  75% {
+    transform: translateX(-10px);
+  }
+
+  90% {
+    transform: translateX(5px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-bounceInLeft {
+  animation: bounceInLeft 1s forwards;
+}
+
+@keyframes bounceInRight {
+  0% {
+    opacity: 0;
+    transform: translate3d(3000px, 0, 0);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate3d(-25px, 0, 0);
+  }
+
+  75% {
+    transform: translate3d(10px, 0, 0);
+  }
+
+  90% {
+    transform: translate3d(-5px, 0, 0);
+  }
+
+  100% {
+    transform: none;
+  }
+}
+
+.animate-bounceInRight {
+  animation: bounceInRight 1s forwards;
+}
+
 @keyframes lentur {
   0%, 100% {
     border-radius: 63% 37% 73% 27% / 37% 67% 33% 63%;
@@ -1199,10 +1283,6 @@ video {
 
 .duration-300 {
   transition-duration: 300ms;
-}
-
-.duration-500 {
-  transition-duration: 500ms;
 }
 
 .ease-in {

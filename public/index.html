@@ -37,9 +37,6 @@
             visibility: hidden;
         }
 
-        .animate__animated {
-            visibility: visible;
-        }
     </style>
 
 
@@ -100,7 +97,7 @@
     <section id="home" class="pt-3 mb-14">
         <div class="container">
             <div class="flex flex-wrap">
-                <div class="w-full px-4 lg:w-1/2">
+                <div class="w-full px-4 lg:w-1/2 animate-bounceInLeft">
                     <div class="relative mt-16 md:mt-8 lg:ml-28">
                         <span
                             class="relative overflow-hidden ring-4 ring-forth animate-lentur shadow-third shadow-2xl bg-primary  w-full h-full scale-90 -bottom-1.5 -z-10 md:scale-75 flex justify-center items-center">
@@ -111,22 +108,22 @@
                 </div>
                 <div class="w-full self-center px-4 lg:w-1/2">
                     <div class="mt-6">
-                        <h1 class="text-3xl md:text-4xl mb-2">
+                        <h1 class="text-3xl md:text-4xl mb-2 animate-bounceInDown">
                             <span class="text-forth font-bold font-secondary">Hi. I am </span>
                             <span class="animate-anigra font-extrabold bg-clip-text text-transparent font-primary">Catur
                                 Hendra</span>
                         </h1>
                         <span id="multiple_text"
                             class="text-primary font-extrabold text-4xl lg:text-5xl font-secondary"></span>
-                        <p class="font-medium leading-relaxed text-forth font-secondary mt-4">Juggling pains and dreams,
+                        <p class="font-medium leading-relaxed text-forth font-secondary mt-4 animate-bounceInRight">Juggling pains and dreams,
                             I dance through the pages of life,
                         </p>
-                        <p class="font-medium leading-relaxed text-forth mb-10 font-secondary">
+                        <p class="font-medium leading-relaxed text-forth mb-10 font-secondary animate-bounceInRight">
                             aiming to turn every hurdle into a stepping stone.
                         </p>
 
                         <a href="#contact"
-                            class="font-secondary text-base text-white font-semibold py-3 p-8 bg-primary rounded-full hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out">Get
+                            class="font-secondary text-base text-white font-semibold py-3 p-8 bg-primary rounded-full hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out ">Get
                             In Touch</a>
                     </div>
 
@@ -140,16 +137,15 @@
         <div class="container">
             <div class="flex flex-wrap xl:w-10/12 mx-auto">
                 <div class="w-full px-4 pb-10 lg:w-1/2">
-                    <h3 class="font-bold uppercase text-primary text-lg mb-4" data-animate="true"
-                        data-animation="animate__bounceInLeft">
+                    <h3 class="font-bold uppercase text-primary text-lg mb-4" data-animate="true" data-animation="bounceInLeft">
                         About
                         me</h3>
                     <h2 class="font-bold text-forth text-3xl mb-2 max-w-md font-primary" data-animate="true"
-                        data-animation="animate__bounceInLeft">
+                        data-animation="bounceInLeft">
                         Living ✨
                     </h2>
                     <p class="font-medium text-base text-forth max-w-xl mb-5 mr-4 text-justify font-secondary"
-                        data-animate="true" data-animation="animate__bounceInLeft">
+                        data-animate="true" data-animation="bounceInLeft">
                         I was born in 2002 in Surabaya, a lively city full of culture and diversity. As the youngest of
                         four siblings, I always had a curious and adventurous spirit. My passion for IT sparked when I
                         attended a vocational school, where I discovered the wonders
@@ -163,11 +159,11 @@
                 </div>
                 <div class="w-full px-4 pb-10 lg:w-1/2 lg:pt-10">
                     <h2 class="font-bold text-forth text-3xl mb-2 max-w-md font-primary" data-animate="true"
-                        data-animation="animate__bounceInRight">
+                        data-animation="bounceInRight">
                         Evolve 💻
                     </h2>
                     <p class="font-medium text-base text-forth max-w-xl mb-5 mr-4 text-justify font-secondary"
-                        data-animate="true" data-animation="animate__bounceInRight">
+                        data-animate="true" data-animation="bounceInRight">
                         Evolution is an endless adventure, a path where learning never stops. Along the way, I've gained
                         skills such as web development, programing, problem solving and many other skills,my hunger for
                         knowledge is still burning. I'm stoked to keep leveling up
@@ -175,7 +171,7 @@
                     </p>
                     <div class="flex items-center">
                         <a href="https://laravel.com/" target="_blank" data-animate="true"
-                            data-animation="animate__bounceInRight"
+                            data-animation="bounceInRight"
                             class="w-9 h-9 mr-2 rounded-full flex justify-center items-center border border-primary hover:bg-primary hover:text-white">
                             <svg role="img" width="20" class="fill-current" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -185,7 +181,7 @@
                             </svg>
                         </a>
                         <a href="https://laravel-livewire.com/" target="_blank" data-delay="0.1s" data-animate="true"
-                            data-animation="animate__bounceInRight"
+                            data-animation="bounceInRight"
                             class="w-9 h-9 mr-2 rounded-full flex justify-center items-center border border-primary hover:bg-primary hover:text-white">
                             <svg role="img" width="20" class="fill-current" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -195,7 +191,7 @@
                             </svg>
                         </a>
                         <a href="https://laravel-livewire.com/" target="_blank" data-delay="0.2s" data-animate="true"
-                            data-animation="animate__bounceInRight"
+                            data-animation="bounceInRight"
                             class="w-9 h-9 mr-2 rounded-full flex justify-center items-center border border-primary hover:bg-primary hover:text-white">
                             <svg role="img" width="20" class="fill-current" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -205,7 +201,7 @@
                             </svg>
                         </a>
                         <a href="https://tailwindcss.com/" target="_blank" data-delay="0.3s" data-animate="true"
-                            data-animation="animate__bounceInRight"
+                            data-animation="bounceInRight"
                             class=" w-9 h-9 mr-2 rounded-full flex justify-center items-center border border-primary hover:bg-primary hover:text-white">
                             <svg role="img" class="fill-current" width="20" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -215,7 +211,7 @@
                             </svg>
                         </a>
                         <a href="https://jquery.com/" target="_blank" data-delay="0.4s" data-animate="true"
-                            data-animation="animate__bounceInRight"
+                            data-animation="bounceInRight"
                             class=" w-9 h-9 mr-2 rounded-full flex justify-center items-center border border-primary hover:bg-primary hover:text-white">
                             <svg role="img" class="fill-current" width="20" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -225,7 +221,7 @@
                             </svg>
                         </a>
                         <a href="https://getbootstrap.com/" target="_blank" data-delay="0.5s" data-animate="true"
-                            data-animation="animate__bounceInRight"
+                            data-animation="bounceInRight"
                             class=" w-9 h-9 mr-2 rounded-full flex justify-center items-center border border-primary hover:bg-primary hover:text-white">
                             <svg role="img" class="fill-current" width="20" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -234,7 +230,7 @@
                                     d="M11.77 11.24H9.956V8.202h2.152c1.17 0 1.834.522 1.834 1.466 0 1.008-.773 1.572-2.174 1.572zm.324 1.206H9.957v3.348h2.231c1.459 0 2.232-.585 2.232-1.685s-.795-1.663-2.326-1.663zM24 11.39v1.218c-1.128.108-1.817.944-2.226 2.268-.407 1.319-.463 2.937-.42 4.186.045 1.3-.968 2.5-2.337 2.5H4.985c-1.37 0-2.383-1.2-2.337-2.5.043-1.249-.013-2.867-.42-4.186-.41-1.324-1.1-2.16-2.228-2.268V11.39c1.128-.108 1.819-.944 2.227-2.268.408-1.319.464-2.937.42-4.186-.045-1.3.968-2.5 2.338-2.5h14.032c1.37 0 2.382 1.2 2.337 2.5-.043 1.249.013 2.867.42 4.186.409 1.324 1.098 2.16 2.226 2.268zm-7.927 2.817c0-1.354-.953-2.333-2.368-2.488v-.057c1.04-.169 1.856-1.135 1.856-2.213 0-1.537-1.213-2.538-3.062-2.538h-4.16v10.172h4.181c2.218 0 3.553-1.086 3.553-2.876z" />
                             </svg>
                         </a>
-                        <a href="#contack" data-delay="0.6s" data-animate="true" data-animation="animate__bounceInRight"
+                        <a href="#contack" data-delay="0.6s" data-animate="true" data-animation="bounceInRight"
                             class="  w-9 h-9 mr-2 rounded-full flex justify-center items-center border border-primary hover:bg-primary hover:text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" class="fill-current" width="20"
                                 viewBox="0 0 50 50">
@@ -256,22 +252,22 @@
             <div class="w-full px-4 ">
                 <div class="max-w-xl mx-auto text-center mb-8">
                     <h3 class="font-bold uppercase text-primary text-lg mb-4" data-animate="true"
-                        data-animation="animate__bounceInDown">
+                        data-animation="bounceInDown">
                         Portofolio</h3>
                     <p class="font-bold text-md text-dark text-xl md:text-2xl font-secondary" data-animate="true"
-                        data-animation="animate__bounceInDown" data-delay="0.2s">Behold my latest
+                        data-animation="bounceInDown" data-delay="0.2s">Behold my latest
                         masterpiece, a living testament to my continuous journey of growth and discovery</p>
                 </div>
                 <div class="w-full px-4 flex flex-row justify-center mb-12 ">
                     <div class="w-28 md:w-32 mr-2 md:mx-4 lg:mx-4 p-4 bg-secondary border-2 rounded-lg border-primary shadow-lg font-primary"
-                        data-animate="true" data-animation="animate__bounceInLeft">
+                        data-animate="true" data-animation="bounceInLeft">
                         <h2 class="text-center font-bold text-2xl md:text-3xl text-primary mb-3">
                             100++
                         </h2>
                         <p class="text-sm text-forth text-center">Projects completed</p>
                     </div>
                     <div class="w-28 md:w-32 ml-2 md:mx-4 lg:mx-4 p-4 bg-secondary border-2 rounded-lg border-primary shadow-lg font-primary"
-                        data-animate="true" data-animation="animate__bounceInRight">
+                        data-animate="true" data-animation="bounceInRight">
                         <h2 class="text-center font-bold text-2xl md:text-3xl text-primary mb-3">
                             50++
                         </h2>
@@ -383,10 +379,10 @@
             <div class="flex flex-wrap xl:w-10/12 mx-auto">
                 <div class="w-full px-4 pb-4">
                     <h3 class="font-bold uppercase text-primary text-lg mb-4" data-animate="true"
-                        data-animation="animate__bounceInLeft">
+                        data-animation="bounceInLeft">
                         Contact</h3>
                     <h2 class="font-bold text-forth text-xl md:text-3xl lg:text-3xl mb-2 max-w-xl font-primarym "
-                        data-animate="true" data-animation="animate__bounceInLeft">
+                        data-animate="true" data-animation="bounceInLeft">
                         Don't hesitate, Let's connect and make some digital magic happen! 👇
                     </h2>
                 </div>
@@ -394,7 +390,7 @@
                     <div class="md:flex items-center">
                         <a href="https://www.instagram.com/caturhendra_" target="_blank"
                             class="flex items-center group w-full mb-4" data-animate="true"
-                            data-animation="animate__bounceInRight">
+                            data-animation="bounceInRight">
                             <div
                                 class="w-16 h-16 mr-2 rounded-full flex justify-center items-center border border-primary group-hover:bg-primary text-primary group-hover:text-white">
                                 <svg role="img" width="40" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
@@ -412,7 +408,7 @@
                         </a>
                         <a href="https://wa.me/+62895397073311" target="_blank"
                             class="flex items-center group w-full mb-4" data-animate="true"
-                            data-animation="animate__bounceInRight" data-delay="0.1s">
+                            data-animation="bounceInRight" data-delay="0.1s">
                             <div
                                 class="w-16 h-16 mr-2 rounded-full flex justify-center items-center border border-primary group-hover:bg-primary text-primary group-hover:text-white">
                                 <svg role="img" class="fill-current" width="40" viewBox="0 0 24 24"
@@ -429,7 +425,7 @@
                             </div>
                         </a>
                         <a href="https://t.me/caturhendra" target="_blank" class="flex items-center group w-full mb-4"
-                            data-animate="true" data-animation="animate__bounceInRight" data-delay="0.2s">
+                            data-animate="true" data-animation="bounceInRight" data-delay="0.2s">
                             <div
                                 class="w-16 h-16 mr-2 rounded-full flex justify-center items-center border border-primary group-hover:bg-primary text-primary group-hover:text-white">
                                 <svg role="img" class="fill-current" width="40" viewBox="0 0 24 24"
@@ -445,7 +441,7 @@
                             </div>
                         </a>
                         <a href="cv/CV CaturHendra.pdf" target="_blank" class="flex items-center group w-full mb-4"
-                            data-animate="true" data-animation="animate__bounceInRight" data-delay="0.3s">
+                            data-animate="true" data-animation="bounceInRight" data-delay="0.3s">
                             <div
                                 class="w-16 h-16 mr-2 rounded-full flex justify-center items-center border border-primary group-hover:bg-primary text-primary group-hover:text-white">
 
@@ -626,7 +622,8 @@
                     const delay = element.getAttribute('data-delay') || '0s';
 
                     element.style.animationDelay = delay;
-                    element.classList.add('animate__animated', animation);
+                    element.classList.add('animate-'+animation);
+                    
                     element.setAttribute('data-animate', 'false');
                 }
             });
