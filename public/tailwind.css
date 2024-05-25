@@ -710,10 +710,6 @@ video {
   display: none;
 }
 
-.aspect-\[16\/9\] {
-  aspect-ratio: 16/9;
-}
-
 .h-12 {
   height: 3rem;
 }
@@ -732,6 +728,14 @@ video {
 
 .h-full {
   height: 100%;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+.w-1\/4 {
+  width: 25%;
 }
 
 .w-12 {
@@ -867,7 +871,7 @@ video {
 }
 
 .animate-bounceInDown {
-  animation: bounceInDown 1s forwards;
+  animation: bounceInDown 2s forwards;
 }
 
 @keyframes bounceInLeft {
@@ -895,7 +899,7 @@ video {
 }
 
 .animate-bounceInLeft {
-  animation: bounceInLeft 1s forwards;
+  animation: bounceInLeft 2s forwards;
 }
 
 @keyframes bounceInRight {
@@ -923,7 +927,22 @@ video {
 }
 
 .animate-bounceInRight {
-  animation: bounceInRight 1s forwards;
+  animation: bounceInRight 2s forwards;
+}
+
+@keyframes fadeOutUp {
+  0% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+.animate-fadeOutUp {
+  animation: fadeOutUp 1s forwards;
 }
 
 @keyframes lentur {
@@ -1018,6 +1037,11 @@ video {
   border-color: rgb(240 245 249 / var(--tw-border-opacity));
 }
 
+.bg-gray-950 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(3 7 18 / var(--tw-bg-opacity));
+}
+
 .bg-primary {
   --tw-bg-opacity: 1;
   background-color: rgb(82 97 107 / var(--tw-bg-opacity));
@@ -1031,11 +1055,6 @@ video {
 .bg-third {
   --tw-bg-opacity: 1;
   background-color: rgb(201 214 223 / var(--tw-bg-opacity));
-}
-
-.bg-white {
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-75 {
@@ -1139,6 +1158,10 @@ video {
 
 .pt-3 {
   padding-top: 0.75rem;
+}
+
+.pt-4 {
+  padding-top: 1rem;
 }
 
 .text-center {
@@ -1250,6 +1273,10 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.opacity-75 {
+  opacity: 0.75;
+}
+
 .shadow-2xl {
   --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
   --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
@@ -1294,6 +1321,12 @@ video {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.transition-opacity {
+  transition-property: opacity;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }

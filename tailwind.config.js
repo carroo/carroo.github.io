@@ -27,9 +27,10 @@ module.exports = {
             animation: {
                 'lentur': 'lentur 16s linear infinite',
                 'anigra': 'anigra 1s ease-out infinite',
-                'bounceInLeft': 'bounceInLeft 1s forwards',
-                'bounceInRight': 'bounceInRight 1s forwards',
-                'bounceInDown': 'bounceInDown 1s forwards',
+                'bounceInLeft': 'bounceInLeft 2s forwards',
+                'bounceInRight': 'bounceInRight 2s forwards',
+                'bounceInDown': 'bounceInDown 2s forwards',
+                'fadeOutUp': 'fadeOutUp 1s forwards'
             },
             keyframes: {
                 anigra: {
@@ -141,6 +142,16 @@ module.exports = {
                     },
                     '100%': {
                         transform: 'translateY(0)',
+                    },
+                },
+
+                fadeOutUp: {
+                    '0%': {
+                        opacity: '1',
+                    },
+                    to: {
+                        opacity: '0',
+                        transform: 'translateY(-100%)',
                     },
                 },
             }
