@@ -41,7 +41,7 @@
 
 </head>
 
-<body class=" bg-gradient-to-r from-secondary to-third ">
+<body class=" bg-gradient-to-r from-secondary to-third md:overflow-x-hidden">
     <div id="loading" class="fixed z-50 inset-0 overflow-hidden animated">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
             <!-- Background overlay -->
@@ -112,7 +112,7 @@
         <section id="home" class="pt-3 mb-14">
             <div class="container">
                 <div class="flex flex-wrap">
-                    <div class="w-full px-4 lg:w-1/2 animate-bounceInLeft">
+                    <div class="w-full px-4 lg:w-1/2 md:animate-bounceInLeft">
                         <div class="relative mt-16 md:mt-8 lg:ml-28">
                             <span
                                 class="relative overflow-hidden ring-4 ring-forth animate-lentur shadow-third shadow-2xl bg-primary  w-full h-full scale-90 -bottom-1.5 -z-10 md:scale-75 flex justify-center items-center">
@@ -123,25 +123,25 @@
                     </div>
                     <div class="w-full self-center px-4 lg:w-1/2">
                         <div class="mt-6">
-                            <h1 class="text-3xl md:text-4xl mb-2 animate-bounceInDown">
+                            <h1 class="text-3xl md:text-4xl mb-2 md:animate-bounceInDown">
                                 <span class="text-forth font-bold font-secondary">Hi. I am </span>
                                 <span
                                     class="animate-anigra font-extrabold bg-clip-text text-transparent font-primary">Catur
                                     Hendra</span>
                             </h1>
-                            <div class="animate-bounceInRight">
+                            <div class="md:animate-bounceInRight">
                                 <span id="multiple_text"
                                     class="text-primary font-extrabold text-4xl lg:text-5xl font-secondary "></span>
                             </div>
-                            <p class="font-medium leading-relaxed text-forth font-secondary mt-4 animate-bounceInRight">
+                            <p class="font-medium leading-relaxed text-forth font-secondary mt-4 md:animate-bounceInRight">
                                 Juggling pains and dreams,
                                 I dance through the pages of life,
                             </p>
                             <p
-                                class="font-medium leading-relaxed text-forth mb-10 font-secondary animate-bounceInRight">
+                                class="font-medium leading-relaxed text-forth mb-10 font-secondary md:animate-bounceInRight">
                                 aiming to turn every hurdle into a stepping stone.
                             </p>
-                            <div class="animate-bounceInRight">
+                            <div class="md:animate-bounceInRight">
                                 <a href="#contact"
                                     class="font-secondary text-base text-white font-semibold py-3 p-8 bg-primary rounded-full hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out ">Get
                                     In Touch</a>
@@ -515,7 +515,7 @@
             <div class="container">
                 <div class="w-full">
                     <div class="flex items-center justify-center mb-5 text-secondary">
-                        <a href="https://www.linkedin.com/in/catur-hendra-37b4661b3/" target="_blank"
+                        <a href="https://www.linkedin.com/in/caturhendra/" target="_blank"
                             class="w-9 h-9 mr-2 rounded-full flex justify-center items-center border border-secondary hover:bg-secondary hover:text-third">
                             <svg role="img" class="fill-current" width="20" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -626,7 +626,7 @@
                     const delay = element.getAttribute('data-delay') || '0s';
 
                     element.style.animationDelay = delay;
-                    element.classList.add('animate-' + animation);
+                    element.classList.add('md:animate-' + animation);
 
                     element.setAttribute('data-animate', 'false');
                 }
@@ -635,7 +635,7 @@
 
         var typed = new Typed('#loading_text', {
             strings: ["Welcome to the Carroo's world"],
-            typeSpeed: 40,
+            typeSpeed: 60,
             loop: false,
             showCursor: false,
             onComplete: function () {

@@ -149,7 +149,10 @@ module.exports = {
                     '0%': {
                         opacity: '1',
                     },
-                    to: {
+                    '90%': {
+                        opacity: '1',
+                    },
+                    '100%': {
                         opacity: '0',
                         transform: 'translateY(-100%)',
                     },
