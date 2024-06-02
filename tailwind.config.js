@@ -25,11 +25,8 @@ module.exports = {
                 'secondary': ["'Exo 2'", 'sans']
             },
             animation: {
-                'lentur': 'lentur 16s linear infinite',
+                'lentur': 'lentur 12s linear infinite',
                 'anigra': 'anigra 1s ease-out infinite',
-                'bounceInLeft': 'bounceInLeft 2s forwards',
-                'bounceInRight': 'bounceInRight 2s forwards',
-                'bounceInDown': 'bounceInDown 2s forwards',
                 'fadeOutUp': 'fadeOutUp 1s forwards'
             },
             keyframes: {
@@ -86,65 +83,6 @@ module.exports = {
                         backgroundColor: '#707E87',
                     },
                 },
-                bounceInRight: {
-                    '0%': {
-                        opacity: 0,
-                        transform: 'translate3d(3000px, 0, 0)',
-                    },
-                    '60%': {
-                        opacity: 1,
-                        transform: 'translate3d(-25px, 0, 0)',
-                    },
-                    '75%': {
-                        transform: 'translate3d(10px, 0, 0)',
-                    },
-                    '90%': {
-                        transform: 'translate3d(-5px, 0, 0)',
-                    },
-                    '100%': {
-                        transform: 'none',
-                    },
-                },
-
-                bounceInLeft: {
-                    '0%': {
-                        opacity: 0,
-                        transform: 'translateX(-1000px)',
-                    },
-                    '60%': {
-                        opacity: 1,
-                        transform: 'translateX(30px)',
-                    },
-                    '75%': {
-                        transform: 'translateX(-10px)',
-                    },
-                    '90%': {
-                        transform: 'translateX(5px)',
-                    },
-                    '100%': {
-                        transform: 'translateX(0)',
-                    },
-                },
-                bounceInDown: {
-                    '0%': {
-                        opacity: 0,
-                        transform: 'translateY(-1000px)',
-                    },
-                    '60%': {
-                        opacity: 1,
-                        transform: 'translateY(30px)',
-                    },
-                    '75%': {
-                        transform: 'translateY(-10px)',
-                    },
-                    '90%': {
-                        transform: 'translateY(5px)',
-                    },
-                    '100%': {
-                        transform: 'translateY(0)',
-                    },
-                },
-
                 fadeOutUp: {
                     '0%': {
                         opacity: '1',
