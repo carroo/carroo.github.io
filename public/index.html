@@ -41,15 +41,30 @@
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
             <!-- Background overlay -->
             <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                <div class="absolute inset-0 bg-third opacity-50 ">
-
+                <div class="absolute inset-0 bg-third opacity-100 flex justify-center">
+                    <div class="w-1/2 h-full flex justify-center items-center ">
+                        <!-- Your content goes here -->
+                        <h1 class="text-forth font-bold text-4xl font-primary" id="loading_text"></h1>
+                    </div>
                 </div>
             </div>
-            <div class="w-1/4 h-full flex justify-center items-center">
-                <!-- Your content goes here -->
-                <h1 class="text-forth font-bold text-4xl font-primary" id="loading_text"></h1>
+            <div class="fixed bottom-0 inset-x-0 bg-third opacity-100 flex justify-center py-4">
+                <p class="text-sm">Find and Click the <span class="font-primary">magic</span> text</p>
             </div>
-
+            <!-- Modal content -->
+        </div>
+    </div>
+    <div id="gameover" class="hidden fixed z-50 inset-0 overflow-hidden animated">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
+            <!-- Background overlay -->
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-third opacity-100 flex justify-center">
+                    <div class="w-1/2 h-full flex justify-center items-center">
+                        <!-- Your content goes here -->
+                        <h1 class="text-forth font-bold text-4xl font-primary" id="gameover_text"></h1>
+                    </div>
+                </div>
+            </div>
             <!-- Modal content -->
         </div>
     </div>
@@ -111,7 +126,9 @@
                         <div class="relative mt-16 md:mt-8 lg:ml-28">
                             <span
                                 class="relative overflow-hidden ring-4 ring-forth animate-lentur shadow-third shadow-2xl bg-primary  w-full h-full scale-90 -bottom-1.5 -z-10 md:scale-75 flex justify-center items-center">
-                                <div id="emote-wajah" class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 text-center" style="font-size: 140px;">🥰</div>
+                                <div id="emote-wajah"
+                                    class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 text-center"
+                                    style="font-size: 140px;"></div>
                                 <img src="catur.png" alt="">
                             </span>
                         </div>
@@ -142,7 +159,8 @@
                                     class="font-secondary text-base text-white font-semibold py-3 p-8 bg-primary rounded-full hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out ">Get
                                     In Touch</a>
                                 <a href="#" id="stopButton"
-                                    class="hidden font-secondary text-base text-white font-semibold py-3 p-4 animate-anigra bg-forth rounded-full hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out ">Score (0)</a>
+                                    class="hidden font-secondary text-base text-white font-semibold py-3 p-4 animate-anigra bg-forth rounded-full hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out ">bug
+                                    (0/30)</a>
                             </div>
                         </div>
 
@@ -424,7 +442,9 @@
                         <h3 class="font-bold uppercase text-primary text-lg mb-4">
                             Contact</h3>
                         <h2 class="font-bold text-forth text-xl md:text-3xl lg:text-3xl mb-2 max-w-xl font-primarym ">
-                            Don't hesitate, Let's connect and make some digital magic happen! 👇
+                            Don't hesitate, Let's connect and make some digital <span
+                                class="startButton animate-anigra font-extrabold bg-clip-text text-transparent font-primary cursor-grab">magic</span>
+                            happen! 👇
                         </h2>
                     </div>
                     <div class="w-full px-4 pb-10 font-secondary">
@@ -609,7 +629,7 @@
     </script>
 
     <script>
-        var typed = new Typed('#loading_text', {
+        var typed_loading = new Typed('#loading_text', {
             strings: ["Welcome to the Carroo's world"],
             typeSpeed: 60,
             loop: false,
@@ -670,10 +690,31 @@
     </script>
 
     <script>
-        let interval = 4000; // waktu awal 5 detik
+        let interval = 3000; // waktu awal 4 detik
         const minInterval = 500; // batas minimum interval
         let intervalId;
-        let score = 0;
+        let jb = 0;
+        const emote = ["😍", "😀", "🙂", "😐", "🙁", "😢", "😭"];
+
+        function updateEmote() {
+            let emoji;
+            if (jb <= 4) {
+                emoji = emote[0];
+            } else if (jb <= 8) {
+                emoji = emote[1];
+            } else if (jb <= 12) {
+                emoji = emote[2];
+            } else if (jb <= 16) {
+                emoji = emote[3];
+            } else if (jb <= 20) {
+                emoji = emote[4];
+            } else if (jb <= 24) {
+                emoji = emote[5];
+            } else {
+                emoji = emote[6];
+            }
+            document.getElementById('emote-wajah').innerHTML = emoji;
+        }
 
         function createBubble() {
             const homeSection = document.getElementById('home');
@@ -686,42 +727,86 @@
 
             // Menetapkan posisi random untuk bubble
             const posX = Math.random() * (window.innerWidth - size);
-            const posY = Math.random() * (window.innerHeight - size);
+            const posY = Math.random() * (window.innerHeight - size - 90) + 90;
             bubble.style.left = `${posX}px`;
             bubble.style.top = `${posY}px`;
 
-            bubble.className = 'bubbles bg-primary animate-lentur duration-1000 rounded-full absolute ring-2 ring-forth';
+            bubble.className = 'bubbles bg-primary animate-lentur duration-1000 rounded-full absolute ring-2 ring-forth cursor-grab';
 
+            const bubbleText = document.createElement('div');
+            bubbleText.textContent = '🐞';
+            bubbleText.className = 'flex items-center justify-center h-full w-full'; // Menggunakan Tailwind untuk styling teks
+            bubbleText.style.fontSize = `${size * 0.5}px`;
+            bubble.appendChild(bubbleText);
             // Tambahkan event listener untuk menghapus bubble saat diklik
             bubble.addEventListener('click', () => {
-                score++
-                document.getElementById('stopButton').innerHTML = 'Score ('+score+')'
+                jb--;
+                document.getElementById('stopButton').innerHTML = `bug (${jb}/30)`;
                 bubble.remove();
+                updateEmote();
             });
 
             // Menambahkan bubble ke home section
             homeSection.appendChild(bubble);
-
+            // menambah jumlah bubble
+            jb++;
+            document.getElementById('stopButton').innerHTML = `bug (${jb}/30)`;
+            updateEmote();
             // Mengurangi interval waktu sebesar 10% tetapi tidak kurang dari minInterval
             interval = Math.max(minInterval, interval * 0.9);
             clearInterval(intervalId);
             intervalId = setInterval(createBubble, interval);
+
+            //gameover
+            if (jb > 30) {
+                clearInterval(intervalId); // Menghentikan penambahan bubble
+                jb = 0;
+                interval = 3000;
+                document.getElementById('gameover').classList.remove('hidden');
+                document.getElementById('gameover').classList.add('animate-fadeInUp');
+                if (typed_gameover) {
+                    typed_gameover.destroy();
+                }
+                document.getElementById('gameover_text').innerHTML = "";
+                var typed_gameover = new Typed('#gameover_text', {
+                    strings: ["Game over! It seems the bug is challenging to fix. Let's enlist Carroo's expertise; he might have the solution......"],
+                    typeSpeed: 80,
+                    loop: false,
+                    showCursor: false,
+                    onComplete: function () {
+                        document.getElementById('stopButton').innerHTML = `bug (${jb}/30)`;
+                        document.getElementById('stopButton').classList.add('hidden');
+                        document.getElementById('emote-wajah').classList.add('hidden');
+                        document.querySelectorAll('.bubbles').forEach(bubble => bubble.remove());
+                        document.getElementById('gameover').classList.remove('animate-fadeInUp');
+                        document.getElementById('gameover').classList.add('animate-fadeOutUp');
+                    }
+                });
+            }
         }
 
-        document.querySelector('.startButton').addEventListener('click', () => {
-            intervalId = setInterval(createBubble, interval);
-            document.getElementById('emote-wajah').classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            document.getElementById('stopButton').classList.remove('hidden');
+        document.querySelectorAll('.startButton').forEach(button => {
+            button.onclick = function () {
+                intervalId = setInterval(createBubble, interval);
+                document.getElementById('emote-wajah').classList.remove('hidden');
+                document.getElementById('emote-wajah').innerHTML = emote[0];
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                document.getElementById('stopButton').classList.remove('hidden');
+            };
         });
+
+
         document.getElementById('stopButton').addEventListener('click', () => {
             clearInterval(intervalId); // Menghentikan penambahan bubble
             document.querySelectorAll('.bubbles').forEach(bubble => bubble.remove());
             document.getElementById('stopButton').classList.add('hidden');
             document.getElementById('emote-wajah').classList.add('hidden');
-            score = 0;
+            jb = 0;
+            interval = 3000;
+            document.getElementById('stopButton').innerHTML = `bug (${jb}/30)`;
         });
     </script>
+
 </body>
 
 </html>

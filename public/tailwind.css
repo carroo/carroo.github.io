@@ -588,6 +588,11 @@ video {
   inset: 0px;
 }
 
+.inset-x-0 {
+  left: 0px;
+  right: 0px;
+}
+
 .-bottom-1 {
   bottom: -0.25rem;
 }
@@ -618,6 +623,10 @@ video {
 
 .top-full {
   top: 100%;
+}
+
+.bottom-0 {
+  bottom: 0px;
 }
 
 .-z-10 {
@@ -774,6 +783,10 @@ video {
   width: 100%;
 }
 
+.w-1\/2 {
+  width: 50%;
+}
+
 .max-w-\[200px\] {
   max-width: 200px;
 }
@@ -913,6 +926,22 @@ video {
   animation: lentur 12s linear infinite;
 }
 
+@keyframes fadeInUp {
+  0% {
+    opacity: 1;
+    transform: translateY(100%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 1s forwards;
+}
+
 .cursor-grab {
   cursor: grab;
 }
@@ -983,6 +1012,11 @@ video {
   border-color: rgb(240 245 249 / var(--tw-border-opacity));
 }
 
+.bg-forth {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 32 34 / var(--tw-bg-opacity));
+}
+
 .bg-primary {
   --tw-bg-opacity: 1;
   background-color: rgb(82 97 107 / var(--tw-bg-opacity));
@@ -996,11 +1030,6 @@ video {
 .bg-third {
   --tw-bg-opacity: 1;
   background-color: rgb(201 214 223 / var(--tw-bg-opacity));
-}
-
-.bg-forth {
-  --tw-bg-opacity: 1;
-  background-color: rgb(30 32 34 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-75 {
@@ -1076,6 +1105,11 @@ video {
 .py-6 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .pb-10 {
@@ -1225,6 +1259,10 @@ video {
 
 .opacity-50 {
   opacity: 0.5;
+}
+
+.opacity-100 {
+  opacity: 1;
 }
 
 .shadow-2xl {
