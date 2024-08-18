@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="tailwind.css">
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <meta name="google-site-verification" content="W42V8Ze92BG2YYUnNtLKK_XAiLeKfQ3laGdZwW_WMC0" />
     <meta name="description" content="Catur Hendra Putra Pamungkas Ceo Of Carotech">
     <meta name="robots" content="index, follow">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -17,7 +18,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Exo+2&family=Ubuntu&display=swap"
         rel="stylesheet">
-    <script type="module" src="module.js"></script>
+    <!-- <script type="module" src="module.js"></script> -->
+    <style>
+        #bubbleclick {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+    </style>
     <style>
         .swiper-slide {
             background-position: center;
@@ -39,7 +47,7 @@
 
 </head>
 
-<body class=" bg-gradient-to-r from-secondary to-third md:overflow-x-hidden cursor-none">
+<body class=" bg-gradient-to-r from-secondary to-third md:overflow-x-hidden">
     <div id="loading" class="fixed z-50 inset-0 overflow-hidden animated">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
             <!-- Background overlay -->
@@ -73,16 +81,18 @@
     </div>
 
     <div id="utama" class="hidden">
-        <header class="bg-secondary absolute top-0 left-0 w-full flex items-center z-10">
+        <header class="fixed top-5 left-0 w-full flex items-center z-10">
             <div class="container">
                 <div class="flex items-center justify-between relative">
                     <div class="px-4 flex items-center">
                         <span id="imglogo"
-                            class="hidden w-12 h-12 mr-2 relative overflow-hidden ring-2 ring-forth animate-lentur shadow-third shadow-md bg-primary flex justify-center items-center">
+                            class="hidden w-12 h-12 mr-2 relative overflow-hidden ring-2 ring-forth animate-lentur shadow-third shadow-md bg-third flex justify-center items-center">
                             <img src="catur.png" alt="">
                         </span>
-                        <a id="carroo" href=""
-                            class="block whitespace-nowrap font-semibold text-2xl md:text-3xl text-primary py-6 font-primary">Carroo</a>
+                        <div class="bg-third rounded-2xl px-4 py-2 ring-forth ring-2 shadow-third">
+                            <a id="carroo" href=""
+                                class="block whitespace-nowrap font-semibold text-2xl md:text-3xl text-primary font-primary">Carroo</a>
+                        </div>
                     </div>
                     <div class="flex items-center px-4">
                         <button id="hamburger" name="hamburger" type=" button" class="block absolute right-4 lg:hidden">
@@ -96,23 +106,23 @@
                     <nav id="nav-menu"
                         class="hidden absolute py-5 bg-secondary border-2 border-primary shadow-lg rounded-lg max-w-[200px] w-full right-4 top-full lg:flex lg:flex-row-reverse  lg:static lg:bg-transparent lg:max-w-full lg:border-none lg:shadow-none lg:rounded-none font-secondary">
                         <ul class="block lg:flex self-end">
-                            <li class="group">
+                            <li class="group bg-third rounded-2xl px-4 py-2 ring-forth ring-2 shadow-third mx-2">
                                 <a href="#home"
-                                    class="text-base text-primary py-2 px-8 flex group-hover:decoration-third group-hover:decoration-dashed group-hover:decoration-4 group-hover:underline group-hover:text-dark transition duration-1000 ease-in-out">Home</a>
+                                    class="text-base text-primary flex group-hover:decoration-third group-hover:decoration-dashed group-hover:decoration-4 group-hover:underline group-hover:text-dark transition duration-1000 ease-in-out">Home</a>
                             </li>
-                            <li class="group">
+                            <li class="group bg-third rounded-2xl px-4 py-2 ring-forth ring-2 shadow-third mx-2">
                                 <a href="#aboutme"
-                                    class="text-base text-primary py-2 px-8 flex group-hover:decoration-third group-hover:decoration-dashed group-hover:decoration-4 group-hover:underline group-hover:text-dark transition duration-1000 ease-in-out">About
+                                    class="text-base text-primary flex group-hover:decoration-third group-hover:decoration-dashed group-hover:decoration-4 group-hover:underline group-hover:text-dark transition duration-1000 ease-in-out">About
                                     Me
                                 </a>
                             </li>
-                            <li class="group">
+                            <li class="group hover:bg-primary bg-third rounded-2xl px-4 py-2 ring-forth ring-2 shadow-third mx-2">
                                 <a href="#portfolio"
-                                    class="text-base text-primary py-2 px-8 flex group-hover:decoration-third group-hover:decoration-dashed group-hover:decoration-4 group-hover:underline group-hover:text-dark transition duration-1000 ease-in-out">Portfolio</a>
+                                    class="text-base text-primary flex group-hover:text-third transition duration-200 ease-in-out">Portfolio</a>
                             </li>
-                            <li class="group">
+                            <li class="group bg-third rounded-2xl px-4 py-2 ring-forth ring-2 shadow-third mx-2">
                                 <a href="#contact"
-                                    class="text-base text-primary py-2 px-8 flex group-hover:decoration-third group-hover:decoration-dashed group-hover:decoration-4 group-hover:underline group-hover:text-dark transition duration-1000 ease-in-out">Contact</a>
+                                    class="text-base text-primary flex group-hover:decoration-third group-hover:decoration-dashed group-hover:decoration-4 group-hover:underline group-hover:text-dark transition duration-1000 ease-in-out">Contact</a>
                             </li>
                         </ul>
 
@@ -695,7 +705,7 @@
                                             d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
                                     </svg>
                                 </a>
-                                <a href="https://absen.carroo.my.id" target="_blank"
+                                <a href="https://absensi.carroo.my.id" target="_blank"
                                     class=" w-9 h-9 mr-2 rounded-full flex justify-center items-center border border-primary hover:bg-primary hover:text-white">
                                     <svg role="img" class="fill-current" width="20" viewBox="0 0 24 24"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -944,9 +954,8 @@
         </footer>
     </div>
 
-
-    <!-- swiper -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
     <script>
         var swiper = new Swiper(".mySwiper", {
             effect: "cards",
@@ -974,8 +983,6 @@
         });
     </script>
 
-
-    <!-- scroll event -->
     <script>
         window.onscroll = function () {
             const header = document.querySelector('header');
@@ -984,11 +991,6 @@
             const aboutme = document.querySelector('#aboutme');
             const carroo = document.querySelector('#carroo');
             const aboutmeOffset = aboutme.offsetTop / 2;
-            if (window.pageYOffset > fixednav) {
-                header.classList.add('navbar-fixed');
-            } else {
-                header.classList.remove('navbar-fixed');
-            }
             if (window.pageYOffset > aboutmeOffset) {
                 imglogo.classList.remove('hidden');
                 const scale = (window.pageYOffset - aboutmeOffset) / 500;
@@ -1023,8 +1025,6 @@
         });
     </script>
 
-
-    <!-- opening animate text -->
     <script>
         var typed_loading = new Typed('#loading_text', {
             strings: ["Welcome to the Carroo's world"],
@@ -1045,8 +1045,6 @@
         });
     </script>
 
-
-    <!-- resume menu -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const buttons = document.querySelectorAll('#btns-resume > button');
@@ -1067,23 +1065,26 @@
 
     </script>
 
-
-    <!-- effect click -->
     <script>
-        let currentTextIndex = 0;
-        const texts = ["😀", "🥰", "😜", "🤭"];
-
         function createClickEffect(event) {
             // Membuat elemen teks efek klik
             const clickEffect = document.createElement("div");
             clickEffect.classList.add('click-effect');
-            clickEffect.textContent = texts[currentTextIndex];
+            clickEffect.classList.add('absolute');
+            clickEffect.classList.add('bubbleclick');
+            clickEffect.classList.add('w-52');
+            clickEffect.classList.add('h-52');
+            clickEffect.classList.add('rounded-full');
+            clickEffect.classList.add('bg-primary');
+            clickEffect.classList.add('mix-blend-difference');
+            clickEffect.classList.add('duration-200');
+            clickEffect.classList.add('ease-linear');
 
             // Mengatur posisi efek klik sesuai dengan posisi klik
             const x = event.clientX + window.pageXOffset;
             const y = event.clientY + window.pageYOffset;
-            clickEffect.style.left = `${x - 28}px`;
-            clickEffect.style.top = `${y - 28}px`;
+            clickEffect.style.left = `${x - 100}px`;
+            clickEffect.style.top = `${y - 100}px`;
 
             // Menambahkan elemen efek klik ke dalam elemen body
             document.body.appendChild(clickEffect);
@@ -1103,7 +1104,6 @@
                     }, 500);
                 }
             }, 10);
-            currentTextIndex = (currentTextIndex + 1) % texts.length;
         }
 
         document.body.addEventListener("click", createClickEffect);
@@ -1229,48 +1229,6 @@
         });
     </script>
 
-
-    <!-- cursor trail-->
-    <script>
-        const dots = [];
-        const cursor = {
-            y: 0,
-            x: 0,
-            initialY: 0,
-        };
-        for (let i = 0; i < 30; i++) {
-            const dot = document.createElement('div');
-            dot.classList.add('dot-cursor');
-            document.body.appendChild(dot);
-            dots.push(dot);
-        }
-        window.addEventListener('mousemove', (e) => {
-            cursor.x = e.clientX + window.scrollX;
-            cursor.y = e.clientY + window.scrollY;
-            cursor.initialY = e.clientY;
-        });
-        window.addEventListener('scroll', (e) => {
-            
-            cursor.y = window.scrollY + cursor.initialY;
-        });
-        function dotsTrail() {
-            let x = cursor.x;
-            let y = cursor.y;
-            dots.forEach((dot, i) => {
-                const nextDot = dots[i + 1] || dots[0];
-                dot.style.left = (x - 12) + 'px';
-                dot.style.top = (y - 12) + 'px';
-
-                //dot.style.transform = `scale(${1 - i * 0.1})`;
-                dot.style.scale = (dots.length - i) / dots.length;
-
-                x += (nextDot.offsetLeft - dot.offsetLeft) * 0.25;
-                y += (nextDot.offsetTop - dot.offsetTop) * 0.25;
-            });
-            requestAnimationFrame(dotsTrail);
-        }
-        dotsTrail();
-    </script>
 </body>
 
 </html>
