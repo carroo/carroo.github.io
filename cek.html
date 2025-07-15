@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bubble Mind with Tailwind CSS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <!-- Container utama -->
+    <div class="relative max-w-xs p-4 bg-blue-500 text-white rounded-lg shadow-lg">
+        <!-- Gelembung utama -->
+        <p>Nama saya Catur Hendra</p>
+        <!-- Segitiga kecil untuk efek gelembung berpikir -->
+        <div class="absolute w-0 h-0 border-l-8 border-l-transparent border-r-8 border-r-transparent border-t-8 border-t-blue-500 bottom-[-8px] left-4"></div>
+    </div>
+
+    <!-- Gelembung kecil untuk efek berpikir -->
+    <div class="absolute bg-blue-400 w-3 h-3 rounded-full bottom-10 left-20"></div>
+    <div class="absolute bg-blue-300 w-2 h-2 rounded-full bottom-14 left-24"></div>
+</body>
+</html>

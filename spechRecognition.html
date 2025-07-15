@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Recognition with Keyword Detection</title>
+</head>
+<body>
+    <h1>Speech Recognition with Keyword Detection</h1>
+    <button id="start-btn">Start Listening</button>
+    <p id="result">Say something...</p>
+    <p id="response"></p>
+    
+    <script>
+        // Pastikan browser mendukung API ini
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+            // Inisialisasi speech recognition
+            const recognition = new SpeechRecognition();
+            
+            // Mengatur bahasa (opsional, default 'en-US')
+            recognition.lang = 'id-ID';
+            
+            // Mengatur recognition agar terus mendengarkan
+            recognition.continuous = true; // Mode continuous listening
+            recognition.interimResults = false;
+            
+            // Apa yang terjadi saat ada hasil pengenalan suara
+            recognition.onresult = (event) => {
+                const transcript = event.results[event.results.length - 1][0].transcript.toLowerCase();
+                document.getElementById('result').innerText = `You said: ${transcript}`;
+                
+                // Periksa apakah kata 'nama' ada dalam hasil
+                if (transcript.includes('nama')) {
+                    document.getElementById('response').innerText = 'Nama saya Catur Hendra';
+                } else {
+                    document.getElementById('response').innerText = '';
+                }
+            };
+            
+            // Jika terjadi error
+            recognition.onerror = (event) => {
+                console.error('Error occurred in recognition: ', event.error);
+            };
+
+            // Restart listening jika berhenti secara otomatis
+            recognition.onend = () => {
+                recognition.start(); // Restart saat berhenti secara otomatis
+            };
+
+            // Mulai mendengarkan saat tombol diklik
+            document.getElementById('start-btn').addEventListener('click', () => {
+                recognition.start();
+                document.getElementById('start-btn').disabled = true; // Nonaktifkan tombol setelah mulai
+            });
+        } else {
+            alert('Browser tidak mendukung Web Speech API.');
+        }
+    </script>
+</body>
+</html>

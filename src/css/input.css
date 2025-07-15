@@ -23,6 +23,6 @@
   @apply text-5xl text-primary font-extrabold absolute pointer-events-none;
 }
 .dot-cursor {
-  @apply h-6 w-6 rounded-full bg-primary animate-lentur absolute top-0 left-0 border-forth;
+  @apply h-6 w-6 rounded-full bg-primary animate-lentur absolute top-0 left-0 border-forth z-[100];
   pointer-events: none !important;
 }
