@@ -1,0 +1,84 @@
+=== PORTFOLIO INFORMATION ===
+
+PERSONAL DETAILS:
+- Full Name: Catur Hendra Putra Pamungkas
+- Nickname: Carroo / Catur Hendra
+- Professional Title: Full Stack Web Developer, Freelancer, and CEO of Carotech
+- Website: https://carroo.github.io
+
+ABOUT:
+I am a passionate Full Stack Web Developer specializing in modern web technologies. I juggle pains and dreams, dancing through the pages of life, aiming to turn every hurdle into a stepping stone. My journey in technology is driven by continuous learning and evolution.
+
+EDUCATION:
+1. State University of Surabaya (Aug 2021 - May 2025, Expected)
+   - Program: Information Technology Engineering
+   - GPA: 3.79/4.00
+
+2. State Vocation High School 1 Surabaya (Aug 2018 - May 2021)
+   - Program: Software Engineering
+
+PROFESSIONAL EXPERIENCE:
+1. CV.Printsoft (Feb 2025 - Current)
+   - Position: Programmer
+   - Type: Employee
+
+2. Aksamedia Mulia Digital (Sept 2024 - Dec 2024)
+   - Position: FullStack Web Developer
+   - Program: MSIB batch 7
+
+3. Laznas LMI (Feb 2024 - Jun 2024)
+   - Position: FullStack Programmer
+   - Program: MSIB batch 6
+
+4. Carotech (Jan 2020 - Present)
+   - Position: Programmer Freelancer
+   - Type: Owner/CEO
+
+5. Nusa Indo Technology (Oct 2019 - May 2020)
+   - Position: Junior Programmer
+   - Type: Internship & Employee
+
+TECHNICAL SKILLS:
+Backend Technologies:
+- Laravel (PHP Framework)
+- CodeIgniter (PHP Framework)
+- Livewire
+- Node.js
+
+Frontend Technologies:
+- React
+- JavaScript
+- Tailwind CSS
+- HTML/CSS
+
+Database & Tools:
+- MySQL
+- Git
+- Modern Web Development tools
+
+Other Skills:
+- Full Stack Development
+- Web Design
+- Problem Solving
+- Programming
+- API Development
+- Modern Web Technologies
+
+PHILOSOPHY:
+"Evolution is an endless adventure, a path where learning never stops. Along the way, I've gained skills such as web development, programming, problem solving and many other skills. My hunger for knowledge is still burning. I'm stoked to keep leveling up my skill set."
+
+PORTFOLIO PROJECTS:
+I have worked on various projects showcasing my expertise in web development, ranging from e-commerce platforms to custom web applications using modern technologies like Laravel, React, and Node.js.
+
+CONTACT & SOCIAL MEDIA:
+Available for collaboration, freelance work, and full-time opportunities through the portfolio website.
+
+===================================
+INSTRUCTIONS FOR AI ASSISTANT:
+- Be professional yet approachable when discussing this portfolio
+- Highlight relevant experience based on the user's questions
+- Emphasize continuous learning and passion for technology
+- Keep responses concise and engaging
+- When asked about skills, mention specific technologies and frameworks
+- When asked about experience, provide context about the roles and duration
+===================================
