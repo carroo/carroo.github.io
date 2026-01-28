@@ -5,24 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const botSend = document.getElementById('bot_send');
     const botCancel = document.getElementById('bot_cancel');
     const chatContainer = document.getElementById('chat_container');
-    
-    // Load AI context from file
-    let aiContext = '';
-    
-    async function loadAIContext() {
-        try {
-            const response = await fetch('../ai-context.txt');
-            if (response.ok) {
-                aiContext = await response.text();
-                console.log('AI Context loaded successfully');
-            }
-        } catch (error) {
-            console.error('Failed to load AI context:', error);
-        }
-    }
-    
-    // Load context on page load
-    loadAIContext();
 
     // Show input, send, and cancel when start button is clicked
     botStart.addEventListener('click', function() {
@@ -175,60 +157,31 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 7000);
     }
     
-    // Function to get response from OpenRouter
-    async function getOpenRouterResponse(message) {
-        const apiKey = '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';
-        
-        // Construct system message with AI context
-        const systemMessage = aiContext 
-            ? `You are a helpful and friendly AI assistant for Catur Hendra's portfolio website. Your role is to help visitors learn about the portfolio owner, answer questions about their projects, skills, and experience.
-
-PORTFOLIO INFORMATION:
-${aiContext}
-
-IMPORTANT RULES:
-- Keep ALL responses VERY SHORT and BRIEF (maximum 2-3 sentences)
-- Answer directly without long explanations
-- Be friendly but concise
-- Use simple language
-- If asked about something not in the context, give a short response saying you don't have that info
-- No lengthy introductions or conclusions`
-            : 'You are a helpful AI assistant for a portfolio website. Keep responses VERY SHORT (2-3 sentences max). Answer directly and concisely.';
-        
+    // Function to get response from Carroo API
+    async function getCarrooResponse(message) {
         try {
-            const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+            const formData = new FormData();
+            formData.append('message', message);
+            
+            const response = await fetch('https://crm.ictitlmi.info/chatbot/carroo_response', {
                 method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`,
-                    'Content-Type': 'application/json',
-                    'HTTP-Referer': window.location.href,
-                    'X-Title': 'Portfolio Chat'
-                },
-                body: JSON.stringify({
-                    model: 'deepseek/deepseek-v3.2',
-                    messages: [
-                        {
-                            role: 'system',
-                            content: systemMessage
-                        },
-                        {
-                            role: 'user',
-                            content: message
-                        }
-                    ]
-                })
+                body: formData
             });
             
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error?.message || 'API request failed');
+                throw new Error('API request failed');
             }
             
             const data = await response.json();
-            return data.choices[0].message.content;
+            
+            if (!data.success) {
+                throw new Error(data.message || 'Failed to get response');
+            }
+            
+            return data.message;
             
         } catch (error) {
-            console.error('OpenRouter Error:', error);
+            console.error('Carroo API Error:', error);
             throw error;
         }
     }
@@ -247,8 +200,8 @@ IMPORTANT RULES:
             chatContainer.appendChild(loadingEl);
             chatContainer.scrollTop = chatContainer.scrollHeight;
             
-            // Get response from OpenRouter
-            const responseText = await getOpenRouterResponse(message);
+            // Get response from Carroo API
+            const responseText = await getCarrooResponse(message);
             
             // Remove loading message
             chatContainer.removeChild(loadingEl);
