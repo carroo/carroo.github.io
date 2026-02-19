@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "build": "tailwindcss -i src/css/input.css -o public/tailwind.css",
+    "dev": "tailwindcss -i src/css/input.css -o public/tailwind.css --watch"
+  },
   "devDependencies": {
     "daisyui": "^4.11.1",
     "prettier-plugin-tailwindcss": "^0.5.6",
