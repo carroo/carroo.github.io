@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const formData = new FormData();
             formData.append('message', message);
             
-            const response = await fetch('https://crm.ictitlmi.info/chatbot/carroo_response', {
+            const response = await fetch('https://crm.ictitlmi.info/chatbot_carroo/carroo_response', {
                 method: 'POST',
                 body: formData
             });

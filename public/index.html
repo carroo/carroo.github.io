@@ -132,6 +132,8 @@
       }
     </script>
 
+    <link rel="stylesheet" href="tailwind.css" />
+
     <style>
       /* ===== Dark Mode - Radial Transition ===== */
       :root {
@@ -146,85 +148,40 @@
         );
       }
 
-      /* view-transition diinjeksi via JS agar SVG mask tidak di-parse HTML */
+      /* ===== BODY BACKGROUND ===== */
+      body {
+        background-image: var(--bg-body-light);
+      }
 
-      /* Dark mode color overrides */
       html[data-theme="dark"] body {
-        background-image: linear-gradient(to right, #1a2232, #0f1723);
-      }
-      html[data-theme="dark"] .bg-secondary,
-      html[data-theme="dark"] header {
-        background-color: #1a2232 !important;
-      }
-      html[data-theme="dark"] .bg-third {
-        background-color: #0f1723 !important;
-      }
-      html[data-theme="dark"] .bg-primary {
-        background-color: #3d5163 !important;
-      }
-      html[data-theme="dark"] .text-primary {
-        color: #8fa3b0 !important;
-      }
-      html[data-theme="dark"] .text-forth {
-        color: #e2eaf0 !important;
-      }
-      html[data-theme="dark"] .text-dark {
-        color: #d1dde6 !important;
-      }
-      html[data-theme="dark"] .text-secondary {
-        color: #a0b3bf !important;
-      }
-      html[data-theme="dark"] .text-white {
-        color: #f0f5f9 !important;
-      }
-      html[data-theme="dark"] .border-primary {
-        border-color: #4a6275 !important;
-      }
-      html[data-theme="dark"] .ring-forth {
-        --tw-ring-color: #4a6275;
-      }
-      html[data-theme="dark"] .shadow-third {
-        --tw-shadow-color: #0d1520;
-      }
-      html[data-theme="dark"] .from-secondary {
-        --tw-gradient-from: #1a2232 var(--tw-gradient-from-position);
-        --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(26,34,50,0));
-      }
-      html[data-theme="dark"] .to-third {
-        --tw-gradient-to: #0f1723 var(--tw-gradient-to-position);
-      }
-      html[data-theme="dark"] .from-third {
-        --tw-gradient-from: #0f1723 var(--tw-gradient-from-position);
-        --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(15,23,35,0));
-      }
-      html[data-theme="dark"] .to-secondary {
-        --tw-gradient-to: #1a2232 var(--tw-gradient-to-position);
-      }
-      html[data-theme="dark"] .bg-white\/90 {
-        background-color: rgba(26,34,50,0.9) !important;
-      }
-      html[data-theme="dark"] #bot_input {
-        background-color: rgba(26,34,50,0.9);
-        color: #e2eaf0;
-        border-color: #4a6275;
-      }
-      html[data-theme="dark"] #loading .bg-third,
-      html[data-theme="dark"] #gameover .bg-third {
-        background-color: #0f1723 !important;
-      }
-      /* Dark mode toggle button */
-      #darkmode-toggle {
-        transition: transform 0.3s ease;
-      }
-      #darkmode-toggle:hover {
-        transform: scale(1.1);
+        background-image: var(--bg-body-light);
       }
 
+      /* ===== SWIPER STYLES ===== */
       .swiper-slide {
         background-position: center;
         background-size: cover;
         width: 40vw;
         height: auto;
+      }
+
+      /* ===== DARK MODE TOGGLE BUTTON ===== */
+      #darkmode-toggle {
+        transition: transform 0.3s ease;
+      }
+
+      #darkmode-toggle:hover {
+        transform: scale(1.1);
+      }
+
+      /* ===== BOT INPUT DARK MODE ===== */
+      html[data-theme="dark"] #bot_input {
+        background-color: rgba(26, 34, 50, 0.9);
+        border-color: var(--color-primary);
+      }
+
+      html[data-theme="dark"] #bot_input::placeholder {
+        color: rgba(143, 163, 176, 0.6);
       }
 
       @media (max-width: 600px) {
@@ -572,7 +529,7 @@
                 </p>
                 <div
                   id="skills-container"
-                  class="flex flex-wrap items-center"
+                  class="flex flex-wrap items-center text-dark"
                 ></div>
               </div>
             </div>

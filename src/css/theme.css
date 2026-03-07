@@ -1,0 +1,46 @@
+/**
+ * Theme Color Configuration
+ * Centralized color management for both light and dark modes
+ * Edit these variables to customize the entire color scheme
+ */
+
+:root {
+  /* ====== LIGHT MODE COLORS ====== */
+  --color-primary: #52616B;
+  --color-secondary: #F0F5F9;
+  --color-third: #C9D6DF;
+  --color-forth: #1E2022;
+  --color-dark: #09090b;
+  --color-white: #ffffff;
+  
+  /* Background colors for light mode */
+  --bg-body-light: linear-gradient(to right, #f0f5f9, #c9d6df);
+  --bg-section-alt: linear-gradient(to right, #c9d6df, #f0f5f9);
+}
+
+/* ====== DARK MODE COLORS ====== */
+html[data-theme="dark"] {
+  --color-primary: #8fa3b0;
+  --color-secondary: #1a2232;
+  --color-third: #0f1723;
+  --color-forth: #e2eaf0;
+  --color-dark: #d1dde6;
+  --color-white: #000000;
+  
+  /* Background colors for dark mode */
+  --bg-body-light: linear-gradient(to right, #1a2232, #0f1723);
+  --bg-section-alt: linear-gradient(to right, #0f1723, #1a2232);
+}
+
+/**
+ * USAGE EXAMPLES:
+ * 
+ * In Tailwind classes: bg-primary, text-forth, border-secondary, etc.
+ * In CSS: color: var(--color-primary);
+ * In inline styles: style="background-color: var(--color-third)"
+ * 
+ * To customize:
+ * 1. Edit the colors above in :root and html[data-theme="dark"]
+ * 2. The changes will automatically apply everywhere in your site
+ * 3. No need to edit multiple files!
+ */
