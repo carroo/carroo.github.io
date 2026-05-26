@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>MCD Offer Injector</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.5.3/lottie_svg.min.js"></script>
+<title>Makan Enak by Carroo</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -13,36 +12,14 @@
     background: #f4f4f2;
     color: #1a1a1a;
     min-height: 100vh;
-    padding: 24px 16px 40px;
-  }
-
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 11px;
-    font-weight: 600;
-    background: #fff3cd;
-    color: #856404;
-    border-radius: 99px;
-    padding: 4px 12px;
-    margin-bottom: 12px;
-    border: 1px solid #ffc107;
+    padding: 32px 16px 40px;
   }
 
   h1 {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 700;
-    color: #DA291C;
-    letter-spacing: -0.5px;
-    margin-bottom: 4px;
-  }
-
-  .sub {
-    font-size: 13px;
-    color: #666;
-    margin-bottom: 20px;
-    line-height: 1.5;
+    color: #1a1a1a;
+    margin-bottom: 28px;
   }
 
   .card {
@@ -51,15 +28,6 @@
     padding: 18px;
     margin-bottom: 14px;
     border: 1px solid #e8e8e6;
-  }
-
-  .card-title {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: #999;
-    margin-bottom: 14px;
   }
 
   .field { margin-bottom: 14px; }
@@ -106,44 +74,12 @@
     cursor: pointer;
     transition: opacity 0.15s, transform 0.1s;
     -webkit-tap-highlight-color: transparent;
-    margin-bottom: 10px;
-  }
-
-  .btn:active { transform: scale(0.97); }
-  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
-  .btn-primary {
     background: #DA291C;
     color: #fff;
   }
 
-  .btn-secondary {
-    background: #f0f0ee;
-    color: #333;
-  }
-
-  .bridge-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    color: #555;
-    margin-bottom: 16px;
-    padding: 10px 12px;
-    background: #f8f8f6;
-    border-radius: 10px;
-  }
-
-  .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #ccc;
-    flex-shrink: 0;
-  }
-
-  .dot.ok { background: #1D9E75; }
-  .dot.err { background: #DA291C; }
+  .btn:active { transform: scale(0.97); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
   .log-box {
     background: #1a1a1a;
@@ -170,6 +106,14 @@
     margin-bottom: 10px;
   }
 
+  .log-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #999;
+  }
+
   .btn-clear {
     background: none;
     border: 1px solid #ddd;
@@ -180,87 +124,35 @@
     cursor: pointer;
     font-family: inherit;
   }
-
-  .success-overlay {
-    display: none;
-    text-align: center;
-    padding: 24px;
-  }
-
-  .success-icon {
-    font-size: 48px;
-    margin-bottom: 12px;
-  }
-
-  .success-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: #1D9E75;
-    margin-bottom: 6px;
-  }
-
-  .success-sub { font-size: 13px; color: #666; }
-
-  .divider {
-    border: none;
-    border-top: 1px solid #f0f0ee;
-    margin: 14px 0;
-  }
 </style>
 </head>
 <body>
 
-<div class="badge">⚠ DEV / TESTING ONLY</div>
-<h1>MCD Offer Injector</h1>
-<p class="sub">Langsung inject offer ke native bridge tanpa perlu kode kupon. Cukup isi loyaltyId & rewardId.</p>
+<h1>Makan enak by carroo</h1>
 
 <div class="card">
-  <div class="bridge-status">
-    <div class="dot" id="bridge-dot"></div>
-    <span id="bridge-label">Mengecek mcd.bridge...</span>
-  </div>
-
-  <div class="card-title">Offer Details</div>
-
   <div class="field">
     <label for="inp-loyalty">Loyalty ID</label>
     <input type="text" id="inp-loyalty" placeholder="contoh: 9912345">
   </div>
-
-  <div class="field">
+  <div class="field" style="margin-bottom:18px;">
     <label for="inp-reward">Reward ID</label>
     <input type="text" id="inp-reward" placeholder="contoh: RWD-001">
   </div>
-
-  <button class="btn btn-primary" id="btn-inject" onclick="doInject()">
-    ⚡ Inject Offer ke Bridge
-  </button>
-
-  <button class="btn btn-secondary" id="btn-getuser" onclick="doGetUser()">
-    👤 Cek Status User (opsional)
-  </button>
-</div>
-
-<div class="card" id="success-card" style="display:none;">
-  <div class="success-overlay" id="success-overlay">
-    <div class="success-icon">🎉</div>
-    <div class="success-title">Offer Berhasil Diaktifkan!</div>
-    <p class="success-sub" id="success-detail"></p>
-  </div>
+  <button class="btn" id="btn-inject" onclick="doInject()">Inject</button>
 </div>
 
 <div class="card">
   <div class="log-header">
-    <div class="card-title" style="margin-bottom:0;">Log Output</div>
+    <span class="log-title">Log</span>
     <button class="btn-clear" onclick="clearLog()">clear</button>
   </div>
   <div class="log-box" id="log-box">
-    <div class="log-line log-info">» Halaman siap. Menunggu mcd.bridge...</div>
+    <div class="log-line log-info">» ready.</div>
   </div>
 </div>
 
 <script>
-  // ── Logging ──────────────────────────────────────────────
   function log(msg, type) {
     var box = document.getElementById('log-box');
     var line = document.createElement('div');
@@ -275,60 +167,25 @@
     document.getElementById('log-box').innerHTML = '';
   }
 
-  // ── Bridge Check ─────────────────────────────────────────
-  function checkBridge() {
-    var dot = document.getElementById('bridge-dot');
-    var label = document.getElementById('bridge-label');
-    if (typeof mcd !== 'undefined' && mcd.bridge) {
-      dot.className = 'dot ok';
-      label.textContent = 'mcd.bridge terdeteksi ✓';
-      log('mcd.bridge tersedia — siap inject', 'ok');
-    } else {
-      dot.className = 'dot err';
-      label.textContent = 'mcd.bridge tidak ditemukan';
-      log('mcd.bridge tidak ada. Pastikan dibuka di dalam GMA Lite WebView.', 'err');
-    }
-  }
-
-  // ── Get User (opsional, untuk info saja) ─────────────────
-  function doGetUser() {
-    log('Mencoba getuser dari bridge...', 'info');
-    if (typeof mcd === 'undefined' || !mcd.bridge) {
-      log('Bridge tidak tersedia.', 'err');
-      return;
-    }
-    var user = mcd.bridge.message('user');
-    user.send({ getuser: true });
-    user.on('data', function(data) {
-      log('User: ' + JSON.stringify(data), 'ok');
-    });
-    user.on('error', function(err) {
-      log('User error: ' + JSON.stringify(err), 'err');
-    });
-    user.on('done', function() {
-      log('getuser done.', 'ok');
-    });
-  }
-
-  // ── Inject Offer ─────────────────────────────────────────
   function doInject() {
     var loyaltyId = document.getElementById('inp-loyalty').value.trim();
     var rewardId  = document.getElementById('inp-reward').value.trim();
 
     if (!loyaltyId || !rewardId) {
-      log('loyaltyId dan rewardId wajib diisi!', 'err');
+      log('loyaltyId dan rewardId wajib diisi.', 'err');
       return;
     }
-
-    log('Mengirim offerActivate → loyaltyId: ' + loyaltyId + ', rewardId: ' + rewardId, 'info');
 
     if (typeof mcd === 'undefined' || !mcd.bridge) {
-      log('Bridge tidak tersedia. Buka halaman ini di dalam GMA Lite.', 'err');
+      log('mcd.bridge tidak ditemukan.', 'err');
       return;
     }
 
-    document.getElementById('btn-inject').disabled = true;
-    document.getElementById('btn-inject').textContent = 'Loading...';
+    log('sending → loyaltyId: ' + loyaltyId + ' rewardId: ' + rewardId, 'info');
+
+    var btn = document.getElementById('btn-inject');
+    btn.disabled = true;
+    btn.textContent = 'Loading...';
 
     var offerActivation = mcd.bridge.message('offers');
     offerActivation.send({
@@ -340,46 +197,27 @@
     });
 
     offerActivation.on('data', function(data) {
-      log('Offer berhasil diaktifkan! Response: ' + JSON.stringify(data), 'ok');
-      showSuccess(loyaltyId, rewardId);
+      log('data: ' + JSON.stringify(data), 'ok');
     });
 
     offerActivation.on('error', function(err) {
-      log('Offer error: ' + JSON.stringify(err), 'err');
-      document.getElementById('btn-inject').disabled = false;
-      document.getElementById('btn-inject').textContent = '⚡ Inject Offer ke Bridge';
+      log('error: ' + JSON.stringify(err), 'err');
+      btn.disabled = false;
+      btn.textContent = 'Inject';
     });
 
     offerActivation.on('done', function() {
-      log('offerActivate done.', 'ok');
-      document.getElementById('btn-inject').disabled = false;
-      document.getElementById('btn-inject').textContent = '⚡ Inject Offer ke Bridge';
+      log('done.', 'ok');
+      btn.disabled = false;
+      btn.textContent = 'Inject';
     });
   }
 
-  // ── Success State ─────────────────────────────────────────
-  function showSuccess(loyaltyId, rewardId) {
-    var card = document.getElementById('success-card');
-    var overlay = document.getElementById('success-overlay');
-    var detail = document.getElementById('success-detail');
-    detail.textContent = 'loyaltyId: ' + loyaltyId + ' · rewardId: ' + rewardId;
-    card.style.display = 'block';
-    overlay.style.display = 'block';
-    card.scrollIntoView({ behavior: 'smooth' });
-  }
-
-  // ── Init ──────────────────────────────────────────────────
   document.addEventListener('mcdBridgeReady', function() {
-    log('mcdBridgeReady event fired!', 'ok');
-    checkBridge();
-
-    // sembunyikan navbar native seperti halaman aslinya
+    log('mcdBridgeReady ✓', 'ok');
     var system = mcd.bridge.message('system');
     system.send({ hideNavigationbar: false, hideCloseButton: false });
   });
-
-  // fallback kalau bridge tidak fire
-  setTimeout(checkBridge, 800);
 </script>
 </body>
 </html>
