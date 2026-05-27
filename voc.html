@@ -1,197 +1,148 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Check Voucher McD</title>
-
-<style>
-body {
-  font-family: Arial, sans-serif;
-  background:#0b0b10;
-  color:#fff;
-  padding:20px;
-}
-
-.container {
-  max-width:420px;
-  margin:auto;
-}
-
-h2 {
-  font-size:18px;
-  margin-bottom:12px;
-  color:#00e5a0;
-}
-
-input {
-  width:100%;
-  padding:12px;
-  border-radius:8px;
-  border:1px solid #333;
-  background:#111;
-  color:#fff;
-  margin-bottom:10px;
-}
-
-button {
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:8px;
-  background:#00e5a0;
-  color:#000;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-button:disabled {
-  opacity:0.5;
-}
-
-#log {
-  margin-top:15px;
-  font-size:12px;
-  white-space:pre-wrap;
-  background:#111;
-  padding:10px;
-  border-radius:8px;
-  height:200px;
-  overflow:auto;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bridge Claim - Simple</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
+    .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input, button { padding: 10px; margin: 8px 0; width: 100%; font-size: 16px; }
+    button { background: #e60012; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:disabled { background: #ccc; }
+    #log { height: 400px; overflow-y: auto; background: #000; color: #0f0; padding: 10px; font-family: monospace; font-size: 14px; margin-top: 10px; }
+  </style>
 </head>
-
 <body>
+  <div class="container">
+    <h2>McD Bridge Claim</h2>
+    
+    <label>Loyalty ID</label>
+    <input type="text" id="loyaltyId" placeholder="Masukkan Loyalty ID" value="">
 
-<div class="container">
-  <h2>Check Voucher</h2>
+    <label>Reward ID</label>
+    <input type="text" id="rewardId" placeholder="Masukkan Reward ID" value="">
 
-  <input id="voucher" placeholder="Masukkan kode voucher" />
+    <label>Jumlah Claim (Quantity)</label>
+    <input type="number" id="quantity" value="1" min="1">
 
-  <button id="btn">Check Voucher</button>
+    <button id="startBtn">🚀 Mulai Claim</button>
 
-  <div id="log">Waiting bridge...</div>
-</div>
-<!-- jQuery required (karena original pakai $) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <div id="log"></div>
+  </div>
 
-<script>
-(function () {
+  <script>
+    const logDiv = document.getElementById('log');
+    const startBtn = document.getElementById('startBtn');
 
-  const log = (t) => {
-    document.getElementById('log').innerText += "\n" + t;
-  };
+    function addLog(message, type = 'info') {
+      const time = new Date().toLocaleTimeString('id-ID');
+      let color = '#0f0';
+      
+      if (type === 'error') color = '#f66';
+      if (type === 'success') color = '#6f6';
+      if (type === 'warn') color = '#ff0';
 
-  const btn = document.getElementById('btn');
-  const input = document.getElementById('voucher');
-
-  let userData = null;
-
-  // ───── Bridge Init ─────
-  function initBridge() {
-    if (!window.mcd || !window.mcd.bridge) {
-      log("❌ mcd.bridge tidak ditemukan");
-      return;
+      logDiv.innerHTML += `<span style="color:${color}">[${time}] ${message}</span><br>`;
+      logDiv.scrollTop = logDiv.scrollHeight;
     }
 
-    const system = mcd.bridge.message('system');
-    system.send({ hideNavigationbar: true, hideCloseButton: true });
+    async function claimWithBridge(loyaltyId, rewardId) {
+      return new Promise((resolve) => {
+        if (!window.mcd || !window.mcd.bridge) {
+          addLog("❌ Bridge tidak terdeteksi! Buka di aplikasi McD.", "error");
+          resolve({ success: false, error: "Bridge not found" });
+          return;
+        }
 
-    const user = mcd.bridge.message('user');
+        try {
+          addLog(`Mengirim claim → Loyalty: ${loyaltyId} | Reward: ${rewardId}`);
 
-    user.send({ getuser: true });
+          const message = window.mcd.bridge.message("offerActivation");
+          let finished = false;
+          const timeout = setTimeout(() => {
+            if (!finished) {
+              finished = true;
+              addLog("⏰ Bridge Timeout", "error");
+              resolve({ success: false, error: "Bridge timeout" });
+            }
+          }, 15000); // 15 detik timeout
 
-    user.on('data', function (data) {
-      userData = data;
-      log("✅ user ready: " + data.email);
-    });
-
-    user.on('error', function (err) {
-      log("❌ user error: " + JSON.stringify(err));
-    });
-  }
-
-  // ───── Voucher Check ─────
-  btn.addEventListener('click', function () {
-
-    const voucher = input.value.trim();
-
-    if (!voucher) {
-      log("❌ voucher kosong");
-      return;
-    }
-
-    if (!userData) {
-      log("❌ user belum ready");
-      return;
-    }
-
-    btn.disabled = true;
-    btn.innerText = "Checking...";
-
-    $.ajax({
-      type: "POST",
-      url: "https://www.mcdonalds.co.id/cek-voucher",
-      data: {
-        email: userData.email,
-        deviceId: userData.deviceId,
-        voucher: voucher
-      },
-      success: function (data) {
-
-        log("API response: " + JSON.stringify(data));
-
-        if (data.code === "Berhasil") {
-          log("✅ voucher valid, activating offer...");
-
-          const offer = mcd.bridge.message('offers');
-
-          offer.send({
-            offerActivate: {
-              loyaltyId: data.voucher.reward.loyalty_id,
-              rewardId: data.voucher.reward.reward_id,
-              autoActivate: true
+          message.on("data", () => {
+            if (!finished) {
+              finished = true;
+              clearTimeout(timeout);
+              addLog("✅ Claim berhasil dikirim ke bridge", "success");
+              resolve({ success: true });
             }
           });
 
-          offer.on('data', function (res) {
-            log("🎉 offer activated");
+          message.on("error", (err) => {
+            if (!finished) {
+              finished = true;
+              clearTimeout(timeout);
+              const errorMsg = typeof err === "string" ? err : JSON.stringify(err);
+              addLog(`❌ Bridge Error: ${errorMsg}`, "error");
+              resolve({ success: false, error: errorMsg });
+            }
           });
 
-          offer.on('error', function (err) {
-            log("❌ offer error: " + JSON.stringify(err));
+          message.send({
+            loyaltyId: loyaltyId,
+            rewardId: rewardId,
+            autoActivate: false
           });
 
-        } else {
-          log("❌ gagal: " + data.code);
+        } catch (e) {
+          addLog(`❌ Error: ${e.message}`, "error");
+          resolve({ success: false, error: e.message });
+        }
+      });
+    }
+
+    async function startClaiming() {
+      const loyaltyId = document.getElementById('loyaltyId').value.trim();
+      const rewardId = document.getElementById('rewardId').value.trim();
+      const quantity = parseInt(document.getElementById('quantity').value) || 1;
+
+      if (!loyaltyId || !rewardId) {
+        addLog("⚠️ Loyalty ID dan Reward ID harus diisi!", "error");
+        return;
+      }
+
+      startBtn.disabled = true;
+      addLog(`🔄 Memulai ${quantity} kali claim...`, "warn");
+
+      for (let i = 1; i <= quantity; i++) {
+        addLog(`<b>Claim ke-${i} dari ${quantity}</b>`);
+        
+        const result = await claimWithBridge(loyaltyId, rewardId);
+        
+        if (!result.success) {
+          addLog(`Claim ke-${i} gagal.`, "error");
         }
 
-      },
-      error: function (err) {
-        log("❌ ajax error");
-        log(err)
-      },
-      complete: function () {
-        btn.disabled = false;
-        btn.innerText = "Check Voucher";
+        // Delay antar claim (opsional, bisa diubah)
+        if (i < quantity) {
+          await new Promise(r => setTimeout(r, 800)); // 800ms delay
+        }
       }
-    });
 
-  });
+      addLog("✅ Semua claim selesai diproses.", "success");
+      startBtn.disabled = false;
+    }
 
-  // ───── Boot ─────
-  document.addEventListener('mcdBridgeReady', function () {
-    log("🚀 bridge ready event");
-    initBridge();
-  });
+    // Event Listener
+    startBtn.addEventListener('click', startClaiming);
 
-  // fallback kalau event tidak fired
-  setTimeout(initBridge, 1000);
-
-})();
-</script>
-
-
+    // Info saat halaman dibuka
+    window.onload = () => {
+      if (window.mcd && window.mcd.bridge) {
+        addLog("✅ Bridge terdeteksi. Siap claim.", "success");
+      } else {
+        addLog("⚠️ Bridge belum terdeteksi. Pastikan dibuka di aplikasi McD.", "warn");
+      }
+    };
+  </script>
 </body>
 </html>
