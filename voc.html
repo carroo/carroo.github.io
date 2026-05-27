@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Check Voucher McD</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background:#0b0b10;
+  color:#fff;
+  padding:20px;
+}
+
+.container {
+  max-width:420px;
+  margin:auto;
+}
+
+h2 {
+  font-size:18px;
+  margin-bottom:12px;
+  color:#00e5a0;
+}
+
+input {
+  width:100%;
+  padding:12px;
+  border-radius:8px;
+  border:1px solid #333;
+  background:#111;
+  color:#fff;
+  margin-bottom:10px;
+}
+
+button {
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  background:#00e5a0;
+  color:#000;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button:disabled {
+  opacity:0.5;
+}
+
+#log {
+  margin-top:15px;
+  font-size:12px;
+  white-space:pre-wrap;
+  background:#111;
+  padding:10px;
+  border-radius:8px;
+  height:200px;
+  overflow:auto;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Check Voucher</h2>
+
+  <input id="voucher" placeholder="Masukkan kode voucher" />
+
+  <button id="btn">Check Voucher</button>
+
+  <div id="log">Waiting bridge...</div>
+</div>
+
+<script>
+(function () {
+
+  const log = (t) => {
+    document.getElementById('log').innerText += "\n" + t;
+  };
+
+  const btn = document.getElementById('btn');
+  const input = document.getElementById('voucher');
+
+  let userData = null;
+
+  // ───── Bridge Init ─────
+  function initBridge() {
+    if (!window.mcd || !window.mcd.bridge) {
+      log("❌ mcd.bridge tidak ditemukan");
+      return;
+    }
+
+    const system = mcd.bridge.message('system');
+    system.send({ hideNavigationbar: true, hideCloseButton: true });
+
+    const user = mcd.bridge.message('user');
+
+    user.send({ getuser: true });
+
+    user.on('data', function (data) {
+      userData = data;
+      log("✅ user ready: " + data.email);
+    });
+
+    user.on('error', function (err) {
+      log("❌ user error: " + JSON.stringify(err));
+    });
+  }
+
+  // ───── Voucher Check ─────
+  btn.addEventListener('click', function () {
+
+    const voucher = input.value.trim();
+
+    if (!voucher) {
+      log("❌ voucher kosong");
+      return;
+    }
+
+    if (!userData) {
+      log("❌ user belum ready");
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerText = "Checking...";
+
+    $.ajax({
+      type: "POST",
+      url: "https://www.mcdonalds.co.id/cek-voucher",
+      data: {
+        email: userData.email,
+        deviceId: userData.deviceId,
+        voucher: voucher
+      },
+      success: function (data) {
+
+        log("API response: " + JSON.stringify(data));
+
+        if (data.code === "Berhasil") {
+          log("✅ voucher valid, activating offer...");
+
+          const offer = mcd.bridge.message('offers');
+
+          offer.send({
+            offerActivate: {
+              loyaltyId: data.voucher.reward.loyalty_id,
+              rewardId: data.voucher.reward.reward_id,
+              autoActivate: true
+            }
+          });
+
+          offer.on('data', function (res) {
+            log("🎉 offer activated");
+          });
+
+          offer.on('error', function (err) {
+            log("❌ offer error: " + JSON.stringify(err));
+          });
+
+        } else {
+          log("❌ gagal: " + data.code);
+        }
+
+      },
+      error: function (err) {
+        log("❌ ajax error");
+      },
+      complete: function () {
+        btn.disabled = false;
+        btn.innerText = "Check Voucher";
+      }
+    });
+
+  });
+
+  // ───── Boot ─────
+  document.addEventListener('mcdBridgeReady', function () {
+    log("🚀 bridge ready event");
+    initBridge();
+  });
+
+  // fallback kalau event tidak fired
+  setTimeout(initBridge, 1000);
+
+})();
+</script>
+
+<!-- jQuery required (karena original pakai $) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</body>
+</html>
