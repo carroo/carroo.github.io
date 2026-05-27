@@ -615,14 +615,20 @@
     });
 
     offerActivation.on('data', function(data) {
-      log('offer data: ' + JSON.stringify(data), 'ok');
+      log('[offer data] ' + JSON.stringify(data), 'ok');
+      try { log('[offer data keys] ' + Object.keys(data).join(', '), 'ok'); } catch(e){}
     });
     offerActivation.on('error', function(err) {
-      log('offer error: ' + JSON.stringify(err), 'err');
+      log('[offer error raw] ' + JSON.stringify(err), 'err');
+      log('[offer error typeof] ' + typeof err, 'err');
+      try { log('[offer error keys] ' + Object.keys(err).join(', '), 'err'); } catch(e){}
+      try { log('[offer error string] ' + String(err), 'err'); } catch(e){}
+      try { log('[offer error code] ' + err.code, 'err'); } catch(e){}
+      try { log('[offer error message] ' + err.message, 'err'); } catch(e){}
       if (btnEl) { btnEl.disabled = false; btnEl.textContent = 'Coba Lagi'; }
     });
     offerActivation.on('done', function() {
-      log('offer done ✓', 'ok');
+      log('[offer done]', 'ok');
       if (btnEl) { btnEl.disabled = false; btnEl.textContent = 'Inject Lagi'; }
     });
   }
@@ -632,17 +638,16 @@
     if (!bridgeReady) { log('mcd.bridge belum ready.', 'err'); return; }
 
     var voucher  = document.getElementById('inp-voucher').value.trim();
-    var baseUrl  = window.location.origin;
     var btn      = document.getElementById('btn-cek');
 
     if (!voucher) { log('Kode voucher wajib diisi.', 'err'); return; }
     if (!userData) { log('Lakukan getuser dulu sebelum cek-voucher.', 'warn'); return; }
 
-    log('POST ' + baseUrl + '/cek-voucher  voucher=' + voucher, 'info');
+    log('POST https://www.mcdonalds.co.id/cek-voucher  voucher=' + voucher, 'info');
     btn.disabled = true; btn.textContent = 'Cek…';
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', baseUrl + '/cek-voucher', true);
+    xhr.open('POST', 'https://www.mcdonalds.co.id/cek-voucher', true);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
       if (xhr.readyState !== 4) return;
