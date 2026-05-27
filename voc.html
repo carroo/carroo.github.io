@@ -1,93 +1,193 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Meta penting dari asli -->
-  <meta name="app-base" content="https://domain-asli-kamu.com">
-  
-  <title>McD Claim</title>
+<script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f8f8f8; }
-    .container { max-width: 700px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-    input, button { width: 100%; padding: 14px; margin: 10px 0; font-size: 16px; border-radius: 6px; }
-    button { background: #e60012; color: white; border: none; font-weight: bold; }
-    #log { height: 450px; overflow-y: auto; background: #1e1e1e; color: #00ff00; padding: 15px; margin-top: 15px; border-radius: 6px; font-family: monospace; }
+    body {
+      background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    .container {
+      max-width: 720px;
+      margin: 2rem auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .header {
+      background: linear-gradient(90deg, #e60012, #ff3333);
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    /* INPUT STYLING - DITINGGIKAN */
+    .custom-input {
+      height: 58px !important;
+      padding: 0 16px 0 48px !important;
+      font-size: 1.05rem !important;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      transition: all 0.3s ease;
+    }
+    
+    .custom-input:focus {
+      border-color: #e60012;
+      box-shadow: 0 0 0 4px rgba(230, 0, 18, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .input-group {
+      position: relative;
+    }
+    .input-group i {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #64748b;
+      font-size: 1.2rem;
+    }
+
+    select.custom-input {
+      padding-left: 48px;
+    }
+
+    #log {
+      height: 420px;
+      overflow-y: auto;
+      background: #0f172a;
+      color: #22c55e;
+      font-family: 'Courier New', monospace;
+      font-size: 0.95rem;
+      padding: 1.1rem;
+      border-radius: 12px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Bridge Claim Tester</h2>
-    
-    <input type="text" id="loyaltyId" placeholder="Loyalty ID" />
-    <input type="text" id="rewardId" placeholder="Reward ID" />
-    <input type="number" id="quantity" value="1" min="1" placeholder="Jumlah" />
-    
-    <button id="checkBtn">Cek Bridge</button>
-    <button id="startBtn">Mulai Claim</button>
+    <!-- Header -->
+    <div class="header">
+      <h1 class="text-2xl font-bold flex items-center justify-center gap-3">
+        <i class="fas fa-hamburger"></i>
+        Makan Enak Claim
+      </h1>
+      <p class="text-sm opacity-90 mt-1">Bridge Claim Tester</p>
+    </div>
 
-    <div id="log"></div>
+    <div class="p-6 space-y-6">
+      
+      <!-- Template -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Pilih Template Reward</label>
+        <div class="input-group">
+          <i class="fas fa-list"></i>
+          <select id="templateSelect" class="custom-input w-full"></select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Loyalty ID</label>
+          <div class="input-group">
+            <i class="fas fa-id-card"></i>
+            <input type="text" id="loyaltyId" class="custom-input w-full" placeholder="Contoh: 5570" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Reward ID</label>
+          <div class="input-group">
+            <i class="fas fa-gift"></i>
+            <input type="text" id="rewardId" class="custom-input w-full" placeholder="Contoh: 320346" />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Jumlah Claim</label>
+        <div class="input-group">
+          <i class="fas fa-hashtag"></i>
+          <input type="number" id="quantity" value="1" min="1" class="custom-input w-full" />
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="grid grid-cols-2 gap-4 pt-2">
+        <button id="checkBtn" 
+                class="bg-red-600 hover:bg-red-700 text-white h-14 rounded-2xl font-semibold text-lg flex items-center justify-center gap-2 transition-all active:scale-95">
+          <i class="fas fa-plug"></i>
+          Cek Bridge
+        </button>
+        <button id="startBtn" 
+                class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white h-14 rounded-2xl font-semibold text-lg flex items-center justify-center gap-2 transition-all active:scale-95">
+          <i class="fas fa-bolt"></i>
+          Mulai Claim
+        </button>
+      </div>
+
+      <!-- Log -->
+      <div>
+        <div class="flex justify-between items-center mb-2">
+          <label class="text-sm font-semibold text-gray-700">Log Activity</label>
+          <button onclick="clearLog()" class="text-xs text-gray-500 hover:text-red-500">
+            <i class="fas fa-trash"></i> Clear
+          </button>
+        </div>
+        <div id="log"></div>
+      </div>
+    </div>
   </div>
 
   <script>
+    // ... Script tetap sama seperti sebelumnya ...
+
     const log = document.getElementById('log');
 
     function addLog(msg, type = 'info') {
       const time = new Date().toLocaleTimeString('id-ID');
-      let color = type === 'success' ? '#00ff00' : type === 'error' ? '#ff4444' : '#ffff00';
+      let color = type === 'success' ? '#22c55e' : type === 'error' ? '#ef4444' : type === 'warning' ? '#eab308' : '#93c5fd';
       log.innerHTML += `<span style="color:${color}">[${time}] ${msg}</span><br>`;
       log.scrollTop = log.scrollHeight;
     }
 
-    // Setup agar lebih mirip asli
+    function clearLog() {
+      log.innerHTML = '';
+      addLog("Log dibersihkan", "info");
+    }
+
     function setupFakeEnvironment() {
       try {
         sessionStorage.setItem('mcd_in_app', '1');
         localStorage.setItem('mcd_in_app', '1');
       } catch(e) {}
-
-      // Coba buat alias bridge
-      if (window.GMA_Lite && window.GMA_Lite.bridge) {
-        window.mcd = window.GMA_Lite;
-        addLog("GMA_Lite bridge ditemukan", "success");
-      }
     }
 
     function checkBridge() {
       setupFakeEnvironment();
-
-      if (window.mcd && window.mcd.bridge) {
-        addLog("✅ window.mcd.bridge TERDETEKSI!", "success");
+      if (window.mcd?.bridge || window.GMA_Lite?.bridge || window.__GMALITE_BRIDGE__) {
+        addLog("✅ Bridge TERDETEKSI!", "success");
         return true;
       }
-      if (window.GMA_Lite && window.GMA_Lite.bridge) {
-        addLog("✅ window.GMA_Lite.bridge TERDETEKSI!", "success");
-        window.mcd = window.GMA_Lite;
-        return true;
-      }
-      if (window.__GMALITE_BRIDGE__) {
-        addLog("✅ __GMALITE_BRIDGE__ TERDETEKSI!", "success");
-        return true;
-      }
-
-      addLog("❌ Bridge belum muncul. Coba refresh halaman di dalam aplikasi.", "error");
+      addLog("❌ Bridge belum terdeteksi. Coba buka di dalam aplikasi.", "error");
       return false;
     }
 
     async function claimWithBridge(loyaltyId, rewardId) {
-      if (!window.mcd || !window.mcd.bridge) {
+      if (!window.mcd?.bridge && !window.GMA_Lite?.bridge) {
         addLog("Bridge tidak tersedia", "error");
         return { success: false };
       }
 
       return new Promise(resolve => {
         try {
-          const message = window.mcd.bridge.message("offerActivation");
+          const bridgeObj = window.mcd || window.GMA_Lite;
+          const message = bridgeObj.bridge.message("offerActivation");
           let finished = false;
           const timeout = setTimeout(() => {
             if (!finished) {
               finished = true;
-              addLog("⏰ Bridge Timeout", "error");
+              addLog("⏰ Timeout - Bridge tidak merespons", "error");
               resolve({ success: false });
             }
           }, 15000);
@@ -96,7 +196,7 @@
             if (!finished) {
               finished = true;
               clearTimeout(timeout);
-              addLog("✅ Bridge berhasil menerima claim", "success");
+              addLog("✅ Claim berhasil dikirim", "success");
               resolve({ success: true });
             }
           });
@@ -110,11 +210,7 @@
             }
           });
 
-          message.send({
-            loyaltyId: loyaltyId,
-            rewardId: rewardId,
-            autoActivate: false
-          });
+          message.send({ loyaltyId, rewardId, autoActivate: false });
         } catch (e) {
           addLog(`Error: ${e.message}`, "error");
           resolve({ success: false });
@@ -122,8 +218,116 @@
       });
     }
 
-    // Event
-    document.getElementById('checkBtn').onclick = checkBridge;
+    // Template (contoh)
+    const templates = [
+    {
+        "title": "Blablabla",
+        "subtitle": "Rp30.000",
+        "loyaltyId": "5570",
+        "rewardId": "320346"
+    },
+    {
+        "title": "Burger + Kentang",
+        "subtitle": "Rp23.636",
+        "image": "",
+        "loyaltyId": "5570",
+        "rewardId": "288656"
+    },
+    {
+        "title": "Chicken Burger Deluxe + Fries(S)",
+        "subtitle": "Rp20.909",
+        "image": "",
+        "loyaltyId": "5570",
+        "rewardId": "320332"
+    },
+    {
+        "title": "Chicken Wrap + Fries(S) + Coke Float",
+        "subtitle": "Rp20.000",
+        "image": "",
+        "loyaltyId": "5570",
+        "rewardId": "320333"
+    },
+    {
+        "title": "Coca Cola",
+        "subtitle": "Rp1",
+        "image": "",
+        "loyaltyId": "5587",
+        "rewardId": "289844"
+    },
+    {
+        "title": "Kopi + Kentang + Ayam",
+        "subtitle": "Rp25.000",
+        "image": "",
+        "loyaltyId": "5570",
+        "rewardId": "288661"
+    },
+    {
+        "title": "McFloat + Kentang + Ayam",
+        "subtitle": "Rp22.727",
+        "image": "",
+        "loyaltyId": "5570",
+        "rewardId": "288658"
+    },
+    {
+        "id": "c54ffaa2a2a3aad8",
+        "title": "McFlurry Choco + Kentang",
+        "subtitle": "Rp13.636",
+        "image": "",
+        "loyaltyId": "5570",
+        "rewardId": "288659"
+    },
+    {
+        "title": "McFlurry Choco + McFlurry Oreo",
+        "subtitle": "Rp15.000",
+        "image": "",
+        "loyaltyId": "5570",
+        "rewardId": "320340"
+    },
+    {
+        "title": "McFlurry Oreo + Kentang",
+        "subtitle": "Rp13.636",
+        "image": "",
+        "loyaltyId": "5570",
+        "rewardId": "288663"
+    },
+    {
+        "title": "Panas 1",
+        "subtitle": "Rp18.182",
+        "image": "",
+        "loyaltyId": "5573",
+        "rewardId": "284713",
+    },
+    {
+        "title": "Panas Spesial",
+        "subtitle": "Rp30.000",
+        "image": "",
+        "loyaltyId": "5570",
+        "rewardId": "288662"
+    }];
+
+    function loadTemplates() {
+      const select = document.getElementById('templateSelect');
+      templates.forEach((tpl, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = `${tpl.title} - ${tpl.subtitle}`;
+        select.appendChild(option);
+      });
+
+      select.addEventListener('change', () => {
+        const selected = templates[select.value];
+        if (selected) {
+          document.getElementById('loyaltyId').value = selected.loyaltyId;
+          document.getElementById('rewardId').value = selected.rewardId;
+          addLog(`✅ Template "${selected.title}" di-load`, "success");
+        }
+      });
+    }
+
+    document.getElementById('checkBtn').onclick = () => {
+      addLog("Memeriksa koneksi bridge...", "info");
+      checkBridge();
+    };
 
     document.getElementById('startBtn').onclick = async () => {
       const loyalty = document.getElementById('loyaltyId').value.trim();
@@ -131,22 +335,25 @@
       const qty = parseInt(document.getElementById('quantity').value) || 1;
 
       if (!loyalty || !reward) {
-        addLog("Loyalty ID dan Reward ID wajib diisi!", "error");
+        addLog("❌ Loyalty ID dan Reward ID wajib diisi!", "error");
         return;
       }
 
-      addLog("Memeriksa bridge...");
       if (!checkBridge()) return;
+
+      addLog(`🚀 Memulai ${qty} kali claim...`, "warning");
 
       for (let i = 1; i <= qty; i++) {
         addLog(`Claim #${i} → Loyalty: ${loyalty} | Reward: ${reward}`);
         await claimWithBridge(loyalty, reward);
-        await new Promise(r => setTimeout(r, 800));
+        await new Promise(r => setTimeout(r, 900));
       }
+
+      addLog("✅ Proses claim selesai", "success");
     };
 
-    // Auto check saat load
     window.onload = () => {
+      loadTemplates();
       setTimeout(checkBridge, 800);
       setTimeout(checkBridge, 2500);
     };
