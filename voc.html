@@ -73,6 +73,8 @@ button:disabled {
 
   <div id="log">Waiting bridge...</div>
 </div>
+<!-- jQuery required (karena original pakai $) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
 (function () {
@@ -168,6 +170,7 @@ button:disabled {
       },
       error: function (err) {
         log("❌ ajax error");
+        log(err)
       },
       complete: function () {
         btn.disabled = false;
@@ -189,8 +192,6 @@ button:disabled {
 })();
 </script>
 
-<!-- jQuery required (karena original pakai $) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </body>
 </html>
