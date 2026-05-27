@@ -3,76 +3,100 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bridge Claim - Simple</title>
+  <!-- Meta penting dari asli -->
+  <meta name="app-base" content="https://domain-asli-kamu.com">
+  
+  <title>McD Claim</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
-    .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    input, button { padding: 10px; margin: 8px 0; width: 100%; font-size: 16px; }
-    button { background: #e60012; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    button:disabled { background: #ccc; }
-    #log { height: 400px; overflow-y: auto; background: #000; color: #0f0; padding: 10px; font-family: monospace; font-size: 14px; margin-top: 10px; }
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f8f8f8; }
+    .container { max-width: 700px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    input, button { width: 100%; padding: 14px; margin: 10px 0; font-size: 16px; border-radius: 6px; }
+    button { background: #e60012; color: white; border: none; font-weight: bold; }
+    #log { height: 450px; overflow-y: auto; background: #1e1e1e; color: #00ff00; padding: 15px; margin-top: 15px; border-radius: 6px; font-family: monospace; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>McD Bridge Claim</h2>
+    <h2>Bridge Claim Tester</h2>
     
-    <label>Loyalty ID</label>
-    <input type="text" id="loyaltyId" placeholder="Masukkan Loyalty ID" value="">
-
-    <label>Reward ID</label>
-    <input type="text" id="rewardId" placeholder="Masukkan Reward ID" value="">
-
-    <label>Jumlah Claim (Quantity)</label>
-    <input type="number" id="quantity" value="1" min="1">
-
-    <button id="startBtn">🚀 Mulai Claim</button>
+    <input type="text" id="loyaltyId" placeholder="Loyalty ID" />
+    <input type="text" id="rewardId" placeholder="Reward ID" />
+    <input type="number" id="quantity" value="1" min="1" placeholder="Jumlah" />
+    
+    <button id="checkBtn">Cek Bridge</button>
+    <button id="startBtn">Mulai Claim</button>
 
     <div id="log"></div>
   </div>
 
   <script>
-    const logDiv = document.getElementById('log');
-    const startBtn = document.getElementById('startBtn');
+    const log = document.getElementById('log');
 
-    function addLog(message, type = 'info') {
+    function addLog(msg, type = 'info') {
       const time = new Date().toLocaleTimeString('id-ID');
-      let color = '#0f0';
-      
-      if (type === 'error') color = '#f66';
-      if (type === 'success') color = '#6f6';
-      if (type === 'warn') color = '#ff0';
+      let color = type === 'success' ? '#00ff00' : type === 'error' ? '#ff4444' : '#ffff00';
+      log.innerHTML += `<span style="color:${color}">[${time}] ${msg}</span><br>`;
+      log.scrollTop = log.scrollHeight;
+    }
 
-      logDiv.innerHTML += `<span style="color:${color}">[${time}] ${message}</span><br>`;
-      logDiv.scrollTop = logDiv.scrollHeight;
+    // Setup agar lebih mirip asli
+    function setupFakeEnvironment() {
+      try {
+        sessionStorage.setItem('mcd_in_app', '1');
+        localStorage.setItem('mcd_in_app', '1');
+      } catch(e) {}
+
+      // Coba buat alias bridge
+      if (window.GMA_Lite && window.GMA_Lite.bridge) {
+        window.mcd = window.GMA_Lite;
+        addLog("GMA_Lite bridge ditemukan", "success");
+      }
+    }
+
+    function checkBridge() {
+      setupFakeEnvironment();
+
+      if (window.mcd && window.mcd.bridge) {
+        addLog("✅ window.mcd.bridge TERDETEKSI!", "success");
+        return true;
+      }
+      if (window.GMA_Lite && window.GMA_Lite.bridge) {
+        addLog("✅ window.GMA_Lite.bridge TERDETEKSI!", "success");
+        window.mcd = window.GMA_Lite;
+        return true;
+      }
+      if (window.__GMALITE_BRIDGE__) {
+        addLog("✅ __GMALITE_BRIDGE__ TERDETEKSI!", "success");
+        return true;
+      }
+
+      addLog("❌ Bridge belum muncul. Coba refresh halaman di dalam aplikasi.", "error");
+      return false;
     }
 
     async function claimWithBridge(loyaltyId, rewardId) {
-      return new Promise((resolve) => {
-        if (!window.mcd || !window.mcd.bridge) {
-          addLog("❌ Bridge tidak terdeteksi! Buka di aplikasi McD.", "error");
-          resolve({ success: false, error: "Bridge not found" });
-          return;
-        }
+      if (!window.mcd || !window.mcd.bridge) {
+        addLog("Bridge tidak tersedia", "error");
+        return { success: false };
+      }
 
+      return new Promise(resolve => {
         try {
-          addLog(`Mengirim claim → Loyalty: ${loyaltyId} | Reward: ${rewardId}`);
-
           const message = window.mcd.bridge.message("offerActivation");
           let finished = false;
           const timeout = setTimeout(() => {
             if (!finished) {
               finished = true;
               addLog("⏰ Bridge Timeout", "error");
-              resolve({ success: false, error: "Bridge timeout" });
+              resolve({ success: false });
             }
-          }, 15000); // 15 detik timeout
+          }, 15000);
 
           message.on("data", () => {
             if (!finished) {
               finished = true;
               clearTimeout(timeout);
-              addLog("✅ Claim berhasil dikirim ke bridge", "success");
+              addLog("✅ Bridge berhasil menerima claim", "success");
               resolve({ success: true });
             }
           });
@@ -81,9 +105,8 @@
             if (!finished) {
               finished = true;
               clearTimeout(timeout);
-              const errorMsg = typeof err === "string" ? err : JSON.stringify(err);
-              addLog(`❌ Bridge Error: ${errorMsg}`, "error");
-              resolve({ success: false, error: errorMsg });
+              addLog(`❌ Bridge Error: ${err}`, "error");
+              resolve({ success: false });
             }
           });
 
@@ -92,56 +115,40 @@
             rewardId: rewardId,
             autoActivate: false
           });
-
         } catch (e) {
-          addLog(`❌ Error: ${e.message}`, "error");
-          resolve({ success: false, error: e.message });
+          addLog(`Error: ${e.message}`, "error");
+          resolve({ success: false });
         }
       });
     }
 
-    async function startClaiming() {
-      const loyaltyId = document.getElementById('loyaltyId').value.trim();
-      const rewardId = document.getElementById('rewardId').value.trim();
-      const quantity = parseInt(document.getElementById('quantity').value) || 1;
+    // Event
+    document.getElementById('checkBtn').onclick = checkBridge;
 
-      if (!loyaltyId || !rewardId) {
-        addLog("⚠️ Loyalty ID dan Reward ID harus diisi!", "error");
+    document.getElementById('startBtn').onclick = async () => {
+      const loyalty = document.getElementById('loyaltyId').value.trim();
+      const reward = document.getElementById('rewardId').value.trim();
+      const qty = parseInt(document.getElementById('quantity').value) || 1;
+
+      if (!loyalty || !reward) {
+        addLog("Loyalty ID dan Reward ID wajib diisi!", "error");
         return;
       }
 
-      startBtn.disabled = true;
-      addLog(`🔄 Memulai ${quantity} kali claim...`, "warn");
+      addLog("Memeriksa bridge...");
+      if (!checkBridge()) return;
 
-      for (let i = 1; i <= quantity; i++) {
-        addLog(`<b>Claim ke-${i} dari ${quantity}</b>`);
-        
-        const result = await claimWithBridge(loyaltyId, rewardId);
-        
-        if (!result.success) {
-          addLog(`Claim ke-${i} gagal.`, "error");
-        }
-
-        // Delay antar claim (opsional, bisa diubah)
-        if (i < quantity) {
-          await new Promise(r => setTimeout(r, 800)); // 800ms delay
-        }
+      for (let i = 1; i <= qty; i++) {
+        addLog(`Claim #${i} → Loyalty: ${loyalty} | Reward: ${reward}`);
+        await claimWithBridge(loyalty, reward);
+        await new Promise(r => setTimeout(r, 800));
       }
+    };
 
-      addLog("✅ Semua claim selesai diproses.", "success");
-      startBtn.disabled = false;
-    }
-
-    // Event Listener
-    startBtn.addEventListener('click', startClaiming);
-
-    // Info saat halaman dibuka
+    // Auto check saat load
     window.onload = () => {
-      if (window.mcd && window.mcd.bridge) {
-        addLog("✅ Bridge terdeteksi. Siap claim.", "success");
-      } else {
-        addLog("⚠️ Bridge belum terdeteksi. Pastikan dibuka di aplikasi McD.", "warn");
-      }
+      setTimeout(checkBridge, 800);
+      setTimeout(checkBridge, 2500);
     };
   </script>
 </body>
