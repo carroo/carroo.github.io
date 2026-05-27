@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>McD Bridge DevTool</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+  :root {
+    --red: #DA291C;
+    --red-dim: #b02015;
+    --gold: #FFC72C;
+    --bg: #0f0f0f;
+    --surface: #181818;
+    --surface2: #222222;
+    --border: #2e2e2e;
+    --text: #f0f0f0;
+    --muted: #666;
+    --green: #39d98a;
+    --blue: #4fc3f7;
+    --orange: #ffb74d;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 20px 16px 48px;
+  }
+
+  /* ── Header ── */
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .header-logo {
+    width: 36px; height: 36px;
+    background: var(--red);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 18px; color: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .header-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+
+  .header-sub {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: var(--mono);
+    margin-top: 1px;
+  }
+
+  .badge-bridge {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .badge-bridge.ready { border-color: var(--green); color: var(--green); }
+  .badge-bridge.error { border-color: var(--red); color: var(--red); }
+
+  /* ── Card ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .card-title {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .card-title .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+  }
+
+  /* ── User Info Box ── */
+  .user-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .user-field {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+
+  .user-field-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+  }
+
+  .user-field-value {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--blue);
+    word-break: break-all;
+    min-height: 16px;
+  }
+
+  .user-field-value.empty { color: var(--muted); font-style: italic; }
+  .user-field.full { grid-column: 1 / -1; }
+
+  .btn-getuser {
+    width: 100%;
+    padding: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: var(--sans);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+
+  .btn-getuser:hover { border-color: var(--blue); color: var(--blue); }
+  .btn-getuser:active { transform: scale(0.97); }
+
+  /* ── Tabs ── */
+  .tabs {
+    display: flex;
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 3px;
+    margin-bottom: 16px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--sans);
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+
+  .tab.active {
+    background: var(--red);
+    color: #fff;
+  }
+
+  /* ── Panels ── */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ── Fields ── */
+  .field { margin-bottom: 12px; }
+
+  label {
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-family: var(--mono);
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: var(--mono);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+    -webkit-appearance: none;
+  }
+
+  input[type="text"]:focus { border-color: var(--red); }
+  input[type="text"]::placeholder { color: var(--muted); }
+
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    background: var(--surface2);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+
+  .toggle-label { font-size: 11px; font-weight: 600; color: var(--muted); font-family: var(--mono); }
+
+  .toggle { position: relative; width: 40px; height: 22px; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider {
+    position: absolute; inset: 0;
+    background: var(--border);
+    border-radius: 99px;
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+  .toggle-slider:before {
+    content: '';
+    position: absolute;
+    width: 16px; height: 16px;
+    left: 3px; top: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+  .toggle input:checked + .toggle-slider { background: var(--red); }
+  .toggle input:checked + .toggle-slider:before { transform: translateX(18px); }
+
+  /* ── Cek Voucher Response Preview ── */
+  .voucher-preview {
+    display: none;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+
+  .voucher-preview.show { display: block; }
+
+  .voucher-preview-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 8px;
+  }
+
+  .voucher-kv {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .kv-item {
+    background: var(--bg);
+    border-radius: 6px;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+  }
+
+  .kv-label { font-family: var(--mono); font-size: 9px; color: var(--muted); margin-bottom: 2px; }
+  .kv-value { font-family: var(--mono); font-size: 12px; color: var(--green); }
+
+  /* ── Button ── */
+  .btn {
+    width: 100%;
+    padding: 13px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: var(--sans);
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: var(--red);
+    color: #fff;
+    letter-spacing: 0.3px;
+  }
+
+  .btn:active { transform: scale(0.97); }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+  .btn.loading { background: var(--red-dim); }
+
+  /* ── Log ── */
+  .log-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .log-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    font-family: var(--mono);
+    font-size: 11px;
+    min-height: 140px;
+    max-height: 260px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .log-line { margin: 2px 0; line-height: 1.6; display: flex; gap: 6px; }
+  .log-ts { color: #444; flex-shrink: 0; }
+  .log-info { color: var(--blue); }
+  .log-ok { color: var(--green); }
+  .log-err { color: #f47c6a; }
+  .log-warn { color: var(--orange); }
+  .log-default { color: #aaa; }
+
+  .btn-clear {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 3px 9px;
+    font-size: 10px;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: var(--mono);
+  }
+
+  .btn-clear:hover { border-color: var(--red); color: var(--red); }
+
+  /* ── Divider ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 14px 0;
+  }
+
+  /* ── Status chip ── */
+  .status-row {
+    display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap;
+  }
+  .chip {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .chip.on { border-color: var(--green); color: var(--green); background: rgba(57,217,138,0.08); }
+  .chip.off { border-color: var(--muted); color: var(--muted); }
+  .chip.err { border-color: #f47c6a; color: #f47c6a; background: rgba(244,124,106,0.08); }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-logo">M</div>
+  <div>
+    <div class="header-title">McD Bridge DevTool</div>
+    <div class="header-sub">makan-enak · offers injector</div>
+  </div>
+  <span class="badge-bridge" id="bridge-badge">bridge: –</span>
+</div>
+
+<!-- Status chips -->
+<div class="status-row">
+  <span class="chip" id="chip-bridge">mcdBridge: –</span>
+  <span class="chip" id="chip-user">user: –</span>
+  <span class="chip" id="chip-logged">login: –</span>
+</div>
+
+<!-- GET USER card -->
+<div class="card">
+  <div class="card-title"><span class="dot"></span>User Session</div>
+
+  <div class="user-grid">
+    <div class="user-field">
+      <div class="user-field-label">email</div>
+      <div class="user-field-value empty" id="u-email">—</div>
+    </div>
+    <div class="user-field">
+      <div class="user-field-label">deviceId</div>
+      <div class="user-field-value empty" id="u-device">—</div>
+    </div>
+    <div class="user-field">
+      <div class="user-field-label">loyaltyId</div>
+      <div class="user-field-value empty" id="u-loyalty">—</div>
+    </div>
+    <div class="user-field">
+      <div class="user-field-label">sessionToken</div>
+      <div class="user-field-value empty" id="u-token">—</div>
+    </div>
+    <div class="user-field full">
+      <div class="user-field-label">raw response</div>
+      <div class="user-field-value empty" id="u-raw" style="font-size:10px; white-space:pre-wrap;">—</div>
+    </div>
+  </div>
+
+  <button class="btn-getuser" id="btn-getuser" onclick="doGetUser()">
+    ↺ &nbsp;getuser
+  </button>
+</div>
+
+<!-- Inject card -->
+<div class="card">
+  <div class="card-title"><span class="dot"></span>Offer Inject</div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" id="tab-voucher" onclick="switchTab('voucher')">Via Cek-Voucher</button>
+    <button class="tab" id="tab-direct" onclick="switchTab('direct')">Direct Inject</button>
+  </div>
+
+  <!-- Panel: via cek-voucher -->
+  <div class="panel active" id="panel-voucher">
+    <div class="field">
+      <label for="inp-voucher">Kode Voucher</label>
+      <input type="text" id="inp-voucher" placeholder="contoh: SiAPPMcDRey2002">
+    </div>
+
+    <!-- Preview hasil cek-voucher -->
+    <div class="voucher-preview" id="voucher-preview">
+      <div class="voucher-preview-title">↳ cek-voucher response</div>
+      <div class="voucher-kv">
+        <div class="kv-item">
+          <div class="kv-label">campaign</div>
+          <div class="kv-value" id="prev-campaign">—</div>
+        </div>
+        <div class="kv-item">
+          <div class="kv-label">code</div>
+          <div class="kv-value" id="prev-code">—</div>
+        </div>
+        <div class="kv-item">
+          <div class="kv-label">loyalty_id</div>
+          <div class="kv-value" id="prev-loyalty">—</div>
+        </div>
+        <div class="kv-item">
+          <div class="kv-label">reward_id</div>
+          <div class="kv-value" id="prev-reward">—</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn" id="btn-cek" onclick="doCekVoucher()">Cek &amp; Inject Voucher</button>
+  </div>
+
+  <!-- Panel: direct inject -->
+  <div class="panel" id="panel-direct">
+    <div class="field">
+      <label for="inp-loyalty">Loyalty ID</label>
+      <input type="text" id="inp-loyalty" placeholder="contoh: 5573">
+    </div>
+    <div class="field">
+      <label for="inp-reward">Reward ID</label>
+      <input type="text" id="inp-reward" placeholder="contoh: 276682">
+    </div>
+    <div class="toggle-row">
+      <span class="toggle-label">autoActivate</span>
+      <label class="toggle">
+        <input type="checkbox" id="chk-auto" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <button class="btn" id="btn-inject" onclick="doDirectInject()">Inject Langsung</button>
+  </div>
+</div>
+
+<!-- Log -->
+<div class="card">
+  <div class="log-header">
+    <span class="card-title" style="margin-bottom:0"><span class="dot"></span>Log</span>
+    <button class="btn-clear" onclick="clearLog()">clear</button>
+  </div>
+  <div class="log-box" id="log-box">
+    <div class="log-line"><span class="log-ts">--:--:--</span><span class="log-info">» devtool ready. waiting for mcdBridgeReady…</span></div>
+  </div>
+</div>
+
+<script>
+  /* ─── state ─── */
+  var userData = null;
+  var bridgeReady = false;
+
+  /* ─── helpers ─── */
+  function log(msg, type) {
+    var box = document.getElementById('log-box');
+    var line = document.createElement('div');
+    var ts = new Date().toLocaleTimeString('id-ID');
+    line.className = 'log-line';
+    line.innerHTML = '<span class="log-ts">' + ts + '</span><span class="log-' + (type || 'default') + '">' + escHtml(msg) + '</span>';
+    box.appendChild(line);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function clearLog() {
+    document.getElementById('log-box').innerHTML = '';
+  }
+
+  function setChip(id, label, state) {
+    var el = document.getElementById(id);
+    el.textContent = label;
+    el.className = 'chip ' + (state || '');
+  }
+
+  /* ─── tab switch ─── */
+  function switchTab(tab) {
+    document.getElementById('tab-voucher').classList.toggle('active', tab === 'voucher');
+    document.getElementById('tab-direct').classList.toggle('active', tab === 'direct');
+    document.getElementById('panel-voucher').classList.toggle('active', tab === 'voucher');
+    document.getElementById('panel-direct').classList.toggle('active', tab === 'direct');
+  }
+
+  /* ─── render user data ─── */
+  function renderUser(data) {
+    userData = data;
+    var set = function(id, val) {
+      var el = document.getElementById(id);
+      if (val) {
+        el.textContent = val;
+        el.classList.remove('empty');
+      } else {
+        el.textContent = '—';
+        el.classList.add('empty');
+      }
+    };
+    set('u-email',   data.email);
+    set('u-device',  data.deviceId);
+    set('u-loyalty', data.loyaltyId || data.loyalty_id);
+    set('u-token',   data.sessionToken ? data.sessionToken.substring(0,24)+'…' : null);
+
+    var rawEl = document.getElementById('u-raw');
+    rawEl.textContent = JSON.stringify(data, null, 2);
+    rawEl.classList.remove('empty');
+
+    var loggedIn = !!(data.email || data.deviceId);
+    setChip('chip-user', 'user: ok', 'on');
+    setChip('chip-logged', loggedIn ? 'login: yes' : 'login: no', loggedIn ? 'on' : 'off');
+  }
+
+  /* ─── getuser ─── */
+  function doGetUser() {
+    if (!bridgeReady) { log('mcd.bridge belum ready.', 'err'); return; }
+    log('getuser → sending…', 'info');
+    var btn = document.getElementById('btn-getuser');
+    btn.disabled = true;
+    btn.textContent = 'Loading…';
+
+    var user = mcd.bridge.message('user');
+    user.send({ getuser: true });
+
+    user.on('data', function(data) {
+      log('getuser data: ' + JSON.stringify(data), 'ok');
+      renderUser(data);
+    });
+    user.on('error', function(err) {
+      log('getuser error: ' + JSON.stringify(err), 'err');
+      if (err.code === 400) {
+        setChip('chip-logged', 'login: no', 'off');
+        log('user belum login (code 400)', 'warn');
+      }
+      btn.disabled = false;
+      btn.textContent = '↺  getuser';
+    });
+    user.on('done', function() {
+      log('getuser done.', 'ok');
+      btn.disabled = false;
+      btn.textContent = '↺  getuser';
+    });
+  }
+
+  /* ─── inject offer (shared) ─── */
+  function injectOffer(loyaltyId, rewardId, autoActivate, btnEl) {
+    log('offerActivate → loyaltyId: ' + loyaltyId + '  rewardId: ' + rewardId + '  autoActivate: ' + autoActivate, 'info');
+
+    if (btnEl) { btnEl.disabled = true; btnEl.textContent = 'Loading…'; }
+
+    var offerActivation = mcd.bridge.message('offers');
+    offerActivation.send({
+      offerActivate: {
+        loyaltyId: loyaltyId,
+        autoActivate: autoActivate,
+        rewardId: rewardId
+      }
+    });
+
+    offerActivation.on('data', function(data) {
+      log('[offer data] ' + JSON.stringify(data), 'ok');
+      try { log('[offer data keys] ' + Object.keys(data).join(', '), 'ok'); } catch(e){}
+    });
+    offerActivation.on('error', function(err) {
+      log('[offer error raw] ' + JSON.stringify(err), 'err');
+      log('[offer error typeof] ' + typeof err, 'err');
+      try { log('[offer error keys] ' + Object.keys(err).join(', '), 'err'); } catch(e){}
+      try { log('[offer error string] ' + String(err), 'err'); } catch(e){}
+      try { log('[offer error code] ' + err.code, 'err'); } catch(e){}
+      try { log('[offer error message] ' + err.message, 'err'); } catch(e){}
+      if (btnEl) { btnEl.disabled = false; btnEl.textContent = 'Coba Lagi'; }
+    });
+    offerActivation.on('done', function() {
+      log('[offer done]', 'ok');
+      if (btnEl) { btnEl.disabled = false; btnEl.textContent = 'Inject Lagi'; }
+    });
+  }
+
+  /* ─── mode 1: via cek-voucher ─── */
+  function doCekVoucher() {
+    if (!bridgeReady) { log('mcd.bridge belum ready.', 'err'); return; }
+
+    var voucher  = document.getElementById('inp-voucher').value.trim();
+    var btn      = document.getElementById('btn-cek');
+
+    if (!voucher) { log('Kode voucher wajib diisi.', 'err'); return; }
+    if (!userData) { log('Lakukan getuser dulu sebelum cek-voucher.', 'warn'); return; }
+
+    log('POST https://www.mcdonalds.co.id/cek-voucher  voucher=' + voucher, 'info');
+    btn.disabled = true; btn.textContent = 'Cek…';
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://www.mcdonalds.co.id/cek-voucher', true);
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState !== 4) return;
+      btn.disabled = false; btn.textContent = 'Cek & Inject Voucher';
+
+      if (xhr.status >= 200 && xhr.status < 300) {
+        var data;
+        try { data = JSON.parse(xhr.response); } catch(e) {
+          log('JSON parse error: ' + e, 'err'); return;
+        }
+        log('cek-voucher response: ' + JSON.stringify(data), 'ok');
+
+        if (data.code === 'Berhasil' && data.voucher && data.voucher.reward) {
+          var r = data.voucher.reward;
+          // show preview
+          document.getElementById('prev-campaign').textContent = data.campaign || '—';
+          document.getElementById('prev-code').textContent     = data.code;
+          document.getElementById('prev-loyalty').textContent  = r.loyalty_id;
+          document.getElementById('prev-reward').textContent   = r.reward_id;
+          document.getElementById('voucher-preview').classList.add('show');
+
+          log('✓ voucher valid. campaign: ' + data.campaign + '  loyalty_id: ' + r.loyalty_id + '  reward_id: ' + r.reward_id, 'ok');
+          injectOffer(r.loyalty_id, r.reward_id, true, btn);
+        } else {
+          log('cek-voucher gagal: ' + (data.code || 'unknown'), 'err');
+          document.getElementById('voucher-preview').classList.remove('show');
+        }
+      } else {
+        log('HTTP error ' + xhr.status + ': ' + xhr.statusText, 'err');
+      }
+    };
+    var params =
+      'email='    + encodeURIComponent(userData.email    || '') +
+      '&deviceId='+ encodeURIComponent(userData.deviceId || '') +
+      '&voucher=' + encodeURIComponent(voucher);
+    xhr.send(params);
+  }
+
+  /* ─── mode 2: direct inject ─── */
+  function doDirectInject() {
+    if (!bridgeReady) { log('mcd.bridge belum ready.', 'err'); return; }
+
+    var loyaltyId    = document.getElementById('inp-loyalty').value.trim();
+    var rewardId     = document.getElementById('inp-reward').value.trim();
+    var autoActivate = document.getElementById('chk-auto').checked;
+    var btn          = document.getElementById('btn-inject');
+
+    if (!loyaltyId || !rewardId) {
+      log('loyaltyId dan rewardId wajib diisi.', 'err'); return;
+    }
+
+    injectOffer(loyaltyId, rewardId, autoActivate, btn);
+  }
+
+  /* ─── bridge ready ─── */
+  document.addEventListener('mcdBridgeReady', function() {
+    bridgeReady = true;
+    log('mcdBridgeReady ✓', 'ok');
+
+    var badge = document.getElementById('bridge-badge');
+    badge.textContent = 'bridge: ready';
+    badge.classList.add('ready');
+
+    setChip('chip-bridge', 'mcdBridge: ready', 'on');
+
+    var system = mcd.bridge.message('system');
+    system.send({ hideNavigationbar: false, hideCloseButton: false });
+
+    // auto getuser on bridge ready
+    log('auto getuser…', 'info');
+    doGetUser();
+  });
+
+  /* ─── fallback jika bridge tidak ada (testing di browser biasa) ─── */
+  window.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+      if (!bridgeReady) {
+        log('mcdBridgeReady tidak terdeteksi — mode testing (bridge mock off)', 'warn');
+        var badge = document.getElementById('bridge-badge');
+        badge.textContent = 'bridge: –';
+        badge.classList.add('error');
+        setChip('chip-bridge', 'mcdBridge: –', 'err');
+      }
+    }, 2000);
+  });
+</script>
+</body>
+</html>
