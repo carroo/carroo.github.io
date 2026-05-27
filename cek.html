@@ -317,147 +317,200 @@
 
 </div>
 
+
 <script>
 (function () {
   'use strict';
 
-  // ── STATE ──────────────────────────────────────────────────────────────────
-  var quantity    = 1;
-  var running     = false;
+  // ── STATE ─────────────────────────────────────────────────────
+  var quantity = 1;
+  var running = false;
   var bridgeReady = false;
+
   var BRIDGE_TIMEOUT_MS = 15000;
   var BRIDGE_RETRY_INTERVAL = 300;
-  var BRIDGE_MAX_ATTEMPTS   = 10;
+  var BRIDGE_MAX_ATTEMPTS = 20;
 
-  // ── DOM ────────────────────────────────────────────────────────────────────
-  var inpLoyalty   = document.getElementById('inp-loyalty');
-  var inpReward    = document.getElementById('inp-reward');
-  var qtyDisplay   = document.getElementById('qty-display');
-  var qtyMinus     = document.getElementById('qty-minus');
-  var qtyPlus      = document.getElementById('qty-plus');
-  var btnActivate  = document.getElementById('btn-activate');
-  var bridgeDot    = document.getElementById('bridge-dot');
-  var bridgeLabel  = document.getElementById('bridge-label');
-  var logBody      = document.getElementById('log-body');
-  var btnClear     = document.getElementById('btn-clear');
-  var progressRow  = document.getElementById('progress-row');
-  var progressBar  = document.getElementById('progress-bar');
-  var progressLbl  = document.getElementById('progress-label');
+  // ── DOM ───────────────────────────────────────────────────────
+  var inpLoyalty = document.getElementById('inp-loyalty');
+  var inpReward = document.getElementById('inp-reward');
+  var qtyDisplay = document.getElementById('qty-display');
+  var qtyMinus = document.getElementById('qty-minus');
+  var qtyPlus = document.getElementById('qty-plus');
+  var btnActivate = document.getElementById('btn-activate');
+  var bridgeDot = document.getElementById('bridge-dot');
+  var bridgeLabel = document.getElementById('bridge-label');
+  var logBody = document.getElementById('log-body');
+  var btnClear = document.getElementById('btn-clear');
+  var progressRow = document.getElementById('progress-row');
+  var progressBar = document.getElementById('progress-bar');
+  var progressLbl = document.getElementById('progress-label');
 
-  // ── LOGGING ────────────────────────────────────────────────────────────────
+  // ── LOG ───────────────────────────────────────────────────────
+  function escHtml(s) {
+    return String(s)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+
   function log(msg, type) {
-    // type: 'success' | 'error' | 'warn' | 'info' | 'default'
     type = type || 'default';
-    var now  = new Date().toLocaleTimeString('id-ID');
+
+    var now = new Date().toLocaleTimeString('id-ID');
+
     var line = document.createElement('div');
     line.className = 'log-line ' + type;
-    line.innerHTML = '<span class="log-time">' + now + '</span>'
-                   + '<span class="log-msg">' + escHtml(msg) + '</span>';
+    line.innerHTML =
+      '<span class="log-time">' + now + '</span>' +
+      '<span class="log-msg">' + escHtml(msg) + '</span>';
+
     logBody.appendChild(line);
     logBody.scrollTop = logBody.scrollHeight;
   }
 
-  function escHtml(s) {
-    return String(s)
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-
   btnClear.addEventListener('click', function () {
     logBody.innerHTML = '';
-    log('Log dibersihkan.', 'default');
+    log('Log dibersihkan');
   });
 
-  // ── BRIDGE DETECTION ───────────────────────────────────────────────────────
+  // ── UI ────────────────────────────────────────────────────────
   function updateBridgeUI(state) {
-    // state: 'checking' | 'ok' | 'fail'
-    bridgeDot.className = 'dot ' + (state === 'ok' ? 'ok' : state === 'fail' ? 'fail' : 'pulse');
+    bridgeDot.className =
+      'dot ' +
+      (state === 'ok'
+        ? 'ok'
+        : state === 'fail'
+        ? 'fail'
+        : 'pulse');
+
     bridgeLabel.textContent =
-        state === 'ok'   ? 'GMA_Lite.bridge terdeteksi — siap'
-      : state === 'fail' ? 'Bridge tidak ditemukan — buka via GMA App'
-      : 'Mendeteksi bridge…';
+      state === 'ok'
+        ? 'mcd.bridge siap'
+        : state === 'fail'
+        ? 'Bridge tidak ditemukan'
+        : 'Mendeteksi bridge...';
   }
 
+  function setQty(n) {
+    quantity = Math.max(1, Math.min(50, n));
+    qtyDisplay.textContent = quantity;
+  }
+
+  qtyMinus.addEventListener('click', function () {
+    setQty(quantity - 1);
+  });
+
+  qtyPlus.addEventListener('click', function () {
+    setQty(quantity + 1);
+  });
+
+  function setProgress(done, total) {
+    progressRow.style.display = 'flex';
+    var pct = total ? Math.round((done / total) * 100) : 0;
+    progressBar.style.width = pct + '%';
+    progressLbl.textContent = done + ' / ' + total;
+  }
+
+  // ── BRIDGE DETECTION ──────────────────────────────────────────
   function checkBridge() {
-    var w = window;
-    if (w.GMA_Lite && w.GMA_Lite.bridge) {
+    if (window.mcd && window.mcd.bridge) {
       bridgeReady = true;
       updateBridgeUI('ok');
-      log('Bridge terdeteksi: GMA_Lite.bridge ready.', 'success');
       btnActivate.disabled = false;
-    } else if (w.__GMALITE_BRIDGE__) {
-      bridgeReady = true;
-      updateBridgeUI('ok');
-      log('Bridge terdeteksi: __GMALITE_BRIDGE__ ready.', 'success');
-      btnActivate.disabled = false;
-    } else {
-      bridgeReady = false;
-      updateBridgeUI('fail');
-      log('GMA_Lite.bridge tidak ditemukan. Harus dibuka dari dalam GMA/GoTo App.', 'warn');
-      btnActivate.disabled = false; // allow manual attempt anyway
+      log('mcd.bridge detected', 'success');
+      return true;
     }
+
+    bridgeReady = false;
+    updateBridgeUI('fail');
+    log('mcd.bridge tidak tersedia', 'warn');
+    return false;
   }
 
-  // ── CORE BRIDGE CALL ───────────────────────────────────────────────────────
-  /**
-   * Calls GMA_Lite.bridge.send('offerActivation') with loyaltyId + rewardId.
-   * Returns a Promise<{ success: boolean, error?: string }>
-   */
+  document.addEventListener('mcdBridgeReady', function () {
+    log('Event mcdBridgeReady fired', 'info');
+    checkBridge();
+  });
+
+  // ── BRIDGE SEND ───────────────────────────────────────────────
   function activateViaAppBridge(payload) {
     return new Promise(function (resolve) {
       var attempts = 0;
 
       function tryBridge() {
         attempts++;
-        var w = window;
 
-        // Check bridge presence
-        if (!w.GMA_Lite || !w.GMA_Lite.bridge) {
+        if (!window.mcd || !window.mcd.bridge) {
           if (attempts < BRIDGE_MAX_ATTEMPTS) {
             setTimeout(tryBridge, BRIDGE_RETRY_INTERVAL);
             return;
           }
-          resolve({ success: false, error: 'Bridge not detected after ' + BRIDGE_MAX_ATTEMPTS + ' attempts. Open in GMA App.' });
+
+          resolve({
+            success: false,
+            error: 'Bridge not detected'
+          });
+
           return;
         }
 
         try {
-          var call    = w.GMA_Lite.bridge.send('offerActivation');
           var settled = false;
 
+          function done(result) {
+            if (settled) return;
+            settled = true;
+            clearTimeout(timer);
+            resolve(result);
+          }
+
           var timer = setTimeout(function () {
-            if (!settled) {
-              settled = true;
-              resolve({ success: false, error: 'Bridge timeout (' + (BRIDGE_TIMEOUT_MS / 1000) + 's)' });
-            }
+            done({
+              success: false,
+              error: 'timeout'
+            });
           }, BRIDGE_TIMEOUT_MS);
 
-          call.on('data', function () {
-            if (!settled) {
-              settled = true;
-              clearTimeout(timer);
-              resolve({ success: true });
-            }
+          // channel sesuai source asli
+          var offer = window.mcd.bridge.message('offers');
+
+          offer.on('data', function (data) {
+            done({
+              success: true,
+              data: data
+            });
           });
 
-          call.on('error', function (err) {
-            if (!settled) {
-              settled = true;
-              clearTimeout(timer);
-              var msg = typeof err === 'string' ? err : JSON.stringify(err);
-              resolve({ success: false, error: 'Bridge error: ' + msg });
-            }
+          offer.on('error', function (err) {
+            done({
+              success: false,
+              error: JSON.stringify(err)
+            });
           });
 
-          // Fire the actual bridge call
-          call.send({
-            loyaltyId:    String(payload.loyaltyId),
-            rewardId:     String(payload.rewardId),
-            autoActivate: false,
+          // kirim format source asli
+          offer.send({
+            offerActivate: {
+              loyaltyId: String(payload.loyaltyId),
+              rewardId: String(payload.rewardId),
+              autoActivate: false
+            },
+
+            // fallback kompatibilitas
+            offerActivation: {
+              loyaltyId: String(payload.loyaltyId),
+              rewardId: String(payload.rewardId),
+              autoActivate: false
+            }
           });
 
         } catch (e) {
-          resolve({ success: false, error: 'Bridge exception: ' + e.message });
+          resolve({
+            success: false,
+            error: e.message
+          });
         }
       }
 
@@ -465,88 +518,84 @@
     });
   }
 
-  // ── QUANTITY ───────────────────────────────────────────────────────────────
-  function setQty(n) {
-    quantity = Math.max(1, Math.min(50, n));
-    qtyDisplay.textContent = quantity;
-  }
-  qtyMinus.addEventListener('click', function () { setQty(quantity - 1); });
-  qtyPlus.addEventListener('click',  function () { setQty(quantity + 1); });
-
-  // ── PROGRESS ───────────────────────────────────────────────────────────────
-  function setProgress(done, total) {
-    progressRow.style.display = 'flex';
-    var pct = total > 0 ? Math.round((done / total) * 100) : 0;
-    progressBar.style.width   = pct + '%';
-    progressLbl.textContent   = done + ' / ' + total;
-  }
-
-  function hideProgress() { progressRow.style.display = 'none'; }
-
-  // ── MAIN ACTIVATION LOOP ───────────────────────────────────────────────────
+  // ── MAIN LOOP ─────────────────────────────────────────────────
   btnActivate.addEventListener('click', function () {
     if (running) return;
 
     var loyaltyId = inpLoyalty.value.trim();
-    var rewardId  = inpReward.value.trim();
+    var rewardId = inpReward.value.trim();
 
     if (!loyaltyId || !rewardId) {
-      log('Loyalty ID dan Reward ID wajib diisi!', 'error');
+      log('Isi Loyalty ID dan Reward ID', 'error');
       return;
     }
 
     running = true;
-    btnActivate.disabled    = true;
+    btnActivate.disabled = true;
     btnActivate.classList.add('running');
-    btnActivate.textContent = 'Memproses…';
+    btnActivate.textContent = 'Memproses...';
 
-    var successCount = 0;
-    var failCount    = 0;
-    var total        = quantity;
-    var index        = 0;
+    var success = 0;
+    var fail = 0;
+    var index = 0;
+    var total = quantity;
 
-    log('Mulai ' + total + ' klaim — loyaltyId: ' + loyaltyId + ', rewardId: ' + rewardId, 'info');
+    log(
+      'Start activation x' + total +
+      ' | loyalty=' + loyaltyId +
+      ' reward=' + rewardId,
+      'info'
+    );
 
-    function done() {
+    function finish() {
       running = false;
-      btnActivate.disabled    = false;
+      btnActivate.disabled = false;
       btnActivate.classList.remove('running');
       btnActivate.textContent = 'Aktivasi via Bridge';
-      setProgress(total, total);
-      log('Selesai. ✓ Berhasil: ' + successCount + '  ✗ Gagal: ' + failCount,
-          failCount === 0 ? 'success' : successCount === 0 ? 'error' : 'warn');
+
+      log(
+        'DONE | success=' + success + ' fail=' + fail,
+        fail ? 'warn' : 'success'
+      );
     }
 
     function next() {
       if (index >= total) {
-        done();
+        finish();
         return;
       }
 
       setProgress(index, total);
-      log('Klaim #' + (index + 1) + ' — mengirim ke bridge…', 'default');
 
-      activateViaAppBridge({ loyaltyId: loyaltyId, rewardId: rewardId })
-        .then(function (result) {
-          if (result.success) {
-            successCount++;
-            log('Klaim #' + (index + 1) + ' ✓ BERHASIL', 'success');
-          } else {
-            failCount++;
-            log('Klaim #' + (index + 1) + ' ✗ GAGAL — ' + result.error, 'error');
-          }
-          index++;
-          // small delay between iterations to avoid bridge spam
-          setTimeout(next, 300);
-        });
+      log('Sending #' + (index + 1));
+
+      activateViaAppBridge({
+        loyaltyId: loyaltyId,
+        rewardId: rewardId
+      }).then(function (result) {
+
+        if (result.success) {
+          success++;
+          log('✓ success #' + (index + 1), 'success');
+        } else {
+          fail++;
+          log('✗ fail #' + (index + 1) + ' : ' + result.error, 'error');
+        }
+
+        index++;
+        setTimeout(next, 350);
+      });
     }
 
     next();
   });
 
-  // ── INIT ───────────────────────────────────────────────────────────────────
+  // ── INIT ──────────────────────────────────────────────────────
   updateBridgeUI('checking');
-  setTimeout(checkBridge, 400);
+
+  setTimeout(checkBridge, 500);
+  setTimeout(checkBridge, 1500);
+  setTimeout(checkBridge, 3000);
 
 })();
 </script>
