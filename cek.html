@@ -1,603 +1,543 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GMA Bridge — Offer Activation</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;700;800&display=swap');
+<html>
+  <head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
 
-  :root {
-    --bg:       #0a0a0f;
-    --surface:  #111118;
-    --border:   #1e1e2e;
-    --accent:   #00e5a0;
-    --accent2:  #0096ff;
-    --danger:   #ff4466;
-    --warn:     #ffaa00;
-    --text:     #e8e8f0;
-    --muted:    #555570;
-    --mono:     'JetBrains Mono', monospace;
-    --sans:     'Syne', sans-serif;
-  }
+    <style>
+      body {
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        font-family: "Segoe UI", system-ui, sans-serif;
+      }
+      .container {
+        max-width: 720px;
+        margin: 2rem auto;
+        background: white;
+        border-radius: 20px;
+        box-shadow:
+          0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+      .header {
+        background: linear-gradient(90deg, #e60012, #ff3333);
+        color: white;
+        padding: 1.5rem;
+        text-align: center;
+      }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      /* INPUT STYLING - DITINGGIKAN */
+      .custom-input {
+        height: 58px !important;
+        padding: 0 16px 0 48px !important;
+        font-size: 1.05rem !important;
+        border: 2px solid #e2e8f0;
+        border-radius: 16px;
+        transition: all 0.3s ease;
+      }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--mono);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 32px 16px 64px;
-  }
+      .custom-input:focus {
+        border-color: #e60012;
+        box-shadow: 0 0 0 4px rgba(230, 0, 18, 0.15);
+        transform: translateY(-1px);
+      }
 
-  /* background grid */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(var(--border) 1px, transparent 1px),
-      linear-gradient(90deg, var(--border) 1px, transparent 1px);
-    background-size: 40px 40px;
-    opacity: 0.4;
-    pointer-events: none;
-    z-index: 0;
-  }
+      .input-group {
+        position: relative;
+      }
+      .input-group i {
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #64748b;
+        font-size: 1.2rem;
+      }
 
-  .wrap {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    max-width: 560px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
+      select.custom-input {
+        padding-left: 48px;
+      }
 
-  /* ── HEADER ── */
-  header {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
-  }
-  .logo {
-    font-family: var(--sans);
-    font-weight: 800;
-    font-size: 22px;
-    letter-spacing: -0.5px;
-    color: var(--accent);
-  }
-  .logo span { color: var(--accent2); }
-  .tagline {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
+      #log {
+        height: 420px;
+        overflow-y: auto;
+        background: #0f172a;
+        color: #22c55e;
+        font-family: "Courier New", monospace;
+        font-size: 0.95rem;
+        padding: 1.1rem;
+        border-radius: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <h1 class="text-2xl font-bold flex items-center justify-center gap-3">
+          <i class="fas fa-hamburger"></i>
+          Makan Enak Mekdi
+        </h1>
+        <p class="text-sm opacity-90 mt-1">by Carroo</p>
+      </div>
 
-  /* ── CARD ── */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  .card-title {
-    font-family: var(--sans);
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
+      <div class="p-6 space-y-6">
+        <!-- Mode Selector -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-3"
+            >Pilih Mode</label
+          >
+          <div class="flex gap-3">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="mode"
+                value="normal"
+                checked
+                class="w-4 h-4"
+              />
+              <span class="text-sm font-medium">Normal</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="mode" value="loop" class="w-4 h-4" />
+              <span class="text-sm font-medium">Loop Range</span>
+            </label>
+          </div>
+        </div>
 
-  /* ── INPUTS ── */
-  .field { display: flex; flex-direction: column; gap: 6px; }
-  label { font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
-  input[type=text], input[type=number] {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 15px;
-    padding: 10px 14px;
-    outline: none;
-    transition: border-color 0.2s;
-    width: 100%;
-  }
-  input:focus { border-color: var(--accent); }
-  input::placeholder { color: var(--muted); }
+        <!-- Normal Mode -->
+        <div id="normalMode" class="space-y-6">
+          <!-- Template -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2"
+              >Pilih Template Reward</label
+            >
+            <div class="input-group">
+              <i class="fas fa-list"></i>
+              <select id="templateSelect" class="custom-input w-full"></select>
+            </div>
+          </div>
 
-  /* ── QUANTITY ROW ── */
-  .qty-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .qty-btn {
-    width: 36px; height: 36px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-size: 18px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: border-color 0.15s;
-    flex-shrink: 0;
-  }
-  .qty-btn:hover { border-color: var(--accent); color: var(--accent); }
-  #qty-display {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--accent);
-    min-width: 32px;
-    text-align: center;
-  }
-  .qty-label { font-size: 11px; color: var(--muted); margin-left: 4px; }
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2"
+                >Loyalty ID</label
+              >
+              <div class="input-group">
+                <i class="fas fa-id-card"></i>
+                <input
+                  type="text"
+                  id="loyaltyId"
+                  class="custom-input w-full"
+                  placeholder="Contoh: 5570"
+                />
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2"
+                >Reward ID</label
+              >
+              <div class="input-group">
+                <i class="fas fa-gift"></i>
+                <input
+                  type="text"
+                  id="rewardId"
+                  class="custom-input w-full"
+                  placeholder="Contoh: 320346"
+                />
+              </div>
+            </div>
+          </div>
 
-  /* ── BUTTON ── */
-  .btn-activate {
-    background: var(--accent);
-    border: none;
-    border-radius: 8px;
-    color: #000;
-    font-family: var(--mono);
-    font-size: 14px;
-    font-weight: 700;
-    padding: 12px 20px;
-    cursor: pointer;
-    letter-spacing: 0.04em;
-    transition: opacity 0.15s, transform 0.1s;
-    position: relative;
-    overflow: hidden;
-  }
-  .btn-activate:active { transform: scale(0.98); }
-  .btn-activate:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
-  .btn-activate.running { background: var(--warn); color: #000; }
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2"
+              >Jumlah Claim</label
+            >
+            <div class="input-group">
+              <i class="fas fa-hashtag"></i>
+              <input
+                type="number"
+                id="quantity"
+                value="1"
+                min="1"
+                class="custom-input w-full"
+              />
+            </div>
+          </div>
+        </div>
 
-  /* ── BRIDGE STATUS ── */
-  .bridge-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    color: var(--muted);
-  }
-  .dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--muted);
-    flex-shrink: 0;
-    transition: background 0.3s;
-  }
-  .dot.ok   { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
-  .dot.fail { background: var(--danger); box-shadow: 0 0 6px var(--danger); }
-  .dot.pulse {
-    background: var(--warn);
-    animation: pulse 0.8s infinite alternate;
-  }
-  @keyframes pulse { to { opacity: 0.3; } }
+        <!-- Loop Mode -->
+        <div id="loopMode" class="space-y-6 hidden">
+          <div class="grid grid-cols-1 gap-5">
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2"
+                >Loyalty ID</label
+              >
+              <div class="input-group">
+                <i class="fas fa-id-card"></i>
+                <input
+                  type="text"
+                  id="loopLoyaltyId"
+                  class="custom-input w-full"
+                  placeholder="Contoh: 5570"
+                />
+              </div>
+            </div>
+          </div>
 
-  /* ── LOG ── */
-  .log-wrap {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  .log-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 14px;
-    border-bottom: 1px solid var(--border);
-    font-size: 11px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-  .log-clear {
-    background: none; border: none; color: var(--muted);
-    font-family: var(--mono); font-size: 11px; cursor: pointer;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-  .log-clear:hover { color: var(--danger); }
-  #log-body {
-    height: 220px;
-    overflow-y: auto;
-    padding: 10px 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  #log-body::-webkit-scrollbar { width: 4px; }
-  #log-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-  .log-line {
-    font-size: 12px;
-    line-height: 1.5;
-    display: flex;
-    gap: 10px;
-  }
-  .log-time { color: var(--muted); flex-shrink: 0; }
-  .log-line.success .log-msg { color: var(--accent); }
-  .log-line.error   .log-msg { color: var(--danger); }
-  .log-line.warn    .log-msg { color: var(--warn); }
-  .log-line.info    .log-msg { color: var(--accent2); }
-  .log-line.default .log-msg { color: var(--text); }
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2"
+                >Reward ID Awal</label
+              >
+              <div class="input-group">
+                <i class="fas fa-gift"></i>
+                <input
+                  type="number"
+                  id="rewardIdStart"
+                  class="custom-input w-full"
+                  placeholder="Contoh: 320346"
+                />
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2"
+                >Reward ID Akhir</label
+              >
+              <div class="input-group">
+                <i class="fas fa-gift"></i>
+                <input
+                  type="number"
+                  id="rewardIdEnd"
+                  class="custom-input w-full"
+                  placeholder="Contoh: 320350"
+                />
+              </div>
+            </div>
+          </div>
 
-  /* ── PROGRESS ── */
-  .progress-row {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 12px; color: var(--muted);
-  }
-  .progress-bar-wrap {
-    flex: 1; height: 4px; background: var(--border); border-radius: 4px; overflow: hidden;
-  }
-  .progress-bar {
-    height: 100%; background: var(--accent); width: 0%;
-    transition: width 0.3s; border-radius: 4px;
-  }
-  #progress-label { flex-shrink: 0; min-width: 60px; text-align: right; }
-</style>
-</head>
-<body>
-<div class="wrap">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2"
+              >Delay (ms)</label
+            >
+            <div class="input-group">
+              <i class="fas fa-hourglass-half"></i>
+              <input
+                type="number"
+                id="delayMs"
+                value="900"
+                min="100"
+                class="custom-input w-full"
+                placeholder="Delay antar claim"
+              />
+            </div>
+          </div>
+        </div>
 
-  <header>
-    <div class="logo">GMA<span>Bridge</span></div>
-    <div class="tagline">offerActivation — direct bridge tool</div>
-  </header>
+        <!-- Buttons -->
+        <div class="grid grid-cols-2 gap-4 pt-2">
+          <button
+            id="checkBtn"
+            class="bg-red-600 hover:bg-red-700 text-white h-14 rounded-2xl font-semibold text-lg flex items-center justify-center gap-2 transition-all active:scale-95"
+          >
+            <i class="fas fa-plug"></i>
+            Cek Bridge
+          </button>
+          <button
+            id="startBtn"
+            class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white h-14 rounded-2xl font-semibold text-lg flex items-center justify-center gap-2 transition-all active:scale-95"
+          >
+            <i class="fas fa-bolt"></i>
+            Mulai Claim
+          </button>
+        </div>
 
-  <!-- INPUT CARD -->
-  <div class="card">
-    <div class="card-title">Payload</div>
-
-    <div class="field">
-      <label for="inp-loyalty">Loyalty ID</label>
-      <input id="inp-loyalty" type="text" placeholder="Contoh: 5570" inputmode="numeric" autocomplete="off">
-    </div>
-
-    <div class="field">
-      <label for="inp-reward">Reward / Offer ID</label>
-      <input id="inp-reward" type="text" placeholder="Contoh: 288663" inputmode="numeric" autocomplete="off">
-    </div>
-
-    <div class="field">
-      <label>Jumlah klaim</label>
-      <div class="qty-row">
-        <button class="qty-btn" id="qty-minus">−</button>
-        <div id="qty-display">1</div>
-        <button class="qty-btn" id="qty-plus">+</button>
-        <span class="qty-label">iterasi</span>
+        <!-- Log -->
+        <div>
+          <div class="flex justify-between items-center mb-2">
+            <label class="text-sm font-semibold text-gray-700"
+              >Log Activity</label
+            >
+            <button
+              onclick="clearLog()"
+              class="text-xs text-gray-500 hover:text-red-500"
+            >
+              <i class="fas fa-trash"></i> Clear
+            </button>
+          </div>
+          <div id="log"></div>
+        </div>
       </div>
     </div>
 
-    <!-- Bridge status -->
-    <div class="bridge-status">
-      <div class="dot" id="bridge-dot"></div>
-      <span id="bridge-label">Mendeteksi bridge…</span>
-    </div>
-  </div>
+    <script>
+      // ... Script tetap sama seperti sebelumnya ...
 
-  <!-- ACTION -->
-  <button class="btn-activate" id="btn-activate" disabled>
-    Aktivasi via Bridge
-  </button>
+      const log = document.getElementById("log");
+      let claimRunning = false;
 
-  <!-- PROGRESS -->
-  <div class="progress-row" id="progress-row" style="display:none">
-    <div class="progress-bar-wrap">
-      <div class="progress-bar" id="progress-bar"></div>
-    </div>
-    <span id="progress-label">0 / 0</span>
-  </div>
+      function addLog(msg, type = "info") {
+        const time = new Date().toLocaleTimeString("id-ID");
+        let color =
+          type === "success"
+            ? "#22c55e"
+            : type === "error"
+              ? "#ef4444"
+              : type === "warning"
+                ? "#eab308"
+                : "#93c5fd";
+        log.innerHTML += `<span style="color:${color}">[${time}] ${msg}</span><br>`;
+        log.scrollTop = log.scrollHeight;
+      }
 
-  <!-- LOG -->
-  <div class="log-wrap">
-    <div class="log-header">
-      <span>Monitor</span>
-      <button class="log-clear" id="btn-clear">Bersihkan</button>
-    </div>
-    <div id="log-body">
-      <div class="log-line default"><span class="log-time">--:--:--</span><span class="log-msg">Menunggu input…</span></div>
-    </div>
-  </div>
+      function clearLog() {
+        log.innerHTML = "";
+        addLog("Log dibersihkan", "info");
+      }
 
-</div>
+      function setupFakeEnvironment() {
+        try {
+          sessionStorage.setItem("mcd_in_app", "1");
+          localStorage.setItem("mcd_in_app", "1");
+        } catch (e) {}
+      }
 
+      function checkBridge() {
+        setupFakeEnvironment();
+        if (
+          window.mcd?.bridge ||
+          window.GMA_Lite?.bridge ||
+          window.__GMALITE_BRIDGE__
+        ) {
+          addLog("✅ Bridge TERDETEKSI!", "success");
+          return true;
+        }
+        addLog(
+          "❌ Bridge belum terdeteksi. Coba buka di dalam aplikasi.",
+          "error",
+        );
+        return false;
+      }
 
-<script>
-(function () {
-  'use strict';
+      async function claimWithBridge(loyaltyId, rewardId) {
+        if (!window.mcd?.bridge && !window.GMA_Lite?.bridge) {
+          addLog("Bridge tidak tersedia", "error");
+          return { success: false };
+        }
 
-  // ── STATE ─────────────────────────────────────────────────────
-  var quantity = 1;
-  var running = false;
-  var bridgeReady = false;
+        return new Promise((resolve) => {
+          try {
+            const bridgeObj = window.mcd || window.GMA_Lite;
+            const message = bridgeObj.bridge.message("offerActivation");
+            let finished = false;
+            const timeout = setTimeout(() => {
+              if (!finished) {
+                finished = true;
+                addLog("⏰ Timeout - Bridge tidak merespons", "error");
+                resolve({ success: false });
+              }
+            }, 15000);
 
-  var BRIDGE_TIMEOUT_MS = 15000;
-  var BRIDGE_RETRY_INTERVAL = 300;
-  var BRIDGE_MAX_ATTEMPTS = 20;
+            message.on("data", () => {
+              if (!finished) {
+                finished = true;
+                clearTimeout(timeout);
+                addLog("✅ Claim berhasil dikirim", "success");
+                resolve({ success: true });
+              }
+            });
 
-  // ── DOM ───────────────────────────────────────────────────────
-  var inpLoyalty = document.getElementById('inp-loyalty');
-  var inpReward = document.getElementById('inp-reward');
-  var qtyDisplay = document.getElementById('qty-display');
-  var qtyMinus = document.getElementById('qty-minus');
-  var qtyPlus = document.getElementById('qty-plus');
-  var btnActivate = document.getElementById('btn-activate');
-  var bridgeDot = document.getElementById('bridge-dot');
-  var bridgeLabel = document.getElementById('bridge-label');
-  var logBody = document.getElementById('log-body');
-  var btnClear = document.getElementById('btn-clear');
-  var progressRow = document.getElementById('progress-row');
-  var progressBar = document.getElementById('progress-bar');
-  var progressLbl = document.getElementById('progress-label');
+            message.on("error", (err) => {
+              if (!finished) {
+                finished = true;
+                clearTimeout(timeout);
+                addLog(`❌ Bridge Error: ${err}`, "error");
+                resolve({ success: false });
+              }
+            });
 
-  // ── LOG ───────────────────────────────────────────────────────
-  function escHtml(s) {
-    return String(s)
-      .replace(/&/g,'&amp;')
-      .replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;')
-      .replace(/"/g,'&quot;');
-  }
-
-  function log(msg, type) {
-    type = type || 'default';
-
-    var now = new Date().toLocaleTimeString('id-ID');
-
-    var line = document.createElement('div');
-    line.className = 'log-line ' + type;
-    line.innerHTML =
-      '<span class="log-time">' + now + '</span>' +
-      '<span class="log-msg">' + escHtml(msg) + '</span>';
-
-    logBody.appendChild(line);
-    logBody.scrollTop = logBody.scrollHeight;
-  }
-
-  btnClear.addEventListener('click', function () {
-    logBody.innerHTML = '';
-    log('Log dibersihkan');
-  });
-
-  // ── UI ────────────────────────────────────────────────────────
-  function updateBridgeUI(state) {
-    bridgeDot.className =
-      'dot ' +
-      (state === 'ok'
-        ? 'ok'
-        : state === 'fail'
-        ? 'fail'
-        : 'pulse');
-
-    bridgeLabel.textContent =
-      state === 'ok'
-        ? 'mcd.bridge siap'
-        : state === 'fail'
-        ? 'Bridge tidak ditemukan'
-        : 'Mendeteksi bridge...';
-  }
-
-  function setQty(n) {
-    quantity = Math.max(1, Math.min(50, n));
-    qtyDisplay.textContent = quantity;
-  }
-
-  qtyMinus.addEventListener('click', function () {
-    setQty(quantity - 1);
-  });
-
-  qtyPlus.addEventListener('click', function () {
-    setQty(quantity + 1);
-  });
-
-  function setProgress(done, total) {
-    progressRow.style.display = 'flex';
-    var pct = total ? Math.round((done / total) * 100) : 0;
-    progressBar.style.width = pct + '%';
-    progressLbl.textContent = done + ' / ' + total;
-  }
-
-  // ── BRIDGE DETECTION ──────────────────────────────────────────
-  function checkBridge() {
-    if (window.mcd && window.mcd.bridge) {
-      bridgeReady = true;
-      updateBridgeUI('ok');
-      btnActivate.disabled = false;
-      log('mcd.bridge detected', 'success');
-      return true;
-    }
-
-    bridgeReady = false;
-    updateBridgeUI('fail');
-    log('mcd.bridge tidak tersedia', 'warn');
-    return false;
-  }
-
-  document.addEventListener('mcdBridgeReady', function () {
-    log('Event mcdBridgeReady fired', 'info');
-    checkBridge();
-  });
-
-  // ── BRIDGE SEND ───────────────────────────────────────────────
-  function activateViaAppBridge(payload) {
-    return new Promise(function (resolve) {
-      var attempts = 0;
-
-      function tryBridge() {
-        attempts++;
-
-        if (!window.mcd || !window.mcd.bridge) {
-          if (attempts < BRIDGE_MAX_ATTEMPTS) {
-            setTimeout(tryBridge, BRIDGE_RETRY_INTERVAL);
-            return;
+            message.send({ loyaltyId, rewardId, autoActivate: false });
+          } catch (e) {
+            addLog(`Error: ${e.message}`, "error");
+            resolve({ success: false });
           }
+        });
+      }
 
-          resolve({
-            success: false,
-            error: 'Bridge not detected'
-          });
+      // Template (contoh)
+      const templates = [
+        {
+          title: "cek",
+          subtitle: "Rp30.000",
+          loyaltyId: "5570",
+          rewardId: "320346",
+        },
+      ];
 
+      function loadTemplates() {
+        const select = document.getElementById("templateSelect");
+        templates.forEach((tpl, index) => {
+          const option = document.createElement("option");
+          option.value = index;
+          option.textContent = `${tpl.title} - ${tpl.subtitle}`;
+          select.appendChild(option);
+        });
+
+        select.addEventListener("change", () => {
+          const selected = templates[select.value];
+          if (selected) {
+            document.getElementById("loyaltyId").value = selected.loyaltyId;
+            document.getElementById("rewardId").value = selected.rewardId;
+            addLog(`✅ Template "${selected.title}" di-load`, "success");
+          }
+        });
+      }
+
+      // Mode switching
+      document.querySelectorAll('input[name="mode"]').forEach((radio) => {
+        radio.addEventListener("change", (e) => {
+          const mode = e.target.value;
+          const normalMode = document.getElementById("normalMode");
+          const loopMode = document.getElementById("loopMode");
+
+          if (mode === "normal") {
+            normalMode.classList.remove("hidden");
+            loopMode.classList.add("hidden");
+          } else {
+            normalMode.classList.add("hidden");
+            loopMode.classList.remove("hidden");
+          }
+          addLog(
+            `Mode berubah ke: ${mode === "normal" ? "Normal" : "Loop Range"}`,
+            "info",
+          );
+        });
+      });
+
+      document.getElementById("checkBtn").onclick = () => {
+        addLog("Memeriksa koneksi bridge...", "info");
+        checkBridge();
+      };
+
+      document.getElementById("startBtn").onclick = async () => {
+        if (claimRunning) {
+          addLog("❌ Claim masih berjalan!", "error");
           return;
         }
 
-        try {
-          var settled = false;
+        const mode = document.querySelector('input[name="mode"]:checked').value;
 
-          function done(result) {
-            if (settled) return;
-            settled = true;
-            clearTimeout(timer);
-            resolve(result);
+        if (mode === "normal") {
+          await startNormalClaim();
+        } else {
+          await startLoopClaim();
+        }
+      };
+
+      async function startNormalClaim() {
+        const loyalty = document.getElementById("loyaltyId").value.trim();
+        const reward = document.getElementById("rewardId").value.trim();
+        const qty = parseInt(document.getElementById("quantity").value) || 1;
+
+        if (!loyalty || !reward) {
+          addLog("❌ Loyalty ID dan Reward ID wajib diisi!", "error");
+          return;
+        }
+
+        if (!checkBridge()) return;
+
+        claimRunning = true;
+        addLog(`🚀 Memulai ${qty} kali claim...`, "warning");
+
+        for (let i = 1; i <= qty; i++) {
+          addLog(`Claim #${i} → Loyalty: ${loyalty} | Reward: ${reward}`);
+          await claimWithBridge(loyalty, reward);
+          await new Promise((r) => setTimeout(r, 900));
+        }
+
+        addLog("✅ Proses claim selesai", "success");
+        claimRunning = false;
+      }
+
+      async function startLoopClaim() {
+        const loyalty = document.getElementById("loopLoyaltyId").value.trim();
+        const startId = parseInt(
+          document.getElementById("rewardIdStart").value,
+        );
+        const endId = parseInt(document.getElementById("rewardIdEnd").value);
+        const delayMs =
+          parseInt(document.getElementById("delayMs").value) || 900;
+
+        if (!loyalty) {
+          addLog("❌ Loyalty ID wajib diisi!", "error");
+          return;
+        }
+
+        if (isNaN(startId) || isNaN(endId)) {
+          addLog("❌ Reward ID Start dan End harus berisi angka!", "error");
+          return;
+        }
+
+        if (startId > endId) {
+          addLog(
+            "❌ Reward ID Start tidak boleh lebih besar dari End!",
+            "error",
+          );
+          return;
+        }
+
+        const totalClaims = endId - startId + 1;
+
+        if (totalClaims > 100) {
+          addLog(
+            "⚠️ Warning: Total claim > 100, bisa memakan waktu lama...",
+            "warning",
+          );
+        }
+
+        if (!checkBridge()) return;
+
+        claimRunning = true;
+        addLog(
+          `🚀 Memulai ${totalClaims} kali claim (${startId} - ${endId})...`,
+          "warning",
+        );
+        addLog(`Loyalty ID: ${loyalty} | Delay: ${delayMs}ms`, "info");
+
+        let successCount = 0;
+        let failCount = 0;
+
+        for (let rewardId = startId; rewardId <= endId; rewardId++) {
+          addLog(
+            `Loop #${rewardId - startId + 1}/${totalClaims} → Reward ID: ${rewardId}`,
+          );
+          const result = await claimWithBridge(loyalty, String(rewardId));
+
+          if (result.success) {
+            successCount++;
+          } else {
+            failCount++;
           }
 
-          var timer = setTimeout(function () {
-            done({
-              success: false,
-              error: 'timeout'
-            });
-          }, BRIDGE_TIMEOUT_MS);
-
-          // channel sesuai source asli
-          var offer = window.mcd.bridge.message('offers');
-
-          offer.on('data', function (data) {
-            done({
-              success: true,
-              data: data
-            });
-          });
-
-          offer.on('error', function (err) {
-            done({
-              success: false,
-              error: JSON.stringify(err)
-            });
-          });
-
-          // kirim format source asli
-          offer.send({
-            offerActivate: {
-              loyaltyId: String(payload.loyaltyId),
-              rewardId: String(payload.rewardId),
-              autoActivate: false
-            },
-
-            // fallback kompatibilitas
-            offerActivation: {
-              loyaltyId: String(payload.loyaltyId),
-              rewardId: String(payload.rewardId),
-              autoActivate: false
-            }
-          });
-
-        } catch (e) {
-          resolve({
-            success: false,
-            error: e.message
-          });
-        }
-      }
-
-      tryBridge();
-    });
-  }
-
-  // ── MAIN LOOP ─────────────────────────────────────────────────
-  btnActivate.addEventListener('click', function () {
-    if (running) return;
-
-    var loyaltyId = inpLoyalty.value.trim();
-    var rewardId = inpReward.value.trim();
-
-    if (!loyaltyId || !rewardId) {
-      log('Isi Loyalty ID dan Reward ID', 'error');
-      return;
-    }
-
-    running = true;
-    btnActivate.disabled = true;
-    btnActivate.classList.add('running');
-    btnActivate.textContent = 'Memproses...';
-
-    var success = 0;
-    var fail = 0;
-    var index = 0;
-    var total = quantity;
-
-    log(
-      'Start activation x' + total +
-      ' | loyalty=' + loyaltyId +
-      ' reward=' + rewardId,
-      'info'
-    );
-
-    function finish() {
-      running = false;
-      btnActivate.disabled = false;
-      btnActivate.classList.remove('running');
-      btnActivate.textContent = 'Aktivasi via Bridge';
-
-      log(
-        'DONE | success=' + success + ' fail=' + fail,
-        fail ? 'warn' : 'success'
-      );
-    }
-
-    function next() {
-      if (index >= total) {
-        finish();
-        return;
-      }
-
-      setProgress(index, total);
-
-      log('Sending #' + (index + 1));
-
-      activateViaAppBridge({
-        loyaltyId: loyaltyId,
-        rewardId: rewardId
-      }).then(function (result) {
-
-        if (result.success) {
-          success++;
-          log('✓ success #' + (index + 1), 'success');
-        } else {
-          fail++;
-          log('✗ fail #' + (index + 1) + ' : ' + result.error, 'error');
+          if (rewardId < endId) {
+            await new Promise((r) => setTimeout(r, delayMs));
+          }
         }
 
-        index++;
-        setTimeout(next, 350);
-      });
-    }
+        addLog(
+          `✅ Proses selesai! Success: ${successCount} | Gagal: ${failCount}`,
+          "success",
+        );
+        claimRunning = false;
+      }
 
-    next();
-  });
-
-  // ── INIT ──────────────────────────────────────────────────────
-  updateBridgeUI('checking');
-
-  setTimeout(checkBridge, 500);
-  setTimeout(checkBridge, 1500);
-  setTimeout(checkBridge, 3000);
-
-})();
-</script>
-</body>
+      window.onload = () => {
+        loadTemplates();
+        setTimeout(checkBridge, 800);
+        setTimeout(checkBridge, 2500);
+      };
+    </script>
+  </body>
 </html>
