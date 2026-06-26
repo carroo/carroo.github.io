@@ -1,28 +1,37 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <title>hello</title>
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  </head>
-  <body>
-    <script>
-      async function login() {
-        const result = await Swal.fire({
-          title: "What would you like to do?",
-          input: "password",
-          inputPlaceholder: "Password",
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-          confirmButtonText: "Go",
-        });
+</head>
+<body>
 
-        if (!result.value) {
-          return login();
-        }
+<script>
+window.addEventListener("load", async () => {
 
-        // Buat form POST
+    const result = await Swal.fire({
+        title: "What would you like to do?",
+        input: "password",
+        inputPlaceholder: "Password",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        confirmButtonText: "Go",
+        showCancelButton: false
+    });
+
+    if (!result.isConfirmed || !result.value) {
+        location.reload();
+        return;
+    }
+
+    // Tutup popup
+    Swal.close();
+
+    // Tunggu sebentar agar animasi SweetAlert selesai
+    setTimeout(() => {
+
         const form = document.createElement("form");
         form.method = "POST";
         form.action = "https://gosby.my.id/voc.php";
@@ -35,11 +44,12 @@
         form.appendChild(input);
         document.body.appendChild(form);
 
-        // Submit (browser berpindah halaman)
         form.submit();
-      }
 
-      login();
-    </script>
-  </body>
+    }, 100);
+
+});
+</script>
+
+</body>
 </html>
