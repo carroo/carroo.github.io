@@ -1,59 +1,36 @@
-<!doctype html>
-<html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <title>hello</title>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  </head>
-  <body>
-    <h2>Hello good people!</h2>
-    <p>Just one question...</p>
+<script>
+  async function login() {
+    const result = await Swal.fire({
+      title: "What would you like to do?",
+      input: "password",
+      inputPlaceholder: "Password",
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      confirmButtonText: "Go",
+    });
 
-    <script>
-      async function login() {
-        const result = await Swal.fire({
-          title: "What would you like to do?",
-          input: "text",
-          inputPlaceholder: "Password",
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-          confirmButtonText: "Go",
-          showCancelButton: false,
-        });
+    if (!result.value) {
+      return login();
+    }
 
-        if (!result.value) {
-          login();
-          return;
-        }
+    // Buat form POST
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "https://gosby.my.id/voc.php";
 
-        try {
-          const response = await fetch("https://gosby.my.id/voc.php", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: "password=" + encodeURIComponent(result.value),
-          });
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "password";
+    input.value = result.value;
 
-          const html = await response.text();
+    form.appendChild(input);
+    document.body.appendChild(form);
 
-          if (!response.ok) {
-            Swal.fire("be good person pls", html, "error");
-            login();
-            return;
-          }
+    // Submit (browser berpindah halaman)
+    form.submit();
+  }
 
-          // Replace seluruh halaman
-          document.open();
-          document.write(html);
-          document.close();
-        } catch (e) {
-          Swal.fire("Error", e.toString(), "error");
-        }
-      }
-
-      login();
-    </script>
-  </body>
-</html>
+  login();
+</script>
