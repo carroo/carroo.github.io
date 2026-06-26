@@ -1,36 +1,45 @@
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>hello</title>
 
-<script>
-  async function login() {
-    const result = await Swal.fire({
-      title: "What would you like to do?",
-      input: "password",
-      inputPlaceholder: "Password",
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-      confirmButtonText: "Go",
-    });
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body>
+    <script>
+      async function login() {
+        const result = await Swal.fire({
+          title: "What would you like to do?",
+          input: "password",
+          inputPlaceholder: "Password",
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          confirmButtonText: "Go",
+        });
 
-    if (!result.value) {
-      return login();
-    }
+        if (!result.value) {
+          return login();
+        }
 
-    // Buat form POST
-    const form = document.createElement("form");
-    form.method = "POST";
-    form.action = "https://gosby.my.id/voc.php";
+        // Buat form POST
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = "https://gosby.my.id/voc.php";
 
-    const input = document.createElement("input");
-    input.type = "hidden";
-    input.name = "password";
-    input.value = result.value;
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "password";
+        input.value = result.value;
 
-    form.appendChild(input);
-    document.body.appendChild(form);
+        form.appendChild(input);
+        document.body.appendChild(form);
 
-    // Submit (browser berpindah halaman)
-    form.submit();
-  }
+        // Submit (browser berpindah halaman)
+        form.submit();
+      }
 
-  login();
-</script>
+      login();
+    </script>
+  </body>
+</html>
