@@ -56,6 +56,7 @@
       {
         "@context": "https://schema.org",
         "@type": "Person",
+        "@id": "https://carroo.github.io/#person",
         "name": "Catur Hendra Putra Pamungkas",
         "alternateName": "Carroo",
         "url": "https://carroo.github.io",
@@ -69,21 +70,29 @@
           "React",
           "Node.js",
           "JavaScript",
+          "Tailwind CSS",
+          "Vue.js",
           "Programming"
         ],
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "State University of Surabaya"
+        },
         "sameAs": [
           "https://github.com/carroo",
           "https://linkedin.com/in/catur-hendra"
         ],
         "contactPoint": {
           "@type": "ContactPoint",
-          "contactType": "Professional",
+          "contactType": "professional",
           "url": "https://carroo.github.io"
         },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://carroo.github.io"
+        },
         "worksFor": {
-          "@type": "Organization",
-          "name": "Carotech",
-          "url": "https://carroo.github.io"
+          "@id": "https://carroo.github.io/#organization"
         }
       }
     </script>
@@ -93,15 +102,54 @@
       {
         "@context": "https://schema.org",
         "@type": "Organization",
+        "@id": "https://carroo.github.io/#organization",
         "name": "Carotech",
         "url": "https://carroo.github.io",
         "logo": "https://carroo.github.io/navicon.jpeg",
         "description": "Software development and freelance programming services",
         "founder": {
           "@type": "Person",
-          "name": "Catur Hendra Putra Pamungkas"
+          "@id": "https://carroo.github.io/#person"
         },
         "sameAs": ["https://github.com/carroo"]
+      }
+    </script>
+
+  <!-- Website Schema (enables Sitelinks Search Box) -->
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://carroo.github.io/#website",
+        "url": "https://carroo.github.io",
+        "name": "Catur Hendra - Web Developer &amp; Freelancer",
+        "description": "Full Stack Web Developer and CEO of Carotech. Specializing in modern web technologies including Laravel, React, and Node.js.",
+        "publisher": {
+          "@id": "https://carroo.github.io/#person"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://carroo.github.io/?s={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+
+  <!-- BreadcrumbList Schema (enables breadcrumb in SERP) -->
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "@id": "https://carroo.github.io/#breadcrumb",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://carroo.github.io/#home" },
+          { "@type": "ListItem", "position": 2, "name": "About Me", "item": "https://carroo.github.io/#aboutme" },
+          { "@type": "ListItem", "position": 3, "name": "Portfolio", "item": "https://carroo.github.io/#portfolio" },
+          { "@type": "ListItem", "position": 4, "name": "Contact", "item": "https://carroo.github.io/#contact" }
+        ]
       }
     </script>
 
