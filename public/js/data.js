@@ -33,6 +33,8 @@ const SKILL_SVGS = {
   php: `<svg role="img" class="fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>PHP</title><path d="M7.01 10.207h-.944l-.515 2.648h.838c.556 0 .97-.105 1.242-.314.272-.21.455-.559.55-1.049.092-.47.05-.802-.124-.995-.175-.193-.523-.29-1.047-.29zM12 5.688C5.373 5.688 0 8.514 0 12s5.373 6.313 12 6.313S24 15.486 24 12c0-3.486-5.373-6.312-12-6.312zm-3.26 7.451c-.261.25-.575.438-.917.551-.336.108-.765.164-1.285.164H5.357l-.327 1.681H3.652l1.23-6.326h2.65c.797 0 1.378.209 1.744.628.366.418.476 1.002.33 1.752a2.836 2.836 0 0 1-.305.847c-.143.255-.33.49-.561.703zm4.024.715l.543-2.799c.063-.318.039-.536-.068-.651-.107-.116-.336-.174-.687-.174H11.46l-.704 3.625H9.388l1.23-6.327h1.367l-.327 1.682h1.218c.767 0 1.295.134 1.586.401s.378.7.263 1.299l-.572 2.944h-1.389zm7.597-2.265a2.782 2.782 0 0 1-.305.847c-.143.255-.33.49-.561.703a2.44 2.44 0 0 1-.917.551c-.336.108-.765.164-1.286.164h-1.18l-.327 1.682h-1.378l1.23-6.326h2.649c.797 0 1.378.209 1.744.628.366.417.477 1.001.331 1.751zM17.766 10.207h-.943l-.516 2.648h.838c.557 0 .971-.105 1.242-.314.272-.21.455-.559.551-1.049.092-.47.049-.802-.125-.995s-.524-.29-1.047-.29z"/></svg>`,
   openrouter: `<svg role="img" width="20" class="fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>OpenRouter</title><path d="M16.778 1.844v1.919q-.569-.026-1.138-.032-.708-.008-1.415.037c-1.93.126-4.023.728-6.149 2.237-2.911 2.066-2.731 1.95-4.14 2.75-.396.223-1.342.574-2.185.798-.841.225-1.753.333-1.751.333v4.229s.768.108 1.61.333c.842.224 1.789.575 2.185.799 1.41.798 1.228.683 4.14 2.75 2.126 1.509 4.22 2.11 6.148 2.236.88.058 1.716.041 2.555.005v1.918l7.222-4.168-7.222-4.17v2.176c-.86.038-1.611.065-2.278.021-1.364-.09-2.417-.357-3.979-1.465-2.244-1.593-2.866-2.027-3.68-2.508.889-.518 1.449-.906 3.822-2.59 1.56-1.109 2.614-1.377 3.978-1.466.667-.044 1.418-.017 2.278.02v2.176L24 6.014Z"/></svg>`,
   git: `<svg role="img" class="fill-current" width="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Git</title><path d="M23.546 10.93L13.067.452c-.604-.603-1.582-.603-2.188 0L8.708 2.627l2.76 2.76c.645-.215 1.379-.07 1.889.441.516.515.658 1.258.438 1.9l2.658 2.66c.645-.223 1.387-.078 1.9.435.721.72.721 1.884 0 2.604-.719.719-1.881.719-2.6 0-.539-.541-.674-1.337-.404-1.996L12.86 8.955v6.525c.176.086.342.203.488.348.713.721.713 1.883 0 2.6-.719.721-1.889.721-2.609 0-.719-.719-.719-1.879 0-2.598.182-.18.387-.316.605-.406V8.835c-.217-.091-.424-.222-.6-.401-.545-.545-.676-1.342-.396-2.009L7.636 3.7.45 10.881c-.6.605-.6 1.584 0 2.189l10.48 10.477c.604.604 1.582.604 2.186 0l10.43-10.43c.605-.603.605-1.582 0-2.187"/></svg>`,
+  supabase: `<svg role="img" class="fill-current" width="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Supabase</title><path d="M11.9 1.036c-.015-.986-1.26-1.41-1.874-.637L.764 12.05C-.33 13.427.65 15.455 2.409 15.455h9.579l.113 7.51c.014.985 1.259 1.408 1.873.636l9.262-11.653c1.093-1.375.113-3.403-1.645-3.403h-9.642z"/></svg>`,
+  flutter: `<svg role="img" class="fill-current" width="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Flutter</title><path d="M14.314 0L2.3 12 6 15.7 21.684.013h-7.357zm.014 11.072L7.857 17.53l6.47 6.47H21.7l-6.46-6.468 6.46-6.46h-7.37z"/></svg>`,
   etc: `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" class="fill-current" width="20" viewBox="0 0 50 50"><title>etc</title><path d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24 13 L 24 24 L 13 24 L 13 26 L 24 26 L 24 37 L 26 37 L 26 26 L 37 26 L 37 24 L 26 24 L 26 13 L 24 13 z"></path></svg>`,
 };
 
@@ -46,7 +48,7 @@ const DATA = {
     {
       period: "Aug 2021 - May 2025 (Expected)",
       title: "State University of Surabaya",
-      desc: "Information Technology Engineering - GPA (3.79/4)",
+      desc: "Information Technology Engineering - GPA (3.85/4)",
     },
     {
       period: "Aug 2018 - May 2021",
@@ -58,7 +60,12 @@ const DATA = {
   // --- Experiences ---
   experiences: [
     {
-      period: "Feb 2025 - Current",
+      period: "Apr 2026 - Current",
+      title: "PT Adi Surya Sempurna",
+      desc: "IT Staff - Employee",
+    },
+    {
+      period: "Feb 2025 - Apr 2026",
       title: "CV.Printsoft",
       desc: "Programmer - Employee",
     },
@@ -96,6 +103,7 @@ const DATA = {
     { url: "https://getbootstrap.com/", icon: "bootstrap" },
     { url: "https://getbootstrap.com/", icon: "mysql" },
     { url: "https://postman.com/", icon: "postman" },
+    { url: "https://supabase.com/", icon: "supabase" },
     { url: "https://vuejs.org/", icon: "nextjs" },
     { url: "https://vuejs.org/", icon: "vuejs" },
     { url: "https://www.python.org/", icon: "python" },
@@ -153,9 +161,7 @@ const DATA = {
       title: "Survei",
       desc: "Survei is a website where users can create survey forms and distribute them to gather responses from everyone",
       techs: ["Codeigniter 3", "Bootstrap", "etc."],
-      links: [
-        { url: "https://github.com/carroo/Web-Survey", icon: "github" },
-      ],
+      links: [{ url: "https://github.com/carroo/Web-Survey", icon: "github" }],
     },
     {
       num: "06",
@@ -182,9 +188,7 @@ const DATA = {
       title: "Super Hero Api",
       desc: "Super Hero API is a website for viewing information about heroes and villains in DC and Marvel comics.",
       techs: ["Next JS", "Tailwind", "Api"],
-      links: [
-        { url: "https://github.com/carroo/heroapi", icon: "github" },
-      ],
+      links: [{ url: "https://github.com/carroo/heroapi", icon: "github" }],
     },
     {
       num: "∞",
@@ -264,7 +268,7 @@ function renderEducations() {
       <p class="text-primary text-sm">${e.period}</p>
       <h2 class="font-bold text-md md:text-xl text-forth mb-3">${e.title}</h2>
       <p class="text-xs text-forth">${e.desc}</p>
-    </div>`
+    </div>`,
     )
     .join("");
 }
@@ -279,7 +283,7 @@ function renderExperiences() {
       <p class="text-primary text-sm">${e.period}</p>
       <h2 class="font-bold text-md md:text-xl text-forth mb-3">${e.title}</h2>
       <p class="text-xs text-forth">${e.desc}</p>
-    </div>`
+    </div>`,
     )
     .join("");
 }
@@ -291,7 +295,9 @@ function renderSkills() {
     .map((s) => {
       const target = s.target !== undefined ? s.target : "_blank";
       return `
-    <a href="${s.url}" ${target ? `target="${target}"` : ""} class="w-9 h-9 mr-2 mb-2 rounded-full flex justify-center items-center border border-primary hover:bg-primary hover:text-white">
+    <a href="${s.url}" ${
+      target ? `target="${target}"` : ""
+    } class="w-9 h-9 mr-2 mb-2 rounded-full flex justify-center items-center border border-primary hover:bg-primary hover:text-white">
       ${SKILL_SVGS[s.icon]}
     </a>`;
     })
@@ -306,7 +312,7 @@ function renderPortfolioSlides() {
       (img, i) => `
     <div class="border h-full p-4 border-primary rounded-lg shadow-md bg-third swiper-slide">
       <img src="${img}" alt="Portfolio ${i + 1}" width="100%" />
-    </div>`
+    </div>`,
     )
     .join("");
 }
@@ -319,23 +325,36 @@ function renderPortfolioDetails() {
       const hidden = i === 0 ? "" : ' class="hidden"';
       const techsHtml = p.techs.length
         ? `<div class="flex flex-wrap gap-2 max-w-sm">
-            ${p.techs.map((t) => `<span class="bg-primary text-white px-2 rounded-md">${t}</span>`).join("")}
+            ${p.techs
+              .map(
+                (t) =>
+                  `<span class="bg-primary text-white px-2 rounded-md">${t}</span>`,
+              )
+              .join("")}
            </div>`
         : "";
       const linksHtml = p.links
         .map(
           (l) => `
-        <a href="${l.url}" target="_blank" class="w-9 h-9 mr-2 rounded-full flex justify-center items-center border border-primary hover:bg-primary hover:text-white">
+        <a href="${
+          l.url
+        }" target="_blank" class="w-9 h-9 mr-2 rounded-full flex justify-center items-center border border-primary hover:bg-primary hover:text-white">
           ${SVG_ICONS[l.icon]}
-        </a>`
+        </a>`,
         )
         .join("");
 
       return `
       <div id="porto-${i + 1}"${hidden}>
-        <h2 class="font-bold text-forth text-6xl mb-2 max-w-md font-primary">${p.num}</h2>
-        <h2 class="font-bold text-forth text-3xl mb-2 max-w-md font-primary">${p.title}</h2>
-        <p class="font-medium text-base text-forth mb-5 text-justify font-secondary">${p.desc}</p>
+        <h2 class="font-bold text-forth text-6xl mb-2 max-w-md font-primary">${
+          p.num
+        }</h2>
+        <h2 class="font-bold text-forth text-3xl mb-2 max-w-md font-primary">${
+          p.title
+        }</h2>
+        <p class="font-medium text-base text-forth mb-5 text-justify font-secondary">${
+          p.desc
+        }</p>
         ${techsHtml}
         <div class="relative flex py-2 items-center">
           <div class="flex-grow border-t border-primary"></div>
@@ -352,7 +371,11 @@ function renderContacts() {
   container.innerHTML = DATA.contacts
     .map(
       (c) => `
-    <a href="${c.url}" target="_blank" class="flex items-center group w-full mb-4"${c.delay ? ` data-delay="${c.delay}"` : ""}>
+    <a href="${
+      c.url
+    }" target="_blank" class="flex items-center group w-full mb-4"${
+      c.delay ? ` data-delay="${c.delay}"` : ""
+    }>
       <div class="w-16 h-16 mr-2 rounded-full flex justify-center items-center border border-primary group-hover:bg-primary text-primary group-hover:text-white">
         ${SVG_ICONS[c.icon]}
       </div>
@@ -360,7 +383,7 @@ function renderContacts() {
         <h2 class="font-bold text-2xl text-forth">${c.title}</h2>
         <p class="text-base text-forth">${c.subtitle}</p>
       </div>
-    </a>`
+    </a>`,
     )
     .join("");
 }
@@ -371,9 +394,11 @@ function renderFooterSocials() {
   container.innerHTML = DATA.footerSocials
     .map(
       (s) => `
-    <a href="${s.url}" target="_blank" class="w-9 h-9 mr-2 rounded-full flex justify-center items-center border border-secondary hover:bg-secondary hover:text-third">
+    <a href="${
+      s.url
+    }" target="_blank" class="w-9 h-9 mr-2 rounded-full flex justify-center items-center border border-secondary hover:bg-secondary hover:text-third">
       ${SVG_ICONS[s.icon]}
-    </a>`
+    </a>`,
     )
     .join("");
 }
