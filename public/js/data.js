@@ -119,8 +119,13 @@ const DATA = {
     {
       num: "01",
       title: "CARO",
-      desc: "Rating Official is an e-learning website that allows students and teachers to rate each other.",
-      techs: ["Laravel 9", "Livewire", "Bootstrap", "etc."],
+      desc: "Rating Official — an e-learning platform where students and teachers can rate each other.",
+      techs: ["Laravel 9", "Livewire", "Bootstrap"],
+      highlights: [
+        "Two-way rating system between teachers & students",
+        "Real-time leaderboard using Livewire",
+        "Role-based access (admin, teacher, student)",
+      ],
       links: [
         { url: "https://github.com/carroo/caro", icon: "github" },
         { url: "https://caro.carroo.my.id", icon: "chrome" },
@@ -129,8 +134,13 @@ const DATA = {
     {
       num: "02",
       title: "CUMTech",
-      desc: "Classy Unbeatable Modern Technologies is a marketing website that sells various electronic products with attractive features, such as a spinning wheel for buyer rewards.",
-      techs: ["Laravel 10", "Bootstrap", "Jquery", "etc."],
+      desc: "Classy Unbeatable Modern Technologies — a marketing e-commerce site with gamified buyer rewards.",
+      techs: ["Laravel 10", "Bootstrap", "Jquery"],
+      highlights: [
+        "Spinning wheel prize feature to boost engagement",
+        "Product catalog with search & category filters",
+        "Admin dashboard for order & inventory management",
+      ],
       links: [
         { url: "https://github.com/carroo/cumtech", icon: "github" },
         { url: "https://cumtech.carroo.my.id", icon: "chrome" },
@@ -139,8 +149,13 @@ const DATA = {
     {
       num: "03",
       title: "Ujian",
-      desc: "Ujian is an e-learning website where teachers can upload exams, and students can answer them.",
-      techs: ["Laravel 10", "Bootstrap", "etc."],
+      desc: "Online exam platform where teachers can upload tests and students can answer them.",
+      techs: ["Laravel 10", "Bootstrap"],
+      highlights: [
+        "Auto-grading for multiple-choice questions",
+        "Exam timer with auto-submit on timeout",
+        "Detailed score reports per student",
+      ],
       links: [
         { url: "https://github.com/carroo/Web-Ujian", icon: "github" },
         { url: "https://ujian.carroo.my.id", icon: "chrome" },
@@ -149,8 +164,13 @@ const DATA = {
     {
       num: "04",
       title: "CRM Donatur LMI",
-      desc: "Customer Relationship Management is a website that manages LMI donors with a feature for sending automatic messages via WhatsApp",
-      techs: ["Codeigniter 3", "Bootstrap", "Api", "etc."],
+      desc: "Customer Relationship Management for managing LMI donors with automated WhatsApp messaging.",
+      techs: ["Codeigniter 3", "Bootstrap", "API"],
+      highlights: [
+        "Automated WhatsApp broadcast via API integration",
+        "Donor database with transaction history",
+        "Recurring donation reminder system",
+      ],
       links: [
         { url: "https://github.com/carroo/CRM-Donatur", icon: "github" },
         { url: "https://msib6.lmizakat.id/msib6/crm/", icon: "chrome" },
@@ -159,15 +179,25 @@ const DATA = {
     {
       num: "05",
       title: "Survei",
-      desc: "Survei is a website where users can create survey forms and distribute them to gather responses from everyone",
-      techs: ["Codeigniter 3", "Bootstrap", "etc."],
+      desc: "Survey creation platform — users can build forms and collect responses from anyone.",
+      techs: ["Codeigniter 3", "Bootstrap"],
+      highlights: [
+        "Drag & drop form builder",
+        "Real-time response analytics & charts",
+        "Shareable survey links with QR code",
+      ],
       links: [{ url: "https://github.com/carroo/Web-Survey", icon: "github" }],
     },
     {
       num: "06",
       title: "Absensi",
-      desc: "Absensi is a website used by teachers to manage student attendance.",
-      techs: ["Laravel 11", "Bootstrap", "etc."],
+      desc: "Attendance management website for teachers to track student presence.",
+      techs: ["Laravel 11", "Bootstrap"],
+      highlights: [
+        "QR code scan for quick attendance",
+        "Monthly attendance recap & export to PDF",
+        "Multi-class & multi-semester support",
+      ],
       links: [
         { url: "https://github.com/carroo/carotech-absensi", icon: "github" },
         { url: "https://absen.carroo.my.id", icon: "chrome" },
@@ -176,8 +206,13 @@ const DATA = {
     {
       num: "07",
       title: "PPG Unesa Tracer Study",
-      desc: "Tracer Study is a website designed to track the career paths of graduates from the Teacher Professional Education.",
-      techs: ["Laravel 10", "Bootstrap", "etc."],
+      desc: "Tracer Study — tracking career paths of Teacher Professional Education graduates.",
+      techs: ["Laravel 10", "Bootstrap"],
+      highlights: [
+        "Graduate data collection & verification workflow",
+        "Interactive career statistics dashboard",
+        "Exportable reports for accreditation needs",
+      ],
       links: [
         { url: "https://github.com/carroo/PPG-Unesa", icon: "github" },
         { url: "https://ppg-unesa.carroo.my.id", icon: "chrome" },
@@ -186,15 +221,25 @@ const DATA = {
     {
       num: "08",
       title: "Super Hero Api",
-      desc: "Super Hero API is a website for viewing information about heroes and villains in DC and Marvel comics.",
-      techs: ["Next JS", "Tailwind", "Api"],
+      desc: "Super Hero API — browse heroes and villains from DC and Marvel universes.",
+      techs: ["Next JS", "Tailwind", "API"],
+      highlights: [
+        "Search by name, power, or affiliation",
+        "Responsive card layout with hero stats",
+        "Built with Next.js App Router & SSR",
+      ],
       links: [{ url: "https://github.com/carroo/heroapi", icon: "github" }],
     },
     {
       num: "∞",
       title: "More Project of CaroTech",
-      desc: "These are some examples of programs I have created. If you're interested in seeing more, please visit the Carrotech recap page",
+      desc: "These are just a few highlights. Check out the full recap for more projects.",
       techs: [],
+      highlights: [
+        "Various internal tools & client projects",
+        "Open-source contributions on GitHub",
+        "Always exploring new technologies",
+      ],
       links: [
         { url: "https://t.me/+EpjP0EzXTcs1NzI1", icon: "telegram" },
         { url: "https://carotech.carroo.my.id", icon: "chrome" },
@@ -338,8 +383,9 @@ function renderPortfolioDetails() {
           (l) => `
         <a href="${
           l.url
-        }" target="_blank" class="w-9 h-9 mr-2 rounded-full flex justify-center items-center border border-primary hover:bg-primary hover:text-white">
+        }" target="_blank" class="inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-primary px-3 py-1.5 rounded-full hover:opacity-80 transition duration-300 ease-in-out">
           ${SVG_ICONS[l.icon]}
+          <span>Show Me</span>
         </a>`,
         )
         .join("");
@@ -355,11 +401,25 @@ function renderPortfolioDetails() {
         <p class="font-medium text-base text-forth mb-5 text-justify font-secondary">${
           p.desc
         }</p>
-        ${techsHtml}
-        <div class="relative flex py-2 items-center">
-          <div class="flex-grow border-t border-primary"></div>
+        ${
+          p.highlights && p.highlights.length
+            ? `<ul class="mb-5 space-y-1.5">
+            ${p.highlights
+              .map(
+                (h) =>
+                  `<li class="flex items-start gap-2 text-sm text-forth font-secondary">
+                    <span class="mt-0.5 text-primary shrink-0">✦</span>
+                    ${h}
+                  </li>`,
+              )
+              .join("")}
+           </ul>`
+            : ""
+        }
+        <div class="flex items-center justify-between flex-wrap gap-3">
+          ${techsHtml}
+          <div class="flex gap-2">${linksHtml}</div>
         </div>
-        <div class="flex text-dark">${linksHtml}</div>
       </div>`;
     })
     .join("");
