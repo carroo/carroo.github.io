@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>CV - Catur Hendra Putra Pamungkas</title>
+    <style>
+      :root {
+        --text: #111111;
+        --muted: #333333;
+        --line: #111111;
+        --font: Arial, Helvetica, sans-serif;
+
+        --fs-base: 11.5px;
+        --fs-small: 11px;
+        --fs-h1: 20px;
+        --fs-h2: 12.5px;
+        --fs-org: 11.5px;
+
+        --lh-base: 1.3;
+
+        --spacing-body-x: 32px;
+        --spacing-body-y: 28px;
+        --spacing-section: 14px;
+        --spacing-item: 8px;
+        --spacing-list-left: 14px;
+        --spacing-list-gap: 2px;
+        --spacing-list-item: 2px;
+        --spacing-list-item-skills: 3px;
+
+        --print-fs-base: 10.5px;
+        --print-spacing-body-x: 16px;
+        --print-spacing-body-y: 12px;
+        --print-page-margin: 8mm;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--font);
+        color: var(--text);
+        max-width: 850px;
+        margin: 0 auto;
+        padding: var(--spacing-body-y) var(--spacing-body-x);
+        line-height: var(--lh-base);
+        font-size: var(--fs-base);
+      }
+
+      h1 {
+        font-size: var(--fs-h1);
+        margin: 0 0 2px 0;
+        letter-spacing: 0.3px;
+      }
+
+      .contact-line {
+        font-size: var(--fs-small);
+        margin: 0 0 1px 0;
+      }
+      .contact-line a {
+        color: var(--text);
+        text-decoration: none;
+      }
+      .contact-line a:hover {
+        text-decoration: underline;
+      }
+
+      .location {
+        font-size: var(--fs-small);
+        color: var(--muted);
+        margin: 0 0 6px 0;
+      }
+
+      .summary {
+        font-size: var(--fs-small);
+        margin: 0 0 12px 0;
+        text-align: justify;
+      }
+
+      h2 {
+        font-size: var(--fs-h2);
+        text-transform: none;
+        border-bottom: 1.5px solid var(--line);
+        padding-bottom: 3px;
+        margin: var(--spacing-section) 0 6px 0;
+      }
+
+      .edu-item,
+      .job {
+        margin-bottom: var(--spacing-item);
+      }
+
+      .row-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        flex-wrap: wrap;
+      }
+
+      .org {
+        font-weight: bold;
+        font-size: var(--fs-org);
+      }
+      .org .place {
+        font-weight: normal;
+      }
+
+      .dates {
+        font-weight: normal;
+        font-size: var(--fs-small);
+        white-space: nowrap;
+      }
+
+      .role {
+        font-style: italic;
+        font-size: var(--fs-small);
+        margin: 1px 0 2px 0;
+      }
+
+      .degree {
+        font-style: italic;
+        font-size: var(--fs-small);
+        margin: 1px 0 0 0;
+      }
+
+      ul {
+        margin: var(--spacing-list-gap) 0 0 0;
+        padding-left: var(--spacing-list-left);
+      }
+      ul li {
+        margin-bottom: var(--spacing-list-item);
+        font-size: var(--fs-small);
+        text-align: justify;
+      }
+
+      .skills-list {
+        list-style: disc;
+        padding-left: var(--spacing-list-left);
+        margin: 0;
+      }
+      .skills-list li {
+        margin-bottom: var(--spacing-list-item-skills);
+        font-size: var(--fs-small);
+      }
+      .skills-list li strong {
+        font-weight: bold;
+      }
+
+      @media print {
+        body {
+          padding: var(--print-spacing-body-y) var(--print-spacing-body-x);
+          font-size: var(--print-fs-base);
+          max-width: 100%;
+        }
+        @page {
+          margin: var(--print-page-margin);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="cv-root"></div>
+
+    <script>
+      const cvData = {
+        name: "CATUR HENDRA PUTRA PAMUNGKAS",
+        contacts: [
+          { label: "+62895397073311", href: "https://wa.me/62895397073311" },
+          {
+            label: "caturguntur@gmail.com",
+            href: "mailto:caturguntur@gmail.com",
+          },
+          {
+            label: "https://www.linkedin.com/in/caturhendra",
+            href: "https://www.linkedin.com/in/caturhendra",
+          },
+          { label: "https://carroo.tech", href: "https://carroo.tech" },
+        ],
+        location: "Surabaya, Indonesia",
+
+        summary:
+          "Passionate Full-Stack Web Developer with 5+ years of experience building scalable web applications using PHP, Laravel, React.js, and JavaScript. Successfully delivered over 100 client projects by developing tailored solutions that improve business processes and user experience. Experienced in both frontend and backend development, with a strong interest in AI technologies, including OpenAI, OpenRouter, and WhatsApp automation using Baileys.",
+
+        education: [
+          {
+            school: "Universitas Negeri Surabaya",
+            place: "Surabaya, Indonesia",
+            dates: "2021 - 2026",
+            degree: "Bachelor of Informatics Engineering, GPA: 3.85/4.00",
+          },
+          {
+            school: "Sekolah Menengah Kejuruan Negeri 1 Surabaya",
+            place: "Surabaya, Indonesia",
+            dates: "2018 - 2021",
+            degree: "Vocational High School Diploma in Software Engineering",
+          },
+        ],
+
+        experience: [
+          {
+            company: "PT Adi Surya Sempurna (Shell Distributor)",
+            place: "Surabaya, Indonesia",
+            dates: "Apr 2026 - Present",
+            role: "IT Staff",
+            bullets: [
+              "Developed and maintained the company's website and internal administrative dashboard, enabling dynamic content management through a user-friendly CMS while ensuring pixel-perfect implementation based on UI/UX designs.",
+              "Maintained and enhanced internal business applications by implementing new features, resolving issues, and developing AI-powered assistants using Retrieval-Augmented Generation (RAG), embeddings, vector search, and OpenRouter to leverage internal company knowledge and improve operational efficiency.",
+              "Provided IT support by troubleshooting hardware, printers, and office network connectivity, ensuring reliable day-to-day operations and minimizing system downtime.",
+            ],
+          },
+          {
+            company: "CV Printsoft",
+            place: "Surabaya, Indonesia",
+            dates: "Feb 2025 - Apr 2026",
+            role: "Programmer",
+            bullets: [
+              "Developed a web platform for a printing service, focusing on enhancing the user experience and simplifying the ordering process for print-related products. The platform is now used by more than 50 printing businesses.",
+              "Built an AI-powered sales assistant using Retrieval-Augmented Generation (RAG), embeddings, vector search, and OpenAI function calling to automate customer inquiries, retrieve business knowledge, and assist customers throughout the ordering process.",
+              "Developed a queue-based WhatsApp Notification API to reliably send automated order and status updates, ensuring stable message delivery under high traffic.",
+            ],
+          },
+          {
+            company: "Aksamedia Mulia Digital",
+            place: "Surabaya, Indonesia",
+            dates: "Sep 2024 - Dec 2024",
+            role: "Full-Stack Web Developer (MSIB Batch 7)",
+            bullets: [
+              "Developed and implemented two client-focused web projects, including a travel management system for Umrah and Hajj, within four months.",
+              "Resolved approximately 50 QA-reported issues, ensuring smooth project delivery and application stability.",
+            ],
+          },
+          {
+            company: "Yayasan Lembaga Manajemen Infaq Ukhuwah Islamiyah",
+            place: "Surabaya, Indonesia",
+            dates: "Feb 2024 - Jun 2024",
+            role: "Full-Stack Programmer (MSIB Batch 6 & Freelance)",
+            bullets: [
+              "Supported the development and implementation of an administration system and a Donor Relationship Management website, successfully delivering both projects within three months.",
+              "Conducted extensive debugging and troubleshooting, resolving more than 50 issues to ensure stable and reliable application performance.",
+              "Built a real-time AI-powered customer support platform, similar to Tawk.to, integrated with WhatsApp and powered by Retrieval-Augmented Generation (RAG), vector search, and OpenAI to deliver context-aware responses from organizational knowledge.",
+            ],
+          },
+          {
+            company: "Carotech",
+            place: "Surabaya, Indonesia",
+            dates: "Jan 2020 - Present",
+            role: "Founder & Freelance Full-Stack Developer",
+            bullets: [
+              "Designed and developed custom software solutions tailored to client requirements, including debugging, testing, and deployment support.",
+              "Collaborated with clients to gather requirements, propose technical solutions, and train over 50 users.",
+              "Successfully completed more than 100 client projects while consistently meeting tight deadlines and maintaining high client satisfaction.",
+            ],
+          },
+          {
+            company: "Nusa Indo Technology",
+            place: "Surabaya, Indonesia",
+            dates: "Oct 2019 - May 2020",
+            role: "Junior Programmer (Internship & Employee)",
+            bullets: [
+              "Contributed to the development of the Jambu Luwuk HRIS platform, managing a database with more than 50 tables.",
+              "Created comprehensive user documentation and user guides, helping more than 100 end users effectively operate the system.",
+            ],
+          },
+        ],
+        skills: [
+          {
+            label: "Achievements",
+            value:
+              "(2021) BNSP Software Engineering Competency Certification (KKNI Level II)",
+          },
+          {
+            label: "Web Development",
+            value:
+              "Laravel, React.js, CodeIgniter, Tailwind CSS, Bootstrap, jQuery, MySQL, REST API, Node.js, Vue.js, Next.js, Express.js, HTML, CSS",
+          },
+          {
+            label: "Programming Languages",
+            value: "PHP, JavaScript, C, C++, Python, Java, Go",
+          },
+          {
+            label: "AI & LLM",
+            value:
+              "OpenAI API, OpenRouter, Retrieval-Augmented Generation (RAG), Vector Search, Function Calling, Prompt Engineering",
+          },
+          {
+            label: "Other Technologies",
+            value: "Baileys, whatsapp-web.js, Git, Flutter",
+          },
+          {
+            label: "Languages",
+            value:
+              "Bahasa Indonesia (Native), English (Professional Working Proficiency)",
+          },
+        ],
+      };
+      function renderContacts(contacts) {
+        return contacts
+          .map((c) => (c.href ? `<a href="${c.href}">${c.label}</a>` : c.label))
+          .join(" | ");
+      }
+
+      function renderEducation(edu) {
+        return edu
+          .map(
+            (e) => `
+    <div class="edu-item">
+      <div class="row-header">
+        <div class="org">${e.school} - <span class="place">${e.place}</span></div>
+        <div class="dates">${e.dates}</div>
+      </div>
+      <div class="degree">${e.degree}</div>
+    </div>
+  `,
+          )
+          .join("");
+      }
+
+      function renderExperience(exp) {
+        return exp
+          .map(
+            (j) => `
+    <div class="job">
+      <div class="row-header">
+        <div class="org">${j.company} - <span class="place">${
+          j.place
+        }</span></div>
+        <div class="dates">${j.dates}</div>
+      </div>
+      <div class="role">${j.role}</div>
+      <ul>
+        ${j.bullets.map((b) => `<li>${b}</li>`).join("")}
+      </ul>
+    </div>
+  `,
+          )
+          .join("");
+      }
+
+      function renderSkills(skills) {
+        return `
+    <ul class="skills-list">
+      ${skills
+        .map((s) => `<li><strong>${s.label}</strong>: ${s.value}</li>`)
+        .join("")}
+    </ul>
+  `;
+      }
+
+      function render() {
+        const root = document.getElementById("cv-root");
+        root.innerHTML = `
+    <h1>${cvData.name}</h1>
+    <p class="contact-line">${renderContacts(cvData.contacts)}</p>
+    <p class="location">${cvData.location}</p>
+    <p class="summary">${cvData.summary}</p>
+
+    <h2>Education Level</h2>
+    ${renderEducation(cvData.education)}
+
+    <h2>Work Experiences</h2>
+    ${renderExperience(cvData.experience)}
+
+    <h2>Skills, Achievements &amp; Other Experience</h2>
+    ${renderSkills(cvData.skills)}
+  `;
+      }
+
+      render();
+    </script>
+  </body>
+</html>
