@@ -99,13 +99,27 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    // Escape anything the visitor or the model sends before it lands in innerHTML.
+    function escapeHtml(text) {
+        return String(text)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function asHtml(text) {
+        return escapeHtml(text).replace(/\n/g, '<br>');
+    }
+
     // Function to add user message (left side)
     function addUserMessage(text) {
         const messageEl = document.createElement('div');
         messageEl.className = 'flex justify-start w-full opacity-0 transition-all duration-300';
         messageEl.innerHTML = `
             <div class="bg-primary text-white px-4 py-2 rounded-lg shadow-lg font-secondary text-sm max-w-xs">
-                ${text}
+                ${asHtml(text)}
             </div>
         `;
         
@@ -134,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
         messageEl.className = 'flex justify-end w-full opacity-0 transition-all duration-300';
         messageEl.innerHTML = `
             <div class="bg-primary text-white px-4 py-2 rounded-lg shadow-lg font-secondary text-sm max-w-xs">
-                ${text}
+                ${asHtml(text)}
             </div>
         `;
         
@@ -163,7 +177,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const formData = new FormData();
             formData.append('message', message);
             
-            const response = await fetch('https://crm.ictitlmi.info/chatbot_carroo/carroo_response', {
+            // Carroo AI: PHP one-shot endpoint on this site (no history kept server-side).
+            const response = await fetch('https://carroo.my.id/public/chat.php', {
                 method: 'POST',
                 body: formData
             });
@@ -216,7 +231,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (loadingEl && loadingEl.innerHTML.includes('Thinking')) {
                 chatContainer.removeChild(loadingEl);
             }
-            addBotMessage('Sorry, I encountered an error. Please try again.');
+            addBotMessage(error && error.message && error.message !== 'API request failed'
+                ? error.message
+                : 'Maaf, koneksinya sedang bermasalah. Coba lagi sebentar lagi ya.');
         }
     }
 });
