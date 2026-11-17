@@ -63,8 +63,39 @@
   $('#pf-total').textContent = pad(slides.length);
   $('#pf-prev').onclick = () => showSlide(slide - 1);
   $('#pf-next').onclick = () => showSlide(slide + 1);
+  // Swipe on touch: the page itself is scroll-driven, so the moment iOS/Android decides a finger
+  // drag is a scroll it fires pointercancel and a pointer-based swipe never completes. So read the
+  // touch stream directly, wait for a clearly horizontal intent, and only then claim the gesture.
+  const SWIPE_MIN = 45;    // px of travel that counts as a swipe
+  const INTENT = 10;       // px before we decide the direction
+  let sx = null, sy = null, swiping = false;
+  const endTouch = () => { sx = null; sy = null; swiping = false; };
+  deck.addEventListener('touchstart', (e) => {
+    const t = e.changedTouches[0];
+    sx = t.clientX; sy = t.clientY; swiping = false;
+  }, { passive: true });
+  deck.addEventListener('touchmove', (e) => {
+    if (sx === null) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - sx, dy = t.clientY - sy;
+    if (!swiping) {
+      if (Math.abs(dx) < INTENT) return;
+      if (Math.abs(dx) < Math.abs(dy) * 1.2) { endTouch(); return; } // vertical: let the page fly on
+      swiping = true;
+    }
+    if (e.cancelable) e.preventDefault();
+  }, { passive: false });
+  deck.addEventListener('touchend', (e) => {
+    if (swiping) {
+      const dx = e.changedTouches[0].clientX - sx;
+      if (Math.abs(dx) > SWIPE_MIN) showSlide(slide + (dx < 0 ? 1 : -1));
+    }
+    endTouch();
+  }, { passive: true });
+  deck.addEventListener('touchcancel', endTouch, { passive: true });
+  // Mouse drag stays on pointer events (no scroll to fight there).
   let swipeX = null;
-  deck.addEventListener('pointerdown', (e) => { swipeX = e.clientX; });
+  deck.addEventListener('pointerdown', (e) => { if (e.pointerType === 'mouse') swipeX = e.clientX; });
   deck.addEventListener('pointerup', (e) => {
     if (swipeX !== null && Math.abs(e.clientX - swipeX) > 50) showSlide(slide + (e.clientX < swipeX ? 1 : -1));
     swipeX = null;

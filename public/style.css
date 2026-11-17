@@ -165,7 +165,12 @@ html:not(.motion) .scroll-hint { display: none; }
   background: linear-gradient(140deg, var(--acc), #1b2636 75%);
   box-shadow: 0 30px 90px -20px var(--acc), inset 0 0 0 3px rgba(255, 255, 255, .1);
 }
-.blob img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.blob img {
+  width: 100%; height: 100%; object-fit: cover;
+  /* the PNG is 433x577 with the head in the upper third: 'top' cropped the square window to the
+     face only. 50% 90% drops the window onto the shoulders so head + white shirt both show. */
+  object-position: 50% 90%;
+}
 
 /* ---------- cards ---------- */
 .card { position: relative; display: block; padding: .9rem 1.1rem; border-radius: 4px; background: var(--card); border: 1px solid var(--line); }
@@ -293,6 +298,34 @@ footer { margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid var(--li
   .ico { width: 38px; height: 38px; }
   .ico svg { width: 18px; height: 18px; }
   footer { margin-top: .9rem; padding-top: .8rem; }
+}
+
+@media (max-width: 620px) {
+  /* --- phone: the projects panel has to live between the fixed header (64px) and the fixed HUD,
+     and a full project card never fits in that band on a small phone. So the panel becomes a
+     column that is capped to the viewport (eyebrow and the ‹ 01/11 › row always visible), the card
+     area scrolls when it is taller than the cap, and the screenshots are SCALED, never cropped -
+     `min(86%, 29vh)` keeps the whole shot in view and grows with a taller phone. Hiding the HUD's
+     counter + label is what stops it from printing over the deck row: each panel already shows its
+     own "07 // PROJECT" eyebrow. `align-content: start` kills the hole that the stacked cards'
+     stretched grid rows used to open between a screenshot and its text. */
+  #hud > span { display: none; }
+  #projects { display: flex; flex-direction: column; max-height: calc(100vh - 8rem); }
+  #projects > .tag { flex: none; }
+  #deck { flex: 1 1 auto; min-height: 0; overflow-y: auto; touch-action: pan-y; scrollbar-width: none; }
+  #deck::-webkit-scrollbar { width: 0; height: 0; }
+  .deck-nav { flex: none; margin: .35rem 0 0; }
+  .deck .pf { align-content: start; }
+  .pf { gap: .45rem; }
+  .pf img { display: block; width: min(86%, 29vh); margin-inline: auto; }
+  .pf-num { font-size: 1.5rem; }
+  .pf-head { gap: .5rem; }
+  .pf h3 { font-size: .98rem; }
+  .pf p { font-size: .78rem; line-height: 1.38; margin: .2rem 0 .35rem; }
+  .pf li { font-size: .75rem; line-height: 1.35; }
+  .chips { margin: .4rem 0; gap: .25rem; }
+  .chips span { font-size: .58rem; padding: .1rem .4rem; }
+  .btn.sm { padding: .3rem .6rem; font-size: .75rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
