@@ -220,15 +220,90 @@ const DATA = {
     },
     {
       num: "08",
-      title: "Super Hero Api",
-      desc: "Super Hero API — browse heroes and villains from DC and Marvel universes.",
-      techs: ["Next JS", "Tailwind", "API"],
+      title: "Pangkasin POS",
+      desc: "Pangkasin POS — a multi-tenant cashier app for barbershops: run the till, split staff bonuses, watch stock and close the day.",
+      techs: ["Laravel 13", "Alpine.js", "Tailwind 4", "MySQL"],
       highlights: [
-        "Search by name, power, or affiliation",
-        "Responsive card layout with hero stats",
-        "Built with Next.js App Router & SSR",
+        "Multi-tenant: every barbershop gets its own isolated data",
+        "Staff bonus & commission counted automatically per transaction",
+        "Daily closing report you can finish from the phone",
       ],
-      links: [{ url: "https://github.com/carroo/heroapi", icon: "github" }],
+      links: [
+        { url: "https://github.com/carroo/pangkasin", icon: "github" },
+        { url: "https://pangkasin.ai.id", icon: "chrome" },
+      ],
+    },
+    {
+      num: "09",
+      title: "GoSBY - Wisata Surabaya",
+      desc: "GoSBY — a recommendation & itinerary planner for Surabaya tourism: pick your preferences, the app builds the route (thesis project).",
+      techs: ["Laravel", "Blade", "MySQL", "SAW", "Dynamic Programming"],
+      highlights: [
+        "Destination ranking with the SAW multi-criteria method",
+        "Auto-generated itinerary & efficient route (dynamic programming)",
+        "Trip cart, spot detail pages, reviews and Google Maps view",
+      ],
+      links: [
+        { url: "https://github.com/carroo/Srkipsi-GoSBY", icon: "github" },
+        { url: "https://gosby.my.id", icon: "chrome" },
+      ],
+    },
+    {
+      num: "10",
+      title: "LMI - Lembaga Manajemen Infaq",
+      desc: "The public site of a national zakat & infaq institution: programmes, education articles, news, a zakat calculator and donations.",
+      techs: ["PHP", "MySQL", "Tailwind"],
+      highlights: [
+        "Programmes, education, news and a zakat calculator on one site",
+        "Donation flow wired to infak.in as the payment channel",
+        "Article & news listing kept current by LMI's editorial team",
+      ],
+      links: [
+        { url: "https://github.com/carroo/lmizakat", icon: "github" },
+        { url: "https://lmizakat.org", icon: "chrome" },
+      ],
+    },
+    {
+      num: "11",
+      title: "MindAR Studio",
+      desc: "MindAR Studio - a WebAR creator: every project gets its own AR page, with image-marker or face tracking, and nothing to install.",
+      techs: ["PHP", "A-Frame", "MindAR", "Three.js"],
+      highlights: [
+        "Marker (image) and face tracking modes, chosen per project",
+        "Upload a marker, then place 3D models that appear on detection",
+        "The MindAR target files are compiled on the server itself",
+      ],
+      links: [
+        { url: "https://github.com/carroo/mindar-cms", icon: "github" },
+        { url: "https://ar.carroo.my.id", icon: "chrome" },
+      ],
+    },
+    {
+      num: "12",
+      title: "WA Gateway",
+      desc: "WA Gateway - a multi-device WhatsApp gateway on Baileys, with a neobrutalism admin panel and a REST API for every message type.",
+      techs: ["Node.js", "Baileys", "Express", "SQLite", "Tailwind"],
+      highlights: [
+        "Several WhatsApp numbers on one server, each with its own device key",
+        "Pairing by QR (live over SSE) or an 8-digit pairing code",
+        "Text, media, sticker, location, contact and bulk send with anti-spam delay",
+      ],
+      links: [
+        { url: "https://github.com/carroo/whatsappgateway", icon: "github" },
+        { url: "https://wa.carroo.my.id/docs", icon: "chrome" },
+      ],
+    },
+    {
+      num: "13",
+      title: "Balakosa Law Firm",
+      desc: "Corporate law firm in Surabaya - company profile with practice areas, fee schedule, team profiles and legal articles, plus its own admin.",
+      techs: ["Laravel", "Tailwind", "Vite", "MySQL"],
+      highlights: [
+        "Practice areas, fee schedule, team profiles and legal articles",
+        "Built-in admin panel to manage pages, articles and inquiries",
+        "Consultation CTA wired to WhatsApp and the contact form",
+      ],
+      links: [{ url: "https://balakosalawfirmsurabaya.com", icon: "chrome" }],
     },
     {
       num: "∞",
@@ -248,6 +323,9 @@ const DATA = {
   ],
 
   // --- Portfolio Images ---
+  // order must match `portfolios` above: 01-08 -> 1-8.png, 09 Pangkasin -> 10.png,
+  // 10 GoSBY -> 11.png, 11-13 (LMI, MindAR, WA Gateway) -> 12-14.png, the closing
+  // "More Project" card -> 9.png
   portfolioImages: [
     "porto/1.png",
     "porto/2.png",
@@ -256,7 +334,12 @@ const DATA = {
     "porto/5.png",
     "porto/6.png",
     "porto/7.png",
-    "porto/8.png",
+    "porto/10.png",
+    "porto/11.jpg",
+    "porto/12.jpg",
+    "porto/13.png",
+    "porto/14.png",
+    "porto/15.jpg",
     "porto/9.png",
   ],
 
