@@ -2,3 +2,7 @@
 node_modules/
 # Kunci API sisi server - jangan pernah di-commit
 /secrets/
+
+# endpoint chat: hanya ada di server (GitHub Pages tidak menjalankan PHP
+# dan akan menyajikan source-nya sebagai teks)
+/public/chat.php
