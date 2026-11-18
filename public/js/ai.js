@@ -139,11 +139,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     chatContainer.removeChild(messageEl);
                 }
             }, 300);
-        }, 7000);
+        }, messageEl.dataset.keep ? 30000 : 7000);
     }
     
     // Function to add bot response (right side)
-    function addBotMessage(text) {
+    // extra.draft: text for a "send on WhatsApp" link; extra.suggestions: follow-up questions
+    function addBotMessage(text, extra = {}) {
         const messageEl = document.createElement('div');
         messageEl.className = 'flex justify-end w-full opacity-0 transition-all duration-300';
         messageEl.innerHTML = `
@@ -151,6 +152,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 ${asHtml(text)}
             </div>
         `;
+        // Built as DOM nodes with textContent, so model text never reaches innerHTML here.
+        const bubble = messageEl.firstElementChild;
+        const extras = [];
+        if (typeof extra.draft === 'string' && extra.draft.trim()) {
+            const link = document.createElement('a');
+            link.href = WHATSAPP_URL + encodeURIComponent(extra.draft);
+            link.target = '_blank';
+            link.rel = 'noopener';
+            link.textContent = '💬 Send this on WhatsApp';
+            link.style.fontWeight = '700';
+            extras.push(link);
+        }
+        (Array.isArray(extra.suggestions) ? extra.suggestions : []).forEach((question) => {
+            const chip = document.createElement('button');
+            chip.type = 'button';
+            chip.textContent = String(question);
+            chip.style.opacity = '.85';
+            chip.onclick = () => { botInput.value = chip.textContent; botSend.click(); };
+            extras.push(chip);
+        });
+        extras.forEach((el) => {
+            el.style.display = 'block';
+            el.style.marginTop = '.4rem';
+            el.style.textAlign = 'left';
+            el.style.textDecoration = 'underline';
+            bubble.appendChild(el);
+        });
+        if (extras.length) messageEl.dataset.keep = '1'; // something to click: stay longer than 7 s
         
         chatContainer.appendChild(messageEl);
         chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -168,9 +197,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     chatContainer.removeChild(messageEl);
                 }
             }, 300);
-        }, 7000);
+        }, messageEl.dataset.keep ? 30000 : 7000);
     }
     
+    const WHATSAPP_URL = 'https://wa.me/62895397073311?text=';
+
+    // What the assistant may do on the page. Only these names ever run, and window.site
+    // (js/app.js) checks every argument against the real page before acting.
+    const ACTIONS = {
+        goTo: (args) => window.site.go(args.section),
+        showProject: (args) => window.site.project(args.title),
+        setTheme: (args) => window.site.theme(args.mode),
+        startGame: () => window.site.game(),
+    };
+
     // Function to get response from Carroo API
     async function getCarrooResponse(message) {
         try {
@@ -193,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error(data.message || 'Failed to get response');
             }
             
-            return data.message;
+            return data; // { message, action, suggestions }
             
         } catch (error) {
             console.error('Carroo API Error:', error);
@@ -216,13 +256,24 @@ document.addEventListener('DOMContentLoaded', function() {
             chatContainer.scrollTop = chatContainer.scrollHeight;
             
             // Get response from Carroo API
-            const responseText = await getCarrooResponse(message);
+            const data = await getCarrooResponse(message);
+            const action = data.action || {}, args = action.args || {};
             
             // Remove loading message
             chatContainer.removeChild(loadingEl);
             
             // Add bot response
-            addBotMessage(responseText);
+            addBotMessage(data.message, {
+                draft: action.name === 'draftContact' ? args.text : '',
+                suggestions: data.suggestions,
+            });
+
+            // a site action that fails must not turn a good answer into an error bubble
+            try {
+                if (Object.prototype.hasOwnProperty.call(ACTIONS, action.name)) ACTIONS[action.name](args);
+            } catch (e) {
+                console.error('Chat action failed:', e);
+            }
             
         } catch (error) {
             console.error('Error fetching bot response:', error);

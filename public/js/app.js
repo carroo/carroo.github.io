@@ -456,4 +456,26 @@
     });
     $('#stopButton').onclick = stopGame;
   }
+
+  // ---------- hooks for the chat assistant (js/ai.js): each one checks its own argument ----------
+  window.site = {
+    go(id) {
+      const i = stops.findIndex((s) => s.id === id);
+      if (i >= 0) goTo(i);
+    },
+    project(title) {
+      const t = String(title).trim().toLowerCase();
+      const i = t ? DATA.portfolios.findIndex((p) => p.title.toLowerCase().startsWith(t)) : -1;
+      if (i < 0) return;
+      showSlide(i);
+      goTo(projectsStop);
+    },
+    theme(mode) {
+      if ((mode === 'light' || mode === 'dark') && (mode === 'light') !== light) themeBtn.onclick();
+    },
+    game() {
+      const b = $('.startButton');
+      if (b && b.onclick) b.onclick(); // no handler under reduced motion
+    },
+  };
 })();

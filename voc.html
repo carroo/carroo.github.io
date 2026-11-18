@@ -1,55 +1,688 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>McD Voucher Bridge Tester</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          monospace;
+        background: #0f1115;
+        color: #e4e6eb;
+        padding: 16px;
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      h1 {
+        font-size: 18px;
+        color: #c02101;
+        margin: 0 0 16px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #2a2d35;
+      }
+      .section {
+        margin-bottom: 12px;
+      }
+      .label {
+        color: #8b919e;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+      }
+      .value {
+        background: #1a1d24;
+        padding: 8px 10px;
+        border-radius: 4px;
+        border-left: 3px solid #c02101;
+        word-break: break-all;
+        font-family: "SF Mono", Monaco, Consolas, monospace;
+        font-size: 12px;
+        min-height: 18px;
+      }
+      .value.empty {
+        color: #555;
+      }
+      .value.ok {
+        border-left-color: #4caf50;
+        color: #4caf50;
+      }
+      .value.error {
+        border-left-color: #f44336;
+        color: #f44336;
+      }
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-<body>
+      .form-row {
+        display: flex;
+        gap: 8px;
+        margin: 16px 0;
+        align-items: stretch;
+      }
+      input[type="text"] {
+        flex: 1;
+        padding: 12px 14px;
+        background: #1a1d24;
+        border: 1px solid #2a2d35;
+        border-radius: 4px;
+        color: #fff;
+        font-size: 14px;
+        font-family: monospace;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      input[type="text"]:focus {
+        outline: none;
+        border-color: #c02101;
+      }
+      button {
+        padding: 12px 24px;
+        background: #c02101;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        min-width: 140px;
+      }
+      button:disabled {
+        background: #2a2d35;
+        color: #555;
+        cursor: not-allowed;
+      }
+      button:not(:disabled):hover {
+        background: #d6260c;
+      }
 
-<script>
-window.addEventListener("load", async () => {
+      .log-box {
+        background: #000;
+        border: 1px solid #2a2d35;
+        border-radius: 4px;
+        padding: 10px;
+        height: 380px;
+        overflow-y: auto;
+        font-family: "SF Mono", Monaco, Consolas, monospace;
+        font-size: 11px;
+        line-height: 1.6;
+      }
+      .log-line {
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .log-line.sys {
+        color: #8b919e;
+      }
+      .log-line.info {
+        color: #61dafb;
+      }
+      .log-line.ok {
+        color: #4caf50;
+      }
+      .log-line.fail {
+        color: #f44336;
+      }
+      .log-line.warn {
+        color: #ff9800;
+      }
+      .log-line .ts {
+        color: #555;
+      }
 
-    const result = await Swal.fire({
-        title: "What would you like to do?",
-        input: "password",
-        inputPlaceholder: "Password",
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        confirmButtonText: "Go",
-        showCancelButton: false
-    });
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      @media (max-width: 600px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .form-row {
+          flex-direction: column;
+        }
+        button {
+          width: 100%;
+        }
+      }
 
-    if (!result.isConfirmed || !result.value) {
-        location.reload();
-        return;
-    }
+      .badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 10px;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+      .badge.on {
+        background: #4caf50;
+        color: #fff;
+      }
+      .badge.off {
+        background: #f44336;
+        color: #fff;
+      }
+      .badge.wait {
+        background: #ff9800;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>McD Voucher Bridge Tester</h1>
 
-    // Tutup popup
-    Swal.close();
+      <div class="grid">
+        <div class="section">
+          <div class="label">Bridge Status</div>
+          <div id="bridge-status" class="value empty">
+            Menunggu <span class="badge wait">WAITING</span>
+          </div>
+        </div>
+        <div class="section">
+          <div class="label">Base URL</div>
+          <div id="base-url" class="value">https://bts-360.mcdonalds.co.id</div>
+        </div>
 
-    // Tunggu sebentar agar animasi SweetAlert selesai
-    setTimeout(() => {
+        <div class="section">
+          <div class="label">Client ID (dari /cas/configuration)</div>
+          <div id="client-id" class="value empty">-</div>
+        </div>
+        <div class="section">
+          <div class="label">CSRF Token</div>
+          <div id="csrf-token" class="value empty">-</div>
+        </div>
 
-        const form = document.createElement("form");
-        form.method = "POST";
-        form.action = "https://gosby.my.id/voc.php";
+        <div class="section">
+          <div class="label">Email (dari bridge user.getuser)</div>
+          <div id="user-email" class="value empty">-</div>
+        </div>
+        <div class="section">
+          <div class="label">Device ID (dari bridge user.getuser)</div>
+          <div id="user-device" class="value empty">-</div>
+        </div>
 
-        const input = document.createElement("input");
-        input.type = "hidden";
-        input.name = "password";
-        input.value = result.value;
+        <div class="section" style="grid-column: 1 / -1">
+          <div class="label">JWT AuthCode (dari bridge user.getAuthCode)</div>
+          <div id="jwt-authcode" class="value empty">-</div>
+        </div>
+      </div>
 
-        form.appendChild(input);
-        document.body.appendChild(form);
+      <div class="form-row">
+        <input
+          type="text"
+          id="voucher-input"
+          placeholder="CONTOH: ZXCV"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button id="start-btn" disabled>START CLAIM</button>
+      </div>
 
-        form.submit();
+      <div class="section">
+        <div class="label">Log Proses</div>
+        <div id="log" class="log-box"></div>
+      </div>
+    </div>
 
-    }, 100);
+    <script>
+      (function () {
+        "use strict";
 
-});
-</script>
+        // ============ CONFIG ============
+        var BASE_URL = "https://bts-360.mcdonalds.co.id";
 
-</body>
+        // ============ STATE ============
+        var clientId = null;
+        var jwtAuthCode = "";
+        var email = "";
+        var deviceId = "";
+        var csrfToken = "";
+        var bridgeReady = false;
+        var clicked = false;
+
+        // ============ HELPERS ============
+        function log(msg, type) {
+          type = type || "sys";
+          var box = document.getElementById("log");
+          var time = new Date().toLocaleTimeString("id-ID", { hour12: false });
+          var div = document.createElement("div");
+          div.className = "log-line " + type;
+          div.innerHTML = '<span class="ts">[' + time + "]</span> " + msg;
+          box.appendChild(div);
+          box.scrollTop = box.scrollHeight;
+        }
+
+        function setValue(id, value, cls) {
+          var el = document.getElementById(id);
+          if (!el) return;
+          if (value === null || value === undefined || value === "") {
+            el.textContent = "-";
+            el.classList.add("empty");
+            el.classList.remove("ok", "error");
+          } else {
+            el.textContent = String(value);
+            el.classList.remove("empty");
+            if (cls) el.classList.add(cls);
+          }
+        }
+
+        function setBridgeStatus(state) {
+          var el = document.getElementById("bridge-status");
+          var badge =
+            state === "on"
+              ? '<span class="badge on">ACTIVE</span>'
+              : state === "off"
+              ? '<span class="badge off">OFFLINE</span>'
+              : '<span class="badge wait">WAITING</span>';
+          el.innerHTML = badge;
+          el.classList.toggle("empty", state !== "on");
+          el.classList.toggle("ok", state === "on");
+          el.classList.toggle("error", state === "off");
+        }
+
+        function getBridgeRoot() {
+          if (window.mcd && window.mcd.bridge) return window.mcd.bridge;
+          if (window.GMA_Lite && window.GMA_Lite.bridge)
+            return window.GMA_Lite.bridge;
+          if (window.__GMALITE_BRIDGE__) return window.__GMALITE_BRIDGE__;
+          return null;
+        }
+
+        // ============ STEP 1: FETCH CSRF TOKEN ============
+        async function fetchCsrfToken() {
+          try {
+            log("GET " + BASE_URL + "/ (ambil CSRF dari meta tag)", "info");
+            var res = await fetch(BASE_URL + "/", { credentials: "include" });
+            var html = await res.text();
+            var match = html.match(
+              /<meta\s+name="csrf-token"\s+content="([^"]+)"/i,
+            );
+            if (match && match[1]) {
+              csrfToken = match[1];
+              setValue("csrf-token", csrfToken, "ok");
+              log("CSRF token terbaca: " + csrfToken, "ok");
+              return csrfToken;
+            } else {
+              log(
+                "CSRF token tidak ditemukan di halaman (mungkin CORS blokir atau struktur berubah)",
+                "fail",
+              );
+              return null;
+            }
+          } catch (e) {
+            log(
+              "Gagal fetch CSRF: " + (e && e.message ? e.message : e),
+              "fail",
+            );
+            log(
+              "Tip: kalau CORS blokir, paste CSRF manual di input bawah",
+              "warn",
+            );
+            return null;
+          }
+        }
+
+        // ============ STEP 2: GET CLIENT ID ============
+        async function getClientId() {
+          try {
+            log("GET " + BASE_URL + "/cas/configuration", "info");
+            var res = await fetch(BASE_URL + "/cas/configuration");
+            var data = await res.json();
+            log("Response /cas/configuration: " + JSON.stringify(data), "info");
+            clientId =
+              (data && data.data && data.data.authCodeClientId) || null;
+            if (clientId) {
+              setValue("client-id", clientId, "ok");
+              log("Client ID: " + clientId, "ok");
+            } else {
+              setValue("client-id", "TIDAK DITEMUKAN", "error");
+              log("authCodeClientId tidak ada di response", "fail");
+            }
+            return clientId;
+          } catch (e) {
+            log(
+              "Gagal ambil client ID: " + (e && e.message ? e.message : e),
+              "fail",
+            );
+            return null;
+          }
+        }
+
+        // ============ STEP 3: GET USER DATA DARI BRIDGE ============
+        function getUserData() {
+          return new Promise(function (resolve, reject) {
+            if (!getBridgeRoot()) {
+              log("Bridge tidak tersedia", "fail");
+              reject(new Error("no bridge"));
+              return;
+            }
+            log('Bridge call: channel="user", payload={getuser:true}', "info");
+            var userConnector = mcd.bridge.message("user");
+            var result = {};
+            userConnector.send({ getuser: true });
+
+            userConnector.on("data", function (data) {
+              log("user.on(data): " + JSON.stringify(data), "info");
+              if (data && data.email) {
+                email = data.email;
+                setValue("user-email", email, "ok");
+              }
+              if (data && data.deviceId) {
+                deviceId = data.deviceId;
+                setValue("user-device", deviceId, "ok");
+              }
+              result.email = data && data.email;
+              result.deviceId = data && data.deviceId;
+            });
+
+            userConnector.on("error", function (error) {
+              log("user.on(error): " + JSON.stringify(error), "fail");
+              log("User belum login? Coba promptlogin...", "warn");
+              promptLogin();
+              reject(error);
+            });
+
+            userConnector.on("done", function () {
+              log("user.on(done) — user data selesai", "ok");
+              resolve(result);
+            });
+          });
+        }
+
+        // ============ STEP 4: GET JWT AUTHCODE DARI BRIDGE ============
+        function getAuthCode() {
+          return new Promise(function (resolve, reject) {
+            if (!clientId) {
+              log("clientId masih null, tidak bisa minta authCode", "fail");
+              reject(new Error("no clientId"));
+              return;
+            }
+            log(
+              'Bridge call: channel="user", payload={getAuthCode:true, clientId:"' +
+                clientId +
+                '"}',
+              "info",
+            );
+            var userConnector = mcd.bridge.message("user");
+            userConnector.send({ getAuthCode: true, clientId: clientId });
+
+            userConnector.on("data", function (data) {
+              log(
+                "user.on(data) authCode response: " +
+                  JSON.stringify(data).substring(0, 400),
+                "info",
+              );
+              jwtAuthCode = (data && data.authCode) || "";
+              if (jwtAuthCode) {
+                setValue(
+                  "jwt-authcode",
+                  jwtAuthCode.substring(0, 100) +
+                    "... (" +
+                    jwtAuthCode.length +
+                    " chars)",
+                  "ok",
+                );
+                log(
+                  "JWT AuthCode didapat, panjang " +
+                    jwtAuthCode.length +
+                    " karakter",
+                  "ok",
+                );
+                resolve(jwtAuthCode);
+              } else {
+                setValue("jwt-authcode", "NO AUTHCODE IN RESPONSE", "error");
+                log("Response bridge tidak berisi authCode", "fail");
+                reject(new Error("no authCode"));
+              }
+            });
+
+            userConnector.on("error", function (error) {
+              log("user.on(error) authCode: " + JSON.stringify(error), "fail");
+              if (error && error.code === 400) {
+                log(
+                  "Error 400 — user belum login. Mencoba promptlogin...",
+                  "warn",
+                );
+                promptLogin();
+              }
+              reject(error);
+            });
+          });
+        }
+
+        // ============ HELPER: PROMPT LOGIN ============
+        function promptLogin() {
+          try {
+            log(
+              'Bridge call: channel="user", payload={promptlogin:true}',
+              "warn",
+            );
+            var user = mcd.bridge.message("user");
+            user.send({ promptlogin: true });
+            user.on("error", function (error) {
+              log("promptlogin error: " + JSON.stringify(error), "fail");
+            });
+            user.on("done", function () {
+              log("promptlogin done — user harus login di app McD", "info");
+            });
+          } catch (e) {
+            log(
+              "promptLogin gagal: " + (e && e.message ? e.message : e),
+              "fail",
+            );
+          }
+        }
+
+        // ============ STEP 5: POST /cas/check-voucher ============
+        async function checkVoucher(voucherCode) {
+          log("========================================", "sys");
+          log("POST " + BASE_URL + "/cas/check-voucher", "info");
+          log(
+            "Headers: X-CSRF-TOKEN=" +
+              (csrfToken ? csrfToken.substring(0, 16) + "..." : "NULL"),
+            "info",
+          );
+          log("Body: {", "info");
+          log('  email: "' + email + '",', "info");
+          log('  deviceId: "' + deviceId + '",', "info");
+          log('  voucher: "' + voucherCode + '",', "info");
+          log(
+            '  authorizationCode: "' +
+              (jwtAuthCode ? jwtAuthCode.substring(0, 40) + "..." : "NULL") +
+              '"',
+            "info",
+          );
+          log("}", "info");
+
+          try {
+            var res = await fetch(BASE_URL + "/cas/check-voucher", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRF-TOKEN": csrfToken,
+              },
+              credentials: "include",
+              body: new URLSearchParams({
+                email: email,
+                deviceId: deviceId,
+                voucher: voucherCode,
+                authorizationCode: jwtAuthCode,
+              }),
+            });
+
+            log(
+              "HTTP Status: " + res.status + " " + res.statusText,
+              res.ok ? "ok" : "fail",
+            );
+            var text = await res.text();
+            log("Raw Response:", "sys");
+            log(text, "info");
+
+            try {
+              var data = JSON.parse(text);
+              log("Parsed JSON:", "sys");
+              log(JSON.stringify(data, null, 2), "info");
+
+              if (data.code === "Berhasil") {
+                log("=== CLAIM BERHASIL ===", "ok");
+                if (data.voucher) {
+                  log("voucher.id: " + data.voucher.id, "ok");
+                  log("voucher.img_url: " + data.voucher.img_url, "ok");
+                  if (data.voucher.reward) {
+                    log(
+                      "reward.loyalty_id: " + data.voucher.reward.loyalty_id,
+                      "ok",
+                    );
+                    log(
+                      "reward.reward_id: " + data.voucher.reward.reward_id,
+                      "ok",
+                    );
+                  }
+                }
+                if (data.redirect) {
+                  log("Redirect URL: " + data.redirect, "warn");
+                }
+                if (data.mdscheck === "yes") {
+                  log("Voucher ini untuk McDelivery", "warn");
+                }
+                if (data.campaign) {
+                  log("Campaign: " + data.campaign, "ok");
+                }
+              } else {
+                log("Hasil: " + (data.code || "Tidak diketahui"), "fail");
+                if (data.campaign) log("Campaign: " + data.campaign, "info");
+              }
+            } catch (e) {
+              log("Response bukan JSON valid", "fail");
+            }
+          } catch (e) {
+            log("Network error: " + (e && e.message ? e.message : e), "fail");
+          }
+          log("========================================", "sys");
+        }
+
+        // ============ BUTTON HANDLER ============
+        document
+          .getElementById("start-btn")
+          .addEventListener("click", async function () {
+            if (clicked) return;
+            var voucherCode = (
+              document.getElementById("voucher-input").value || ""
+            )
+              .trim()
+              .toUpperCase();
+            if (!voucherCode) {
+              log("Isi kode voucher dulu", "warn");
+              return;
+            }
+            if (!email || !deviceId) {
+              log("email/deviceId belum ada dari bridge", "fail");
+              return;
+            }
+            if (!csrfToken) {
+              log("CSRF token belum ada", "fail");
+              return;
+            }
+
+            clicked = true;
+            this.disabled = true;
+            this.textContent = "PROCESSING...";
+            log('Button diklik, voucher: "' + voucherCode + '"', "sys");
+
+            try {
+              // Always get fresh JWT before each claim
+              await getAuthCode();
+              // Now POST to /cas/check-voucher
+              await checkVoucher(voucherCode);
+            } catch (e) {
+              log("Proses gagal: " + (e && e.message ? e.message : e), "fail");
+            }
+
+            clicked = false;
+            this.disabled = false;
+            this.textContent = "START CLAIM";
+          });
+
+        // ============ MAIN: mcdBridgeReady ============
+        document.addEventListener("mcdBridgeReady", async function () {
+          log("Event mcdBridgeReady fired — bridge siap", "ok");
+          setBridgeStatus("on");
+          bridgeReady = true;
+
+          // Hide nav & close like offer.js does
+          try {
+            var system = mcd.bridge.message("system");
+            system.send({ hideNavigationbar: true, hideCloseButton: true });
+            log(
+              'Bridge call: channel="system", payload={hideNavigationbar:true, hideCloseButton:true}',
+              "info",
+            );
+          } catch (e) {
+            log("Gagal hide system UI: " + e, "warn");
+          }
+
+          // Step 1: CSRF
+          await fetchCsrfToken();
+
+          // Step 2: Client ID
+          await getClientId();
+
+          // Step 3: User data dari bridge
+          try {
+            await getUserData();
+          } catch (e) {
+            log("Gagal ambil user data (mungkin belum login)", "fail");
+          }
+
+          // Enable button kalau semua prerequisite siap
+          if (clientId && email && deviceId && csrfToken) {
+            document.getElementById("start-btn").disabled = false;
+            log("=== SIAP KLAIM — tombol aktif ===", "ok");
+          } else {
+            log("Prerequisite belum lengkap, tombol masih disabled", "fail");
+            log(
+              "clientId: " +
+                (clientId ? "OK" : "MISSING") +
+                ", email: " +
+                (email ? "OK" : "MISSING") +
+                ", deviceId: " +
+                (deviceId ? "OK" : "MISSING") +
+                ", csrfToken: " +
+                (csrfToken ? "OK" : "MISSING"),
+              "warn",
+            );
+          }
+        });
+
+        // ============ FALLBACK: kalau bridge sudah ready sebelum listener dipasang ============
+        if (getBridgeRoot()) {
+          log(
+            "Bridge sudah tersedia sebelum event listener, trigger manual",
+            "warn",
+          );
+          setTimeout(function () {
+            if (!bridgeReady) {
+              document.dispatchEvent(new Event("mcdBridgeReady"));
+            }
+          }, 500);
+        }
+
+        // Initial log
+        log("Page loaded. Base URL: " + BASE_URL, "sys");
+        log("Menunggu event mcdBridgeReady...", "sys");
+      })();
+    </script>
+  </body>
 </html>
